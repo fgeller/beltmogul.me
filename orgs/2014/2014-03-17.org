@@ -1,0 +1,40 @@
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a><a href=\"/atom.xml\"><i class=\"fa fa-rss\"></i></a></div>")) -*-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § 2014-03-17
+* § 2014-03-17
+
+[[http://vimeo.com/87845442][Live Coding ScalaJS]]
+
+[[http://www.youtube.com/watch?v%3D_P9HqHVPeik][Stephen Wolfram's Introduction to the Wolfram Language]]
+
+[[http://www.datastax.com/dev/blog/cql-in-2-0-6][New CQL features coming in 2.0.6]]  static columns and slicing over clustering columns.
+
+[[http://www.theatlanticcities.com/arts-and-lifestyle/2014/03/no-one-happier-about-berlin-being-over-berlin/8577/][Berlin being over Berlin]]  mhhh.
+
+[[http://xkcd.com/1080/large/][Visual field]]
+
+[[http://www.viralnova.com/kakapo-egg-recovery/][Kakapo egg recovery]]  clumsy fellows.
+
+[[http://petapixel.com/2014/03/07/camera-drone-captures-gorgeous-video-dolphin-stampede-whales-migrating/][Drone captures dolphins and whales]]  just beautiful.
+
+[[http://martinfowler.com/bliki/CircuitBreaker.html][Circuit Breaker]]  pattern for monitoring calls.
+
+[[http://scalikejdbc.org/documentation/query-dsl.html][Query DSL]]  sql dsl for scala.
+
+[[http://pragdave.me/blog/2014/03/04/time-to-kill-agile/][Time to kill agile]]  an abused noun.
+
+[[http://petapixel.com/2014/03/09/nasa-shares-beautiful-gallery-cosmic-imagery-ahead-tonights-cosmos-premier/][NASA shares cosmic imagery]]
+
+[[http://eed3si9n.com/learning-scalaz/][Learning scalaz]]
+
+[[https://www.destroyallsoftware.com/talks/useing-youre-types-good][Useing youre types good]]  not recommend using java, because it makes bugs.
+
+[[http://zachholman.com/posts/github-communication/][Github communication]]

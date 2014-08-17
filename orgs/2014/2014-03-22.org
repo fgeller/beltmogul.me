@@ -1,0 +1,37 @@
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § 2014-03-22
+
+[[http://articles.coreyhaines.com/posts/thoughts-on-pair-programming/][Thoughts on pair programming]]  by Corey Haines.
+
+[[https://www.youtube.com/watch?v%3DuiJycy6dFSQ][Why Not?]]  paulp on scala's collections.
+
+[[https://www.youtube.com/watch?v%3DuiJycy6dFSQ][The Best Ramen Shops in NYC]]   mhh.
+
+[[https://www.loomio.org/][Loomio]]  online decision finding.
+
+[[https://www.google.com/fonts/specimen/Lato][Lato]]  neat font.
+
+[[https://slack.com/][Slack]]  pretty team communication.
+
+[[http://codemanship.co.uk/parlezuml/blog/?postid%3D1220][Blind Pair Programming Interviews]]  thoughts on dev interviews.
+
+[[http://robertheaton.com/2014/03/07/lessons-from-a-silicon-valley-job-search/][Lessons from a Silicon Valley job search]]  comprehensive.
+
+[[http://www.warski.org/blog/2014/02/using-scala-traits-as-modules-or-the-thin-cake-pattern/][Using Scala traits as modules, or the "Thin Cake" Pattern]]  variant on the cake pattern.
+
+[[https://github.com/adamw/macwire][macwire]]  scala dependency injection container replacement.
+
+[[http://flatuicolors.com/][Flat UI Colors]]  clear.
+
+[[https://github.com/john2x/flatui-theme.el][john2x/flatui-theme.el]]  for emacs.

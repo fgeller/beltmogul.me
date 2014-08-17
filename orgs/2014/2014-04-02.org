@@ -1,0 +1,37 @@
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § 2014-04-02
+
+[[http://travel.nationalgeographic.com/travel/traveler-magazine/photo-contest/2012/entries/2014/150230/view/][Spontaneous Humpback]]  wow.
+
+[[http://thinkrelevance.com/blog/2013/07/10/rich-hickey-and-core-async-podcast-episode-035][Rich Hickey and core.async]]  abstracting over callback hell.
+
+[[http://dorey.github.io/JavaScript-Equality-Table/][JavaScript Equality Table]]  extensive list of wat's.
+
+[[http://legoofdoom.blogspot.co.nz/2009/01/turing-machine-demonstration-video.html][Lego of Doom]]  turing machine from lego.
+
+[[https://www.youtube.com/watch?v%3DGSZhUZT7Fyc][An Introduction to Scalaz-Stream]]
+
+[[https://www.youtube.com/watch?v%3Dhzf3hTUKk8U][Functional Programming is Terrible]]  ... in scala?
+
+[[http://vimeo.com/68375232][TDD, where did it all go wrong]]  revisits beck.
+
+[[https://bitbucket.org/zck/2048.el][2048.el]]  looks like there are tons.
+
+[[http://jaredly.github.io/2014/03/22/rust-vs-go/index.html][Rust vs Go]]  compile time checks for mutability.
+
+[[http://proseand.co.nz/2014/03/31/scala-may-not-be-right-for-you-if/][Scala may not be right for you if ...]]
+
+[[http://blog.plover.com/prog/git-habits.html][My Git Habits]]  by Mark Dominus.
+
+[[http://vimeo.com/85490944][Spotify Engineering Culture]]

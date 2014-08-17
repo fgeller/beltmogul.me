@@ -1,0 +1,41 @@
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § 2014-04-13
+
+[[http://eed3si9n.com/learning-scalaz/Tagged%2Btype.html][Tagged type]] in scala.
+
+[[http://ternjs.net/][Tern]] intelligent javascript tooling.
+
+[[http://ternjs.net/][Responding in a Timely Manner]] Martin Thompson on responsive systems.
+
+[[http://www.ted.com/talks/dan_gilbert_asks_why_are_we_happy][Dan Gilbert: The surprising science of happiness]] synthetic happiness.
+
+[[http://ejohn.org/blog/write-code-every-day/][Write Code Every Day]] lower the threshold for getting back into your projects.
+
+[[http://sarabander.github.io/sicp/html/index.xhtml][Structure and Interpretation of Computer Programs]] nicely typeset.
+
+[[http://groups.csail.mit.edu/mac/classes/6.001/abelson-sussman-lectures/][Structure and Interpretation of Computer Programs, Video Lectures]] the original series.
+
+[[http://hashrocket.com/blog/posts/using-datomic-as-a-graph-database][Using Datomic as a Graph Database]] intriguing.
+
+[[http://www.masteringemacs.org/articles/2014/04/10/dired-shell-commands-find-xargs-replacement/][Dired Shell Commands: The find & xargs replacement]] emacs goodness.
+
+[[https://github.com/gnab/remark][gnab/remark]] markdown based presentations in your browser.
+
+[[http://www.sysdig.org/][sysdig]] strace alternative.
+
+[[http://newzly.github.io/phantom/][Phantom]] cassandra DSL for Scala.
+
+[[http://blog.sigfpe.com/2006/12/evaluating-cellular-automata-is.html][Evaluating cellular automata is comonadic]] conway's game of life and comonads.
+
+[[http://www.adequatelygood.com/JavaScript-Scoping-and-Hoisting.html][JavaScript Scoping and Hoisting]] … good to know.

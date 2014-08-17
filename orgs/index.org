@@ -1,0 +1,367 @@
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link href="atom.xml" type="application/atom+xml" rel="alternate" title="belt mogul feed">
+#+HTML_HEAD: <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:nil html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: belt mogul
+
+#+BEGIN_HTML
+<a href="/atom.xml" class="fa fa-rss"></a>
+#+END_HTML
+
+* § [[file:2014/typing.html][typing]]
+
+   This post is a summary of the tools that I'm fiddling with to tweak my
+   keyboard layout every now and then. I recently changed from [[https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard][Dvorak]] to the
+   less standard [[http://www.workmanlayout.com/blog/][Workman Layout]] with a bit more exotic features that led me to
+   look into options for implementing and customizing the layout.
+
+* OSX
+
+   For my Macbook, new layouts can be added by creating a bundle in
+   =~/Library/Keyboard Layouts=. There is a Workman bundle with several layout
+   variations available at [[https://github.com/deekayen/workman/tree/master/mac][deekayen/workman]]. I'm using a variation of [[https://github.com/deekayen/workman/tree/master/mac#workman-dead-for-programmers][Workman
+   Dead]], which trades the number of key presses against the distance
+   traveled. Additionally, you don't have to press a modifier key to get to the
+   symbols. Symbols that are usually available via the number row, are
+   accessible on home row after pressing the dead key. Pressing the dead key, in
+   my case the comma key, will remap several keys. It changes the layout from
+   normal Workman:
+
+   #+ATTR_HTML: :alt workman layer. :title workman layer.
+   [[file:../../img/o/Screen-Shot-2014-08-09-at-7.45.47-AM.png][file:../../img/o/Screen-Shot-2014-08-09-at-7.45.47-AM-resized.png]]
+
+   to a more symbol focused one:
+
+   #+ATTR_HTML: :alt symbol layer. :title symbol layer.
+   [[file:../../img/o/Screen-Shot-2014-08-09-at-7.45.52-AM.png][file:../../img/o/Screen-Shot-2014-08-09-at-7.45.52-AM-resized.png]]
+
+   For example, the key ={= is accessible by pressing
+   @@html:<code>@@,s@@html:</code>@@ in succession, rather than =shift= + =[=, the
+   key =(= is @@html:<code>@@,h@@html:</code>@@ rather than =shift= + =9= and so on.
+
+   The symbol layer is different from the one included in the bundle at
+   [[https://github.com/deekayen/workman/tree/master/mac][deekayen/workman]], more customized to my habits. For example, rather than
+   splitting parentheses across both hands, I moved them to the left hand. This
+   means that the right hand can stay on top of the dead key in case I want to
+   insert a pair. I also traded numbers for more symbols and added =~= close to
+   the dead key so that I can type =~/= conveniently in a rolling motion.
+
+   The customization is quite straight forward with [[http://scripts.sil.org/cms/scripts/page.php?site_id%3Dnrsi&id%3Dukelele][Ukelele]]. You can open the
+   main bundle, select the layout you want to modify and enter the symbol layer
+   to modify just that part of it. Ukelele then updates the file that describes
+   the layout (=*.keylayout= in =Workman.bundle/Contents/Resources=). Much more
+   convenient than editing the XML by hand :)
+
+  For some specific key remapping on my Macbook I use [[https://pqrs.org/osx/karabiner/][Karabiner]] and [[https://pqrs.org/osx/karabiner/seil.html.en][Seil]], rather
+  than the layout. For example, capslock and return are both mapped to control
+  when pressed in combination with another key, otherwise to their original
+  meaning. The combination of Karabiner and Seil allows all sorts of
+  remappings. For example, in the firmware version I mapped backslash to the
+  capslock key, as I don't really use capslock. I use Seil to map capslock to
+  backslash and Karabiner to map backslash to control when pressed in
+  combination with another key.
+
+  You can do this for any other key combo: Identify the key's code via:
+  Karabiner > Misc & Uninstall > Launch EventViewer and use Seil to map the
+  capslock key to that code. Then add your own configuration to Karabiner,
+  similar to the following:
+
+   #+begin_src xml
+     <?xml version="1.0"?>
+     <root>
+       <item>
+         <name>Change backslash to left control key.</name>
+         <appendix>(Send an backslash key event when backslash key is pressed alone.)</appendix>
+         <identifier>private.backslash_to_control_escape</identifier>
+
+         <autogen>
+           __KeyOverlaidModifier__
+           <!-- from -->
+           KeyCode::BACKSLASH,
+           <!-- to -->
+           KeyCode::CONTROL_L,
+           <!-- alone -->
+           KeyCode::BACKSLASH,
+         </autogen>
+       </item>
+     </root>
+   #+end_src
+
+   The software support that OSX offers is quite convenient and switching
+   between layouts is fast, in case someone else needs to type. But there are
+   some shortcomings:
+
+   - OSX defaults back to QWERTY when requesting an admin password or when
+     logging out.
+
+   - There are some issues with the symbol layers when using sites like
+     [[http://www.keybr.com/][keybr.com]] or [[https://typing.io/][typing.io]] for practicing. Not sure where the key presses are
+     lost or whether they are translated incorrectly.
+
+   - When pairing with other developers, I fall back to Qwerty as Workman is
+     still quite niche and few systems support it out of the box.
+
+* ErgoDox
+
+   Hardware to the rescue! I bought an [[http://ergodox.org/][ErgoDox]] via [[https://www.massdrop.com/buy/ergodox?s%3Dergodox][Massdrop]] last year and this
+   seemed like the perfect opportunity to learn about its firmware. Compiling my
+   own firmware version addresses the above issues by "escaping" OSX and
+   allowing me to just plug in a keyboard with Workman installed. There are
+   multiple firmware implementations available and I just customized one to fit
+   my needs. This means custom placement of modifier keys and also adding the
+   dead key layer. I'm using Massdrop's configurator for the ErgoDox to get a
+   visual representation of my setup:
+
+   #+ATTR_HTML: :alt ergodox layer 0. :title ergodox layer 0.
+   [[file:../../img/o/ergodox-layer-0.png][file:../../img/o/ergodox-layer-0-resized.png]]
+
+   This is just the first layer, the next layer is for symbols and the third is
+   for a numpad on the right hand near home row, the full configuration is
+   available [[https://www.massdrop.com/ext/ergodox/?referer%3D92TGQH&hash%3Dcd06f0925f6a7563b492b5fcfb08f7a7][here]].
+
+   The configurator allows you to compile your own firmware version as well, but
+   currently there is no support for the dead key approach that I'm using. But
+   luckily [[https://github.com/benblazak/ergodox-firmware][benblazak/ergodox-firmware]] has support for sticky keys, which you can
+   use to implement the dead key approach. The project is well documented and
+   it's quite straight-forward to compile your own version on a Mac. The only
+   external dependency I had to download was the compiler as part of the [[http://www.obdev.at/products/crosspack/download.html][AVR
+   MacPack]]. Change the layout in =src/makefile-options= to your target and you're
+   good to go! Simply issue a =make= in the =src= sub-folder and then load the
+   resulting =firmware.hex= with a [[http://pjrc.com/teensy/loader_mac.html][Teensy Loader]] onto your ErgoDox.
+
+   To implement a Workman Dead version, I used the existing [[https://github.com/benblazak/ergodox-firmware/blob/master/src/keyboard/ergodox/layout/colemak-jc-mod.c][Colemak layout]] that
+   makes use of the sticky keys functionality and adapted the keys to
+   Workman. The layout definition is split across three function invocations,
+   where each one looks similar to the following:
+
+   #+begin_src c
+     const uint8_t PROGMEM _kb_layout[KB_LAYERS][KB_ROWS][KB_COLUMNS] = {
+     // LAYER 0
+     KB_MATRIX_LAYER(
+         // unused
+         0,
+         // left hand
+         _esc,       _1, _2, _3, _4, _5, _grave,
+         0,          _Q, _D, _R, _W, _B, _tab,
+         _backslash, _A, _S, _H, _T, _G,
+         _shiftL,    _Z, _X, _M, _C, _V, _guiL,
+         0,          0,  0,  0,  _esc,
+         // left thumb block
+              0, 0,
+         0,   0, _altL,
+         _bs, 2, _ctrlL,
+         // right hand
+         _equal, _6, _7, _8, _9,      _0,         _esc,
+         _dash,  _J, _F, _U, _P,      _semicolon, 0,
+                 _Y, _N, _E, _O,      _I,         _quote,
+         _guiR,  _K, _L, 1,  _period, _slash,     _shiftR,
+                 _arrowU, _arrowD, _arrowL, _arrowR, 0,
+         // right thumb block
+         0,      0,
+         _altR,  0,      0,
+         _ctrlR, _enter, _space
+     ),
+   #+end_src
+
+   The above snippet is the definition for the first layer and defines the basic
+   Workman layout. The =0='s indicate an unused key while the ones with an
+   underscore reference a given key code. For example, =_9= refers to the key code
+   that a regular USB keyboard emits when you press the =9= key (I'm using the
+   short name, the full name is more descriptive: =KEY_9_LeftParenthesis=).
+
+   To implement the symbol layer, I use the comma key as a sticky key, wish
+   activates a second layer (for one key press). The definition of the sticky
+   keys is straight-forward: You indicate the layer number on the normal layout
+   (the =1= in comma position and =2= on the left thumb block in the basic layout
+   above).
+
+   In addition to the call to =_kb_layout=, you manage the specific behavior for
+   press & release by passing mappings to =_kb_layout_press= and
+   =_kb_layout_release=. These mappings are analogous to the one passed to
+   =_kb_layout=, but instead of key codes you add references to functions. For the
+   activation of the symbol layer, you add references to =lsticky1= or =lsticky2= in
+   the press & and release mappings.
+
+   Not all symbols are accessible without modifiers on a regular keyboard, but
+   one goal of the dead key approach is to get rid of the modifier. For this to
+   work, you can supply a modifier-specific function in the press & release
+   mapping. For example, this is just the layout for the left hand for the
+   symbol layer:
+
+   #+begin_src c
+     0,  0,          0,          0,          0,          0,      0,
+     0,  _bracketR,  _bracketR,  _0,         _add_kp,    _2,     0,
+     0,  _bracketL,  _bracketL,  _9,         _equal_kp,  _5,
+     0,  _comma,     _period,    _backslash, _dash,      _dash,  0,
+     0,  0,          0,          0,          0,
+   #+end_src
+
+   To produce ={}= rather than =[]= in the third column, the press & release
+   mappings contain calls to =kbfun_shift_press_release= (aka =sshprre=) rather than
+   the normal =kbfun_press_release= (aka =kprrel=):
+
+   #+begin_src c
+    ktrans,	ktrans,		ktrans,		ktrans,		ktrans,		ktrans,		ktrans,
+    ktrans,	kprrel,		sshprre,	sshprre,	sshprre,	sshprre,	ktrans,
+    ktrans,	kprrel,		sshprre,	sshprre,	sshprre,	sshprre,
+    ktrans,	sshprre,	sshprre,	sshprre,	kprrel,		sshprre,	ktrans,
+    ktrans,	ktrans,		ktrans,		ktrans,		ktrans,
+   #+end_src
+
+   The tedious bit is to keep the corresponding calls to =_kb_layout_press= and
+   =_kb_layout_release= for each layer in sync. Otherwise you might see modifier
+   keys that remain pressed for no apparent reason. For example, if the press &
+   release mappings contain different function references, one to =kprrel= and the
+   other to =sshprre=, then the shift modifier would not get released properly.
+   Keeping the different invocations in sync is a bit tedious as all information
+   is passed in a single call where position defines the meaning of a value and
+   you only get arity compiler warnings. But your favorite editor might be able
+   to help you with that ;)
+
+   For reference my full layout is available [[https://github.com/fgeller/ergodox-firmware/blob/master/src/keyboard/ergodox/layout/workman-dead-mod.c][here]].
+
+* § [[file:2014/pipes.html][scala pipes]]
+
+  I was looking for an operator to make the following easier to read:
+
+#+begin_src scala
+  val hans = Person("Herbert", "Fischer", new java.util.Date(now - (23 * MilliSecondsInYear)))
+  val withAge = addAge(hans)
+  val withAgeAndFullName = addFullName(withAge)
+#+end_src
+
+More specifically, the goal is to fill in optional fields based on initially
+populated fields. In this case the mandatory fields are =firstName=, =lastName= and
+=birthDate= and we derive the =age= and =fullName=:
+
+#+begin_src scala
+  val MilliSecondsInYear = 1000 * 60 * 60 * 24 * 365L
+  def now = System.currentTimeMillis
+
+  case class Person(
+    firstName: String,
+    lastName: String,
+    birthDate: java.util.Date,
+    age: Option[Long] = None,
+    fullName: Option[String] = None)
+
+  def addFullName(person: Person) = person.copy(fullName = Some(s"${person.firstName} ${person.lastName}"))
+  def addAge(person: Person) = person.copy(age = Some((now - person.birthDate.getTime) / MilliSecondsInYear))
+#+end_src
+
+The full example I was looking at had about ten chained function
+invocations. Inserting intermediate results led to redundant names as in the
+example above and nesting the function invocations felt hard to read as you have
+to read the expressions from the inside out:
+
+#+begin_src scala
+  val withAgeAndFullName = addFullName(addAge(hans))
+#+end_src
+
+My preferred solution was imitating pipes like this:
+
+#+begin_src sh
+  ls | sort | uniq -c
+#+end_src
+
+So ideally we could write:
+
+#+begin_src scala
+  val withAgeAndFullName = hans | addAge | addFullName
+#+end_src
+
+But that's the bitwise OR. The alternative I've seen is the following:
+
+#+begin_src scala
+  val withAgeAndFullName = hans |> addAge |> addFullName
+#+end_src
+
+Rather than including a library for this, we can try this ourselves. First, we
+need to pimp objects with our operator:
+
+#+begin_src scala
+  class PimpAny[A](any: A) {
+    def |>[B](fun: A ⇒ B): B = fun(any)
+  }
+#+end_src
+
+And add an implicit conversion to make this available:
+
+#+begin_src scala
+  implicit def pimpAnyWithPipeOperator[A](any: A) = new PimpAny(any)
+#+end_src
+
+We can be even more concise and combine the wrapping class and the
+implicit conversion via syntactic sugar in an implicit class:
+
+#+begin_src scala
+  implicit class PimpAnyWithPipeOperator[A](any: A) {
+    def |>[B](fun: A ⇒ B): B = fun(any)
+  }
+#+end_src
+
+And we're done -- fun practice to learn about implicit classes. :)
+
+Full REPL example with pipes:
+
+#+begin_src scala
+  implicit class PimpAnyWithPipeOperator[A](any: A) {
+    def |>[B](fun: A ⇒ B): B = fun(any)
+  }
+
+  val MilliSecondsInYear = 1000 * 60 * 60 * 24 * 365L
+
+  case class Person(
+    firstName: String,
+    lastName: String,
+    birthDate: java.util.Date,
+    age: Option[Long] = None,
+    fullName: Option[String] = None)
+
+  def now = System.currentTimeMillis
+
+  def addFullName(person: Person): Person =
+    person.copy(fullName = Some(s"${person.firstName} ${person.lastName}"))
+
+  def addAge(person: Person): Person =
+    person.copy(age = Some((now - person.birthDate.getTime) / MilliSecondsInYear))
+
+  val hans = Person("Herbert", "Fischer", new java.util.Date(now - (23 * MilliSecondsInYear)))
+  val withAgeAndFullName = hans |> addAge |> addFullName
+#+end_src
+
+* § [[file:2014/tree.html][tree]]
+
+  #+ATTR_HTML: :alt tree :title tree
+  [[file:../img/a/P6082095.jpg]]
+
+* § [[file:2014/leaving.html][leaving]]
+
+  #+ATTR_HTML: :alt leaving :title leaving
+  [[file:../img/a/P3120694.jpg]]
+
+* § [[file:2014/black-swan.html][black swan]]
+* § [[file:2014/move.html][move]]
+* § [[file:./2014/up-or-down.html][up or down?]]
+* § [[file:./2014/my-world.html][my world]]
+* § [[file:./2014/2014-04-28.html][2014-04-28]]
+* § [[file:./2014/emacs-lisp-scala.html][emacs lisp + scala]]
+* § [[file:./2014/2014-04-13.html][2014-04-13]]
+* § [[file:./2014/orange.html][orange]]
+* § [[file:./2014/2014-04-02.html][2014-04-02]]
+* § [[file:./2014/going-out.html][going out]]
+* § [[file:./2014/spot-of-green-ii.html][spot of green II]]
+* § [[file:./2014/2014-03-22.html][2014-03-22]]
+* § [[file:./2014/2014-03-17.html][2014-03-17]]
+* § [[file:./2014/emacs-scala.html][emacs + scala]]
+* § [[file:./2014/spot-of-green.html][spot of green]]
+* § [[file:./2014/2014-03-01.html][2014-03-01]]

@@ -1,0 +1,37 @@
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § 2014-04-28
+
+[[http://blog.tinkeringmonkey.com/do-your-back-a-favor-get-a-standing-desk/][Do Your Back a Favor, Get a Standing Desk]]  interesting design.
+
+[[https://www.kickstarter.com/projects/2036834894/the-most-affordable-automatic-sit-to-stand-desk?ref%3Dcard][The most affordable, automatic sit-to-stand desk.]]  kickstarter project.
+
+[[https://www.mailpile.is/][Mailpile: Let's take e-mail back!]]  self hosted email web interface.
+
+[[http://www.mathjax.org/][MathJax]]  latex via Javascript.
+
+[[https://www.youtube.com/watch?v%3Db0EF0VTs9Dc][Monads and Gonads]]  interesting for thoughts.
+
+[[http://tech.toptable.co.uk/blog/2014/04/16/look-ma-no-unit-tests/][Look ma, no unit tests!]]  thinking about dropping the scaffolding.
+
+[[http://david.heinemeierhansson.com/2014/tdd-is-dead-long-live-testing.html][TDD is dead. Long live testing.]]  DHH's thoughts.
+
+[[http://blog.8thlight.com/uncle-bob/2014/04/25/MonogamousTDD.html][Monogamous TDD]]  Uncle Bob's response.
+
+[[https://github.com/gkossakowski/sbt/wiki/Incremental-compiler-notes][Incremental compiler notes]]  for scalac.
+
+[[http://retronym.github.io/welcome-to-scala-211/#/][Welcome to Scala 2.11]]  release notes.
+
+[[https://www.youtube.com/watch?v%3DlDipvzpk3AE][Sbt 1.0]]  future plans.
+
+[[https://www.youtube.com/watch?v%3DsG_6nlMZ8f4][Epic Circles]]  by numberphile.

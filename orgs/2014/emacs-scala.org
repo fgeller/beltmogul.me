@@ -1,0 +1,92 @@
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § emacs + scala
+
+  For a bit more than a year I have been working mainly with Scala in
+  Emacs. While it's not like working with a LISP, there are a few tweaks that
+  make life a bit easier. I'll describe my setup and the small additions that
+  work for me.  There's only very little Emacs Lisp, but you can always find
+  more details on [[https://github.com/fgeller/emacs.d][fgeller/emacs.d]].
+
+  As a caveat, while I used [[https://github.com/aemoncannon/ensime][aemoncannon/ensime]] heavily in the beginning, I
+  rarely switch it on nowadays, mostly due to the overhead with sub projects in
+  SBT. Instead I use other tools to get similar functionality. These tools are
+  not as tightly integrated with Scala, but that also means many are applicable
+  for other scenarios as well. Also, none of this is meant as a reference, but
+  more as pointers -- I'm always curious to learn about other techniques :)
+
+  Entry point is usually the project root via an alias in =eshell= to set the
+  =default-directory=. Then I'll start a SBT session via =compile= in =comint-mode= to
+  run tests and drive compilation (e.g., via an alias for =(compile "sbt" t)= in
+  =eshell=).
+
+  #+ATTR_HTML: :alt SBT session in compile-mode. :title SBT session in compile-mode.
+  [[file:../../img/o/Screen-Shot-2014-03-16-at-6.43.32-PM.png][file:../../img/o/Screen-Shot-2014-03-16-at-6.43.32-PM-resized.png]]
+
+  I use [[https://github.com/magit/magit][magit/magit]] for getting a basic overview of where I left off or to create a
+  new branch. Then there are multiple options to find a file to edit. Either
+  jump to a specific line in a file with uncommitted changes via the hunk in
+  =magit-status=, or browse the log and jump via a commit, or browse current files
+  under version control via [[https://github.com/emacs-helm/helm-ls-git][emacs-helm/helm-ls-git]].
+
+  #+ATTR_HTML: :alt magit with log view. :title magit with log view
+  [[file:../../img/o/Screen-Shot-2014-03-16-at-7.03.14-PM.png][file:../../img/o/Screen-Shot-2014-03-16-at-7.03.14-PM-resized.png]]
+
+  I use [[https://github.com/hvesalai/scala-mode2][hvesalai/scala-mode2]] for basic syntax highlighting plus
+  [[https://github.com/drothlis/pretty-symbols][drothlis/pretty-symbols]] for two more unicode glyphs ;)
+
+  #+ATTR_HTML: :alt Jump to source line from commit. :title Jump to source line from commit.
+  [[file:../../img/o/Screen-Shot-2014-03-16-at-7.10.59-PM.png][file:../../img/o/Screen-Shot-2014-03-16-at-7.10.59-PM-resized.png]]
+
+  In the background, there is usually a process running for formatting files via
+  [[https://github.com/mdr/scalariform][mdr/scalariform]] that I connect to by adding to the =after-save-hook=. It's a
+  small [[https://github.com/fgeller/scalariform-daemon][fgeller/scalariform-daemon]] that waits for HTTP requests and formats
+  files in place.  This means that I lose undo history but that hasn't been an
+  issue for me. I tried magit's integration with [[https://github.com/bartman/git-wip][bartman/git-wip]], but very
+  rarely used it. Most importantly, it saves time to start up the JVM for each
+  format request and combined with a low value for =auto-revert-interval= you get
+  quick formats on save.
+
+  [[https://github.com/magnars/expand-region.el/][magnars/expand-region.el]] and [[https://github.com/Fuco1/smartparens][Fuco1/smartparens]] enable a light version of
+  structured editing, but mostly there is little special configuration for
+  editing Scala code versus general text editing. There are tons of cool
+  [[http://emacsrocks.com/][resources]] out there that do a much better job at describing [[https://github.com/capitaomorte/yasnippet][snippets]],
+  [[https://github.com/auto-complete/auto-complete][auto-completion]] or [[https://github.com/winterTTr/ace-jump-mode][quick in buffer jumping]] and more :)
+
+  SBT's [[http://www.scala-sbt.org/release/docs/Detailed-Topics/Triggered-Execution][triggered execution]] via the tilde operator is usually my main driver
+  during development for red-green-refactor. Using compile-mode to run the SBT
+  session enables jumping to specific lines on compilation or test failure.
+
+  #+ATTR_HTML: :alt Jump to source line from compilation error. :title Jump to source line from compilation error.
+  [[file:../../img/o/Screen-Shot-2014-03-16-at-7.42.06-PM.png][file:../../img/o/Screen-Shot-2014-03-16-at-7.42.06-PM-resized.png]]
+
+  For other navigation I use a combination of tags and basic text search. For
+  tags, I configure [[http://ctags.sourceforge.net/][Exuberant ctags]] as a plug-in parser for [[http://www.gnu.org/software/global/global.html][GNU global]]. ctags
+  allows me to simply add a basic regex-based [[https://gist.github.com/fgeller/8452095][configuration]] for Scala files and
+  global allows for incremental updates on save. I also add other sources to my
+  projects to enable jumping to tags in other libraries or the Scala
+  distribution for reference. [[https://github.com/syohex/emacs-helm-gtags][helm-gtags]] allows for convenient selection between
+  multiple candidates by matching on the source line or file name. I also copied
+  helm-gtags functionality for a [[https://github.com/fgeller/emacs.d/blame/master/init.org#L1635][crude helper]] to create import statements based
+  on indexed tags.
+
+  #+ATTR_HTML: :alt Jump to symbol definition with helm-gtags. :title Jump to symbol definition with helm-gtags.
+  [[file:../../img/o/Screen-Shot-2014-03-16-at-8.13.48-PM.png][file:../../img/o/Screen-Shot-2014-03-16-at-8.13.48-PM-resized.png]]
+
+  Finally, for in-buffer search there is the excellent built-in [[http://www.emacswiki.org/emacs/IncrementalSearch][isearch]] but for
+  text searches across files I use [[https://github.com/Wilfred/ag.el][Wilfred/ag.el]] as a front-end for
+  [[https://github.com/ggreer/the_silver_searcher][ggreer/the_silver_searcher]]. As a bonus, you get easy text changes across files
+  via [[https://github.com/mhayashi1120/Emacs-wgrep][mhayashi1120/Emacs-wgrep]].
+
+  #+ATTR_HTML: :alt Use wgrep to edit lines across files. :title Use wgrep to edit lines across files.
+  [[file:../../img/o/Screen-Shot-2014-03-16-at-8.27.36-PM.png][file:../../img/o/Screen-Shot-2014-03-16-at-8.27.36-PM-resized.png]]

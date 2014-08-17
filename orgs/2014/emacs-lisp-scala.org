@@ -1,0 +1,175 @@
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § emacs lisp + scala
+
+   This posts describes some of the utility functions that I wrote for editing
+   Scala code. They've mostly grown into existence after I couldn't be bothered
+   to repeat a task manually over and over again. Fortunately, it is quite easy
+   to translate manual steps of text manipulation in Emacs to executable Emacs
+   Lisp. So in a sense they are just slightly more complex macros ;)
+
+   These little utility functions are doomed to be imperfect, as they're lacking
+   information from static analysis. That means the functionality is nowhere
+   close to what [[https://github.com/aemoncannon/ensime][aemoncannon/ensime]] and other tools can do for you. On the other
+   hand, they are very light-weight, flexible and easily extensible alternatives
+   and work for most of my use cases. And possibly, they make your life easier
+   as well.
+
+   Perhaps they offer you a simple entry point to write your own functions after
+   seeing how easy it is to jump from calling functions such as =replace-regexp=
+   interactively to calling them from utility functions. All functions are using
+   basic Emacs Lisp functionality and some third party libraries that are
+   available via ELPA -- most notably [[https://github.com/magnars/dash.el][magnars/dash.el]] for list and [[https://github.com/magnars/s.el][magnars/s.el]]
+   for string manipulation.
+
+   In my [[http://beltmogul.blogspot.co.nz/2014/03/emacs-scala.html][previous post]] I mentioned that I use [[https://github.com/fgeller/scalariform-daemon][fgeller/scalariform-daemon]] to save
+   time when formatting files. To trigger the daemon, I add the following
+   function to the =after-save-hook= in =scala-mode= buffers:
+
+   #+begin_src emacs-lisp
+     (defun scalariform-daemon-format-file ()
+       (when (and (boundp 'scalariform-preferences-file)
+                  scalariform-preferences-file)
+         (require 'request)
+         (request
+          "http://localhost:8080/format"
+          :params `((fileName . ,buffer-file-name)
+                    (preferencesFile . ,scalariform-preferences-file)))))
+   #+end_src
+
+   It reports the current file name to the daemon via an HTTP request using
+   [[https://github.com/tkf/emacs-request][tkf/emacs-request]]. The request includes a reference to the file that
+   tells scalariform how to format a given file. This means that I can set the
+   value of =scalariform-preferences-file= in a directory-local variable and have
+   different preferences for different projects and keep different parties
+   happy.
+
+   When working on tests I often want to focus on a single test. My SBT session
+   usually triggers for a whole test class though and the dance to run a
+   single test from SBT is not that easy to automate. As an alternative, I
+   simply ignore all other tests in my current test class by text manipulation:
+
+   #+begin_src emacs-lisp
+     (defun scala-ignore-all-tests ()
+       (interactive)
+       (save-excursion
+         (replace-regexp "\\bit(\\(s\\)?\"" "ignore(\\1\"" nil (point-min) (point-max)))
+       (unless current-prefix-arg
+         (save-excursion
+           (search-backward "ignore(" nil)
+           (replace-match "it(" nil t))))
+   #+end_src
+
+
+   Assuming =point= is in the test that I'm trying to focus on, this simply
+   replaces all occurrences of =it(= with =ignore(= in the current buffer and then
+   replaces the closest match backwards to enable the current test. It skips the
+   re-enabling of the current test if the function was invoked with a prefix
+   argument. These patterns work for [[http://www.scalatest.org/getting_started_with_fun_spec][ScalaTest's FunSpec]] but would have to be
+   changed for other specs or test frameworks where you'd identify tests
+   differently.
+
+   After the test is green, I should be a good citizen and make sure that none
+   of the others are affected and that works by simply re-enabling them all:
+
+   #+begin_src emacs-lisp
+     (defun scala-enable-all-tests ()
+       (interactive)
+       (save-excursion
+         (replace-regexp "\\bignore(\\(s\\)?\"" "it(\\1\"" nil (point-min) (point-max))))
+   #+end_src
+
+   Managing import statements is often a nuisance and IDEs are very good at
+   taking that pain away. The benefit of not having an IDE do the work for you,
+   is that you get an understanding of your project -- but even then it boils
+   down to very repetitive tasks and I'm rather lazy when it comes to those.
+
+   To add an import statement for a new symbol, I'm using the indexed tags of my
+   project to find the definition of a symbol and then try to derive the full
+   package name from visiting the file:
+
+   #+begin_src emacs-lisp
+     (defun helm-gtags-action-import-tag (elm)
+       (when (string-match "\\(.+?\\):\\([0-9]+\\):\\(.+\\)" elm)
+         (let* ((filename (match-string 1 elm))
+                (tagname (helm-attr 'helm-gtags-tagname))
+                (default-directory (helm-gtags-base-directory))
+                (package (save-excursion
+                           (with-current-buffer (find-file-noselect filename)
+                             (goto-char (point-min))
+                             (while (and (not (looking-at-p "package ")) (not (eobp)))
+                               (beginning-of-line)
+                               (forward-line 1))
+                             (if (looking-at-p "package ")
+                                 (buffer-substring
+                                  (+ (point) (length "package "))
+                                  (point-at-eol))
+                               "PACKAGE"))))
+                (import-statement (format "import %s.%s" package tagname)))
+           (goto-char (point-min))
+           (when (looking-at-p "package ") (forward-line 1) (newline))
+           (insert import-statement)
+           (when helm-gtags-pulse-at-cursor
+             (pulse-momentary-highlight-one-line (point))))))
+   #+end_src
+
+   I use a copy of [[https://github.com/syohex/emacs-helm-gtags][syohex/emacs-helm-gtags]] functionality to jump to a tag to
+   identify a symbol name that I want to import. It provides easy access to
+   the indexed tags and offers convenient matching when the name is not
+   unique. The above function is the action that I install to find the package
+   name and adding the import statement to the top of the file. It does not work
+   for all edge cases, for example, multiple package statements in a single
+   file, but it has served me well so far. In case you want to try this, it
+   relies on patch [[https://github.com/fgeller/emacs-helm-gtags/commit/3bed42e4c8cadce882a6363f720dbde7771b0fc7][3bed42e]] to [[https://github.com/syohex/emacs-helm-gtags][syohex/emacs-helm-gtags]] to access the tag name in
+   a custom action via the helm attribute =helm-gtags-tagname=. For more context
+   on how to hook it up consider my configuration [[https://github.com/fgeller/emacs.d][fgeller/emacs.d]].
+
+   As importing is easy now ;) you may want to remove unused imports. The
+   following function identifies the imported name for each import statement and
+   then counts its occurrences in the current buffer to identify unused imports:
+
+   #+begin_src emacs-lisp
+     (defun find-unused-imports ()
+       (interactive)
+       (let* ((full-buffer-contents (buffer-substring-no-properties (point-min) (point-max)))
+              (filter-unused-imports
+               (lambda (line)
+                 (let* ((raw (cadr (s-match "import .+\\.\\(.+\\)" line)))
+                        (name-match (s-match "{ .+ \\(⇒\\|=>\\) \\(.+\\) }" raw))
+                        (name-re (format "\\b%s\\b" (if name-match (caddr name-match) raw)))
+                        (count (s-count-matches name-re full-buffer-contents)))
+                   (when (eq count 1) line))))
+              (unused-import-lines
+               (with-temp-buffer
+                 (insert full-buffer-contents)
+                 (goto-char (point-min))
+                 (keep-lines "^import " (point-min) (point-max))
+                 (let* ((contents (filter-buffer-substring (point-min) (point-max) t))
+                        (import-lines (s-split "\n" contents t)))
+                   (-flatten (-map filter-unused-imports import-lines))))))
+         (goto-char (point-min))
+         (insert (s-join "\n" unused-import-lines))
+         (open-line 2)
+         (-each
+             unused-import-lines
+           (lambda (line) (save-excursion (flush-lines (format "^%s$" line)))))))
+   #+end_src
+
+   This is just a heuristic that might give you false results. Therefore the
+   function just moves the import statements that are potentially superfluous to
+   the top of the buffer rather then deleting them immediately. You can then
+   review the identified imports and decide to keep false positives like
+   implicits. After adding and removing import statements I use
+   [[https://github.com/fgeller/sort-imports.el][fgeller/sort-imports.el]] to identify blocks in which I want the import
+   statements to be grouped and then continue with what I actually wanted to
+   code :)

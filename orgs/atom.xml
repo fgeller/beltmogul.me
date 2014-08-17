@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title>belt mogul</title>
+  <link href="http://beltmogul.me/feed/" rel="self" />
+  <link href="http://beltmogul.me/" />
+  <id>urn:uuid:8875bcdd-f8d6-ce64-0193-6da7c5eb9cd6</id>
+  <updated>2014-05-31T02:50:05+0000</updated>
+
+  <entry>
+    <title>typing</title>
+    <link type="text/html" href="http://www.beltmogul.me/2014/typing.html"/>
+    <id>urn:uuid:3359994b-8579-bfb4-8993-215c98420262</id>
+    <updated>2014-08-09T09:57:22+0000</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<p>
+This post is a summary of the tools that I'm fiddling with to tweak my
+keyboard layout every now and then. I recently changed from <a href="https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard">Dvorak</a> to the
+less standard <a href="http://www.workmanlayout.com/blog/">Workman Layout</a> with a bit more exotic features that led me to
+look into options for implementing and customizing the layout.
+</p>
+
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1">OSX</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+For my Macbook, new layouts can be added by creating a bundle in
+<code>~/Library/Keyboard Layouts</code>. There is a Workman bundle with several layout
+variations available at <a href="https://github.com/deekayen/workman/tree/master/mac">deekayen/workman</a>. I'm using a variation of <a href="https://github.com/deekayen/workman/tree/master/mac#workman-dead-for-programmers">Workman
+Dead</a>, which trades the number of key presses against the distance
+traveled. Additionally, you don't have to press a modifier key to get to the
+symbols. Symbols that are usually available via the number row, are
+accessible on home row after pressing the dead key. Pressing the dead key, in
+my case the comma key, will remap several keys. It changes the layout from
+normal Workman:
+</p>
+
+
+<div class="figure">
+<p><a href="../../img/o/Screen-Shot-2014-08-09-at-7.45.47-AM.png" alt="workman layer." title="workman layer."><img src="../../img/o/Screen-Shot-2014-08-09-at-7.45.47-AM-resized.png" alt="workman layer." title="workman layer." /></a>
+</p>
+</div>
+
+<p>
+to a more symbol focused one:
+</p>
+
+
+<div class="figure">
+<p><a href="../../img/o/Screen-Shot-2014-08-09-at-7.45.52-AM.png" alt="symbol layer." title="symbol layer."><img src="../../img/o/Screen-Shot-2014-08-09-at-7.45.52-AM-resized.png" alt="symbol layer." title="symbol layer." /></a>
+</p>
+</div>
+
+<p>
+For example, the key <code>{</code> is accessible by pressing
+<code>,s</code> in succession, rather than <code>shift</code> + <code>[</code>, the
+key <code>(</code> is <code>,h</code> rather than <code>shift</code> + <code>9</code> and so on.
+</p>
+
+<p>
+The symbol layer is different from the one included in the bundle at
+<a href="https://github.com/deekayen/workman/tree/master/mac">deekayen/workman</a>, more customized to my habits. For example, rather than
+splitting parentheses across both hands, I moved them to the left hand. This
+means that the right hand can stay on top of the dead key in case I want to
+insert a pair. I also traded numbers for more symbols and added <code>~</code> close to
+the dead key so that I can type <code>~/</code> conveniently in a rolling motion.
+</p>
+
+<p>
+The customization is quite straight forward with <a href="http://scripts.sil.org/ukelele">Ukelele</a>. You can open the
+main bundle, select the layout you want to modify and enter the symbol layer
+to modify just that part of it. Ukelele then updates the file that describes
+the layout (<code>*.keylayout</code> in <code>Workman.bundle/Contents/Resources</code>). Much more
+convenient than editing the XML by hand :)
+</p>
+
+<p>
+For some specific key remapping on my Macbook I use <a href="https://pqrs.org/osx/karabiner/">Karabiner</a> and <a href="https://pqrs.org/osx/karabiner/seil.html.en">Seil</a>, rather
+than the layout. For example, capslock and return are both mapped to control
+when pressed in combination with another key, otherwise to their original
+meaning. The combination of Karabiner and Seil allows all sorts of
+remappings. For example, in the firmware version I mapped backslash to the
+capslock key, as I don't really use capslock. I use Seil to map capslock to
+backslash and Karabiner to map backslash to control when pressed in
+combination with another key.
+</p>
+
+<p>
+You can do this for any other key combo: Identify the key's code via:
+Karabiner &gt; Misc &amp; Uninstall &gt; Launch EventViewer and use Seil to map the
+capslock key to that code. Then add your own configuration to Karabiner,
+similar to the following:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-xml">&lt;?<span style="color: #d98c10;">xml</span> <span style="color: #8e44ad;">version</span>=<span style="color: #0a74b9;">"</span><span style="color: #0a74b9;">1.0</span><span style="color: #0a74b9;">"</span>?&gt;
+&lt;<span style="color: #2492db;">root</span>&gt;
+  &lt;<span style="color: #2492db;">item</span>&gt;
+    &lt;<span style="color: #2492db;">name</span>&gt;Change backslash to left control key.&lt;/<span style="color: #2492db;">name</span>&gt;
+    &lt;<span style="color: #2492db;">appendix</span>&gt;(Send an backslash key event when backslash key is pressed alone.)&lt;/<span style="color: #2492db;">appendix</span>&gt;
+    &lt;<span style="color: #2492db;">identifier</span>&gt;private.backslash_to_control_escape&lt;/<span style="color: #2492db;">identifier</span>&gt;
+
+    &lt;<span style="color: #2492db;">autogen</span>&gt;
+      __KeyOverlaidModifier__
+      <span style="color: #95a5a6;">&lt;!--</span><span style="color: #7f8c8d;"> from </span><span style="color: #95a5a6;">--&gt;</span>
+      KeyCode::BACKSLASH,
+      <span style="color: #95a5a6;">&lt;!--</span><span style="color: #7f8c8d;"> to </span><span style="color: #95a5a6;">--&gt;</span>
+      KeyCode::CONTROL_L,
+      <span style="color: #95a5a6;">&lt;!--</span><span style="color: #7f8c8d;"> alone </span><span style="color: #95a5a6;">--&gt;</span>
+      KeyCode::BACKSLASH,
+    &lt;/<span style="color: #2492db;">autogen</span>&gt;
+  &lt;/<span style="color: #2492db;">item</span>&gt;
+&lt;/<span style="color: #2492db;">root</span>&gt;
+</pre>
+</div>
+
+<p>
+The software support that OSX offers is quite convenient and switching
+between layouts is fast, in case someone else needs to type. But there are
+some shortcomings:
+</p>
+
+<ul class="org-ul">
+<li>OSX defaults back to QWERTY when requesting an admin password or when
+logging out.
+</li>
+
+<li>There are some issues with the symbol layers when using sites like
+<a href="http://www.keybr.com/">keybr.com</a> or <a href="https://typing.io/">typing.io</a> for practicing. Not sure where the key presses are
+lost or whether they are translated incorrectly.
+</li>
+
+<li>When pairing with other developers, I fall back to Qwerty as Workman is
+still quite niche and few systems support it out of the box.
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2">ErgoDox</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Hardware to the help! I bought an <a href="http://ergodox.org/">ErgoDox</a> via <a href="https://www.massdrop.com/buy/ergodox?s=ergodox">Massdrop</a> last year and this
+seemed like the perfect opportunity to learn about its firmware. Compiling my
+own firmware version addresses the above issues by "escaping" OSX and
+allowing me to just plug in a keyboard with Workman installed. There are
+multiple firmware implementations available and I just customized one to fit
+my needs. This means custom placement of modifier keys and also adding the
+dead key layer. I'm using Massdrop's configurator for the ErgoDox to get a
+visual representation of my setup:
+</p>
+
+
+<div class="figure">
+<p><a href="../../img/o/ergodox-layer-0.png" alt="ergodox layer 0." title="ergodox layer 0."><img src="../../img/o/ergodox-layer-0-resized.png" alt="ergodox layer 0." title="ergodox layer 0." /></a>
+</p>
+</div>
+
+<p>
+This is just the first layer, the next layer is for symbols and the third is
+for a numpad on the right hand near home row, the full configuration is
+available <a href="https://www.massdrop.com/ext/ergodox/?referer=92TGQH&amp;hash=cd06f0925f6a7563b492b5fcfb08f7a7">here</a>.
+</p>
+
+<p>
+The configurator allows you to compile your own firmware version as well, but
+currently there is no support for the dead key approach that I'm using. But
+luckily <a href="https://github.com/benblazak/ergodox-firmware">benblazak/ergodox-firmware</a> has support for sticky keys, which you can
+use to implement the dead key approach. The project is well documented and
+it's quite straight-forward to compile your own version on a Mac. The only
+external dependency I had to download was the compiler as part of the <a href="http://www.obdev.at/products/crosspack/download.html">AVR
+MacPack</a>. Change the layout in <code>src/makefile-options</code> to your target and you're
+good to go! Simply issue a <code>make</code> in the <code>src</code> sub-folder and then load the
+resulting <code>firmware.hex</code> with a <a href="http://pjrc.com/teensy/loader_mac.html">Teensy Loader</a> onto your ErgoDox.
+</p>
+
+<p>
+To implement a Workman Dead version, I used the existing <a href="https://github.com/benblazak/ergodox-firmware/blob/master/src/keyboard/ergodox/layout/colemak-jc-mod.c">Colemak layout</a> that
+makes use of the sticky keys functionality and adapted the keys to
+Workman. The layout definition is split across three function invocations,
+where each one looks similar to the following:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c"><span style="color: #d98c10;">const</span> uint8_t <span style="color: #2492db;">PROGMEM</span> <span style="color: #8e44ad;">_kb_layout</span>[KB_LAYERS][KB_ROWS][KB_COLUMNS] = {
+<span style="color: #95a5a6;">// </span><span style="color: #7f8c8d;">LAYER 0</span>
+KB_MATRIX_LAYER(
+    <span style="color: #95a5a6;">// </span><span style="color: #7f8c8d;">unused</span>
+    0,
+    <span style="color: #95a5a6;">// </span><span style="color: #7f8c8d;">left hand</span>
+    _esc,       _1, _2, _3, _4, _5, _grave,
+    0,          _Q, _D, _R, _W, _B, _tab,
+    _backslash, _A, _S, _H, _T, _G,
+    _shiftL,    _Z, _X, _M, _C, _V, _guiL,
+    0,          0,  0,  0,  _esc,
+    <span style="color: #95a5a6;">// </span><span style="color: #7f8c8d;">left thumb block</span>
+         0, 0,
+    0,   0, _altL,
+    _bs, 2, _ctrlL,
+    <span style="color: #95a5a6;">// </span><span style="color: #7f8c8d;">right hand</span>
+    _equal, _6, _7, _8, _9,      _0,         _esc,
+    _dash,  _J, _F, _U, _P,      _semicolon, 0,
+            _Y, _N, _E, _O,      _I,         _quote,
+    _guiR,  _K, _L, 1,  _period, _slash,     _shiftR,
+            _arrowU, _arrowD, _arrowL, _arrowR, 0,
+    <span style="color: #95a5a6;">// </span><span style="color: #7f8c8d;">right thumb block</span>
+    0,      0,
+    _altR,  0,      0,
+    _ctrlR, _enter, _space
+),
+</pre>
+</div>
+
+<p>
+The above snippet is the definition for the first layer and defines the basic
+Workman layout. The <code>0</code>'s indicate an unused key while the ones with an
+underscore reference a given key code. For example, <code>_9</code> refers to the key code
+that a regular USB keyboard emits when you press the <code>9</code> key (I'm using the
+short name, the full name is more descriptive: <code>KEY_9_LeftParenthesis</code>).
+</p>
+
+<p>
+To implement the symbol layer, I use the comma key as a sticky key, wish
+activates a second layer (for one key press). The definition of the sticky
+keys is straight-forward: You indicate the layer number on the normal layout
+(the <code>1</code> in comma position and <code>2</code> on the left thumb block in the basic layout
+above).
+</p>
+
+<p>
+In addition to the call to <code>_kb_layout</code>, you manage the specific behavior for
+press &amp; release by passing mappings to <code>_kb_layout_press</code> and
+<code>_kb_layout_release</code>. These mappings are analogous to the one passed to
+<code>_kb_layout</code>, but instead of key codes you add references to functions. For the
+activation of the symbol layer, you add references to <code>lsticky1</code> or <code>lsticky2</code> in
+the press &amp; and release mappings.
+</p>
+
+<p>
+Not all symbols are accessible without modifiers on a regular keyboard, but
+one goal of the dead key approach is to get rid of the modifier. For this to
+work, you can supply a modifier-specific function in the press &amp; release
+mapping. For example, this is just the layout for the left hand for the
+symbol layer:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c">0,  0,          0,          0,          0,          0,      0,
+0,  _bracketR,  _bracketR,  _0,         _add_kp,    _2,     0,
+0,  _bracketL,  _bracketL,  _9,         _equal_kp,  _5,
+0,  _comma,     _period,    _backslash, _dash,      _dash,  0,
+0,  0,          0,          0,          0,
+</pre>
+</div>
+
+<p>
+To produce <code>{}</code> rather than <code>[]</code> in the third column, the press &amp; release
+mappings contain calls to <code>kbfun_shift_press_release</code> (aka <code>sshprre</code>) rather than
+the normal <code>kbfun_press_release</code> (aka <code>kprrel</code>):
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-c">ktrans, ktrans,     ktrans,     ktrans,     ktrans,     ktrans,     ktrans,
+ktrans, kprrel,     sshprre,    sshprre,    sshprre,    sshprre,    ktrans,
+ktrans, kprrel,     sshprre,    sshprre,    sshprre,    sshprre,
+ktrans, sshprre,    sshprre,    sshprre,    kprrel,     sshprre,    ktrans,
+ktrans, ktrans,     ktrans,     ktrans,     ktrans,
+</pre>
+</div>
+
+<p>
+The tedious bit is to keep the corresponding calls to <code>_kb_layout_press</code> and
+<code>_kb_layout_release</code> for each layer in sync. Otherwise you might see modifier
+keys that remain pressed for no apparent reason. For example, if the press &amp;
+release mappings contain different function references, one to <code>kprrel</code> and the
+other to <code>sshprre</code>, then the shift modifier would not get released properly.
+Keeping the different invocations in sync is a bit tedious as all information
+is passed in a single call where position defines the meaning of a value and
+you only get arity compiler warnings. But your favorite editor might be able
+to help you with that ;)
+</p>
+
+<p>
+For reference my full layout is available <a href="https://github.com/fgeller/ergodox-firmware/blob/master/src/keyboard/ergodox/layout/workman-dead-mod.c">here</a>.
+</p>
+</div>
+</div>
+</div>
+</content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+
+  <entry>
+    <title>scala pipes</title>
+    <link type="text/html" href="http://www.beltmogul.me/2014/pipes.html"/>
+    <id>urn:uuid:10e2b7dc-19b6-07d4-e25b-c9407399aa4c</id>
+    <updated>2014-06-24T12:20:22+0000</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<p>
+I was looking for an operator to make the following easier to read:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">hans</span> <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">Person</span>(<span style="color: #0a74b9;">"Herbert"</span>, <span style="color: #0a74b9;">"Fischer"</span>, <span style="color: #d98c10;">new</span> <span style="color: #2492db;">java</span>.util.<span style="color: #e67e22;">Date</span>(now - (<span style="color: #e67e22;">23</span> * <span style="color: #e67e22;">MilliSecondsInYear</span>)))
+<span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">withAge</span> <span style="color: #d98c10;">=</span> addAge(hans)
+<span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">withAgeAndFullName</span> <span style="color: #d98c10;">=</span> addFullName(withAge)
+</pre>
+</div>
+
+<p>
+More specifically, the goal is to fill in optional fields based on initially
+populated fields. In this case the mandatory fields are <code>firstName</code>, <code>lastName</code> and
+<code>birthDate</code> and we derive the <code>age</code> and <code>fullName</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">MilliSecondsInYear</span> <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">1000</span> * <span style="color: #e67e22;">60</span> * <span style="color: #e67e22;">60</span> * <span style="color: #e67e22;">24</span> * <span style="color: #e67e22;">365L</span>
+<span style="color: #d98c10;">def</span> <span style="color: #2492db;">now</span> <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">System</span>.currentTimeMillis
+
+<span style="color: #d98c10;">case</span> <span style="color: #d98c10;">class</span> <span style="color: #2492db;">Person</span>(
+  firstName<span style="color: #d98c10;">:</span> <span style="color: #2492db;">String</span>,
+  lastName<span style="color: #d98c10;">:</span> <span style="color: #2492db;">String</span>,
+  birthDate<span style="color: #d98c10;">:</span> <span style="color: #2492db;">java</span>.util.<span style="color: #e67e22;">Date</span>,
+  age<span style="color: #d98c10;">:</span> <span style="color: #2492db;">Option</span>[<span style="color: #e67e22;">Long</span>] <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">None</span>,
+  fullName<span style="color: #d98c10;">:</span> <span style="color: #2492db;">Option</span>[<span style="color: #e67e22;">String</span>] <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">None</span>)
+
+<span style="color: #d98c10;">def</span> <span style="color: #2492db;">addFullName</span>(person<span style="color: #d98c10;">:</span> <span style="color: #2492db;">Person</span>) <span style="color: #d98c10;">=</span> person.copy(fullName <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">Some</span>(s<span style="color: #0a74b9;">"${person.firstName} ${person.lastName}"</span>))
+<span style="color: #d98c10;">def</span> <span style="color: #2492db;">addAge</span>(person<span style="color: #d98c10;">:</span> <span style="color: #2492db;">Person</span>) <span style="color: #d98c10;">=</span> person.copy(age <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">Some</span>((now - person.birthDate.getTime) / <span style="color: #e67e22;">MilliSecondsInYear</span>))
+</pre>
+</div>
+
+<p>
+The full example I was looking at had about ten chained function
+invocations. Inserting intermediate results led to redundant names as in the
+example above and nesting the function invocations felt hard to read as you have
+to read the expressions from the inside out:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">withAgeAndFullName</span> <span style="color: #d98c10;">=</span> addFullName(addAge(hans))
+</pre>
+</div>
+
+<p>
+My preferred solution was imitating pipes like this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-sh">ls | sort | uniq -c
+</pre>
+</div>
+
+<p>
+So ideally we could write:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">withAgeAndFullName</span> <span style="color: #d98c10;">=</span> hans | addAge | addFullName
+</pre>
+</div>
+
+<p>
+But that's the bitwise OR. The alternative I've seen is the following:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">withAgeAndFullName</span> <span style="color: #d98c10;">=</span> hans |&gt; addAge |&gt; addFullName
+</pre>
+</div>
+
+<p>
+Rather than including a library for this, we can try this ourselves. First, we
+need to pimp objects with our operator:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #d98c10;">class</span> <span style="color: #2492db;">PimpAny</span>[<span style="color: #e67e22;">A</span>](any<span style="color: #d98c10;">:</span> <span style="color: #2492db;">A</span>) {
+  <span style="color: #d98c10;">def</span> <span style="color: #2492db;">|&gt;</span>[<span style="color: #e67e22;">B</span>](fun<span style="color: #d98c10;">:</span> <span style="color: #2492db;">A</span> <span style="color: #d98c10;">&#8658;</span> <span style="color: #e67e22;">B</span>)<span style="color: #d98c10;">:</span> <span style="color: #2492db;">B</span> <span style="color: #d98c10;">=</span> fun(any)
+}
+</pre>
+</div>
+
+<p>
+And add an implicit conversion to make this available:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #16a085;">implicit</span> <span style="color: #d98c10;">def</span> <span style="color: #2492db;">pimpAnyWithPipeOperator</span>[<span style="color: #e67e22;">A</span>](any<span style="color: #d98c10;">:</span> <span style="color: #2492db;">A</span>) <span style="color: #d98c10;">=</span> <span style="color: #d98c10;">new</span> <span style="color: #2492db;">PimpAny</span>(any)
+</pre>
+</div>
+
+<p>
+We can be even more concise and combine the wrapping class and the
+implicit conversion via syntactic sugar in an implicit class:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #16a085;">implicit</span> <span style="color: #d98c10;">class</span> <span style="color: #2492db;">PimpAnyWithPipeOperator</span>[<span style="color: #e67e22;">A</span>](any<span style="color: #d98c10;">:</span> <span style="color: #2492db;">A</span>) {
+  <span style="color: #d98c10;">def</span> <span style="color: #2492db;">|&gt;</span>[<span style="color: #e67e22;">B</span>](fun<span style="color: #d98c10;">:</span> <span style="color: #2492db;">A</span> <span style="color: #d98c10;">&#8658;</span> <span style="color: #e67e22;">B</span>)<span style="color: #d98c10;">:</span> <span style="color: #2492db;">B</span> <span style="color: #d98c10;">=</span> fun(any)
+}
+</pre>
+</div>
+
+<p>
+And we're done &#x2013; fun practice to learn about implicit classes. :)
+</p>
+
+<p>
+Full REPL example with pipes:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala"><span style="color: #16a085;">implicit</span> <span style="color: #d98c10;">class</span> <span style="color: #2492db;">PimpAnyWithPipeOperator</span>[<span style="color: #e67e22;">A</span>](any<span style="color: #d98c10;">:</span> <span style="color: #2492db;">A</span>) {
+  <span style="color: #d98c10;">def</span> <span style="color: #2492db;">|&gt;</span>[<span style="color: #e67e22;">B</span>](fun<span style="color: #d98c10;">:</span> <span style="color: #2492db;">A</span> <span style="color: #d98c10;">&#8658;</span> <span style="color: #e67e22;">B</span>)<span style="color: #d98c10;">:</span> <span style="color: #2492db;">B</span> <span style="color: #d98c10;">=</span> fun(any)
+}
+
+<span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">MilliSecondsInYear</span> <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">1000</span> * <span style="color: #e67e22;">60</span> * <span style="color: #e67e22;">60</span> * <span style="color: #e67e22;">24</span> * <span style="color: #e67e22;">365L</span>
+
+<span style="color: #d98c10;">case</span> <span style="color: #d98c10;">class</span> <span style="color: #2492db;">Person</span>(
+  firstName<span style="color: #d98c10;">:</span> <span style="color: #2492db;">String</span>,
+  lastName<span style="color: #d98c10;">:</span> <span style="color: #2492db;">String</span>,
+  birthDate<span style="color: #d98c10;">:</span> <span style="color: #2492db;">java</span>.util.<span style="color: #e67e22;">Date</span>,
+  age<span style="color: #d98c10;">:</span> <span style="color: #2492db;">Option</span>[<span style="color: #e67e22;">Long</span>] <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">None</span>,
+  fullName<span style="color: #d98c10;">:</span> <span style="color: #2492db;">Option</span>[<span style="color: #e67e22;">String</span>] <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">None</span>)
+
+<span style="color: #d98c10;">def</span> <span style="color: #2492db;">now</span> <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">System</span>.currentTimeMillis
+
+<span style="color: #d98c10;">def</span> <span style="color: #2492db;">addFullName</span>(person<span style="color: #d98c10;">:</span> <span style="color: #2492db;">Person</span>)<span style="color: #d98c10;">:</span> <span style="color: #2492db;">Person</span> <span style="color: #d98c10;">=</span>
+  person.copy(fullName <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">Some</span>(s<span style="color: #0a74b9;">"${person.firstName} ${person.lastName}"</span>))
+
+<span style="color: #d98c10;">def</span> <span style="color: #2492db;">addAge</span>(person<span style="color: #d98c10;">:</span> <span style="color: #2492db;">Person</span>)<span style="color: #d98c10;">:</span> <span style="color: #2492db;">Person</span> <span style="color: #d98c10;">=</span>
+  person.copy(age <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">Some</span>((now - person.birthDate.getTime) / <span style="color: #e67e22;">MilliSecondsInYear</span>))
+
+<span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">hans</span> <span style="color: #d98c10;">=</span> <span style="color: #e67e22;">Person</span>(<span style="color: #0a74b9;">"Herbert"</span>, <span style="color: #0a74b9;">"Fischer"</span>, <span style="color: #d98c10;">new</span> <span style="color: #2492db;">java</span>.util.<span style="color: #e67e22;">Date</span>(now - (<span style="color: #e67e22;">23</span> * <span style="color: #e67e22;">MilliSecondsInYear</span>)))
+<span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">withAgeAndFullName</span> <span style="color: #d98c10;">=</span> hans |&gt; addAge |&gt; addFullName
+</pre>
+</div>
+
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+
+  <entry>
+    <title>tree</title>
+    <link type="text/html" href="http://www.beltmogul.me/2014/tree.html"/>
+    <id>urn:uuid:[yas] elisp error! Symbol's function definition is void: uuid-string</id>
+    <updated>2014-06-10T09:24:49+0000</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <div class="figure">
+          <p><img src="../../img/a/P6082095.jpg" alt="tree" title="tree" />
+          </p>
+        </div>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+
+  <entry>
+    <title>leaving</title>
+    <link type="text/html" href="http://www.beltmogul.me/2014/leaving.html"/>
+    <id>urn:uuid:dc1fa56f-709c-cf64-ac73-53ce7de8778d</id>
+    <updated>2014-05-31T05:18:21+0000</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <h1 class="title">§ leaving</h1>
+
+        <div class="figure">
+          <p><img src="../../img/a/P3120694.jpg" alt="leaving" title="leaving" />
+          </p>
+        </div>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+
+  <entry>
+    <title>black swan</title>
+    <link type="text/html" href="http://www.beltmogul.me/2014/black-swan.html"/>
+    <id>urn:uuid:b146463d-e960-4884-0a6b-9b1bb147f5d6</id>
+    <updated>2014-05-31T03:00:15+0000</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <h1 class="title">§ black swan</h1>
+
+        <div class="figure">
+          <p><img src="../../img/a/P5031821.jpg" alt="black swan" title="black swan" />
+          </p>
+        </div>
+
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+  <entry>
+    <title>move</title>
+    <link type="text/html" href="http://www.beltmogul.me/2014/move.html"/>
+    <id>urn:uuid:0640e75b-49f2-5904-51b3-6084a2cdd48a</id>
+    <updated>2014-05-31T02:59:55+0000</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <h1 class="title">§ move</h1>
+        <p>
+          beltmogul moved to a new home: <a href="http://www.beltmogul.me">beltmogul.me</a>
+        </p>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+  <entry>
+    <title>up or down?</title>
+    <link type="text/html" href="http://www.beltmogul.me/2014/up-or-down.html"/>
+    <id>urn:uuid:746d3b78-6fee-9fd4-dc8b-85a5ad5802db</id>
+    <updated>2014-05-31T02:59:21+0000</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <h1 class="title">§ up or down?</h1>
+
+        <div class="figure">
+          <p><img src="../img/a/PC051248.jpg" alt="up or down?" title="up or down?" />
+          </p>
+        </div>
+
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+  <entry>
+    <title>my world</title>
+    <link type="text/html" href="http://www.beltmogul.me/2014/my-world.html"/>
+    <id>urn:uuid:a41eceb4-0a4a-d4a4-18eb-4747245dd279</id>
+    <updated>2014-05-31T02:58:45+0000</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <h1 class="title">§ my world</h1>
+
+        <div class="figure">
+          <p><img src="../img/a/P3231118.jpg" alt="my world" title="my world" />
+          </p>
+        </div>
+
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+</feed>

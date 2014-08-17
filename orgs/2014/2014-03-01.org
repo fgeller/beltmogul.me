@@ -1,0 +1,27 @@
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § 2014-03-01
+
+[[https://www.youtube.com/watch?v%3DDlguc63cRXg][Scaling Source Control at Facebook]]  hg on steroids.
+
+[[http://atom.io/docs/latest/][Atom]]  github's editor.
+
+[[https://www.youtube.com/watch?v%3DGHaXN8G10fI][Brad Fitzpatrick - Go Programming Language]]
+
+[[http://blog.golang.org/fosdem14][Go talks at FOSDEM 2014]]
+
+[[https://www.youtube.com/watch?v%3DsJBMQ-4uaS0][Jay Kreps - Building LinkedIn's Real-time Pipeline]]  origins of Kafka.
+
+[[http://www.datastax.com/wp-content/uploads/2014/02/WP-DataStax-Enterprise-In-Memory.pdf][Cassandra In-Memory Option]]  datastax whitepaper.
+
+[[http://technomancy.us/173][in which keyboard science goes further]]  mini dox.
