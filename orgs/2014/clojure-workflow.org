@@ -1,0 +1,342 @@
+# -*- org-export-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § clojure workflow
+
+This post is a write-up of a short presentation that I gave at the last Clojure
+meetup in Auckland. The topic was "Real World Clojure" and I gave a quick demo
+of the interactive workflow that I enjoyed for my last side projects. For the
+demo, I used [[http://clojure-liberator.github.io/liberator/][Liberator]] to implement basic GET and POST operations against a
+=/users= resource and [[http://www.datomic.com/][Datomic]] for storage. But a fair warning: there isn't much
+detail about either one of those two technologies in my post. My focus was on
+the interactive workflow that I enjoy so much about LISPs. Both Liberator and
+Datomic are well documented, perhaps this post gets you interested in
+either.
+
+* Setup
+
+  The setup is just Emacs with [[https://github.com/clojure-emacs/cider][clojure-emacs/cider]] and a [[http://leiningen.org/][Leiningen]] project. No
+  special configuration on the Emacs side, and I pushed the project template
+  with tests and a basic Datomic setup to [[https://github.com/fgeller/clj-meetup-akl-2014-08][fgeller/clj-meetup-akl-2014-08]].
+
+  Luckily, the project contains basic tests for the HTTP interface:
+
+  #+begin_src clojure
+    (fact "listing users"
+          (let [response (handlers (request :get "/users"))]
+            (:status response) => 200
+            (:body response) => "{}")
+          (cleanup))
+    (fact "adding and listing a user"
+          (let [request (body (content-type (request :post "/users") "application/json") "{\"nick\": \"hans\"}")
+                response (handlers request)]
+            (:status response) => 201)
+          (let [response (handlers (request :get "/users"))]
+            (:status response) => 200
+            (:body response) => "{\"1\":{\"nick\":\"hans\"}}")
+          (cleanup))
+  #+end_src
+
+  The tests are written with [[https://github.com/marick/Midje][marick/Midje]] and outline the basic requirements for
+  this example. For test feedback, I use =eshell= and Leiningen to start a REPL
+  via =(compile "lein repl" t)= in the project root. Midje includes support for
+  triggering test runs on file change, so let's load that up:
+
+  #+ATTR_HTML: :alt Midje to run tests :title Midje to run tests
+  [[file:../../img/o/Screen-Shot-2014-08-31-at-12.32.52-PM.png][file:../../img/o/Screen-Shot-2014-08-31-at-12.32.52-PM-resized.png]]
+
+  Let's take a quick look at the template (=src/meetup-users/core.clj=). Basic
+  namespacing and imports to get started:
+
+  #+begin_src clojure
+    (ns meetup-users.core
+      (:require
+       [clojure.data.json :as json]
+       [clojure.java.io :as io]
+       [datomic.api :only [q db] :as peer]
+       [liberator.core :refer [resource defresource]]
+       [liberator.dev :refer [wrap-trace]]
+       [compojure.core :refer [defroutes ANY]]
+       [ring.adapter.jetty :refer [run-jetty]]))
+  #+end_src
+
+  Define where to find Datomic and how we layout our data:
+
+  #+begin_src clojure
+    (def datomic-uri "datomic:mem://users")
+    (def schema-txs [{:db/id #db/id[:db.part/db]
+                      :db/ident :user/id
+                      :db/valueType :db.type/long
+                      :db/cardinality :db.cardinality/one
+                      :db.install/_attribute :db.part/db},
+                     {:db/id #db/id[:db.part/db]
+                      :db/ident :user/nick
+                      :db/valueType :db.type/string
+                      :db/cardinality :db.cardinality/one
+                      :db.install/_attribute :db.part/db}])
+
+  #+end_src
+
+  The URI defines that we're not going to persist our data for now and just use
+  the in-memory storage for a database name =users=. The =schema-txs= hold the
+  transactions to describe user entities. We define two attributes =:user/id= and
+  =:user/nick=, the =:user/id= will be the external ID, rather than exposing the
+  internal entity ID. To read more about the structure of these transactions,
+  you can get started [[http://docs.datomic.com/transactions.html][here]].
+
+  Then some wrappers around Datomic's API to make testing a bit easier:
+
+  #+begin_src clojure
+    (defn setup-database []
+      (peer/create-database datomic-uri)
+      @(peer/transact (peer/connect datomic-uri) schema-txs))
+    (defn delete-database []
+      (peer/delete-database datomic-uri))
+    (defn read-database []
+      (peer/db (peer/connect datomic-uri)))
+    (setup-database)
+  #+end_src
+
+  This will be the starting point, an empty resource definition:
+
+  #+begin_src clojure
+    (defresource users-resource)
+  #+end_src
+
+  The following hooks the resource into the default ring setup and defines a
+  helper to start up the application using jetty:
+
+  #+begin_src clojure
+    (defroutes app-routes (ANY "/users" [] users-resource))
+    (def handlers (wrap-trace app-routes :header :ui))
+    (defn boot [port] (run-jetty #'handlers {:port port :join? false}))
+  #+end_src
+
+  The =wrap-trace= middleware is provided by Liberator to make debugging easier,
+  will see it's output shortly.
+
+* Let's get started
+
+  We can see that all tests fail, and the easiest target seems to be the GET
+  request. So let's fake that one by returning an empty map:
+
+  #+begin_src clojure
+    (defresource users-resource
+      :handle-ok (fn [context] {}))
+  #+end_src
+
+  But the test results aren't very helpful, we're just getting 500s:
+
+  #+ATTR_HTML: :alt Test failures :title Test failures
+  [[file:../../img/o/Screen-Shot-2014-08-31-at-1.28.17-PM.png][file:../../img/o/Screen-Shot-2014-08-31-at-1.28.17-PM-resized.png]]
+
+  So let's use Liberator to figure this out. Make sure you started cider via
+  =cider-jack-in=, which starts a headless REPL that we can use for evaluating our
+  code. Evaluating the =core.clj= buffer via =cider-eval-buffer= allows for starting
+  the application on port 2134 via =(boot 2134)=. Just add the expression in your
+  buffer and evaluate it via =C-x C-e= (with point after the expression). Your
+  minibuffer should show some feedback that the expression was evaluated, in my
+  case:
+
+  #+begin_src text
+    => #<Server org.eclipse.jetty.server.Server@6df54136>
+  #+end_src
+
+  Don't forget to remove the expression once you're done, or you'll get warnings
+  as you tests run in the background.
+
+  Now create or change to an eshell buffer to query the application. Issue a
+  request via =curl -v localhost:2134/users=, this is my result:
+
+  #+ATTR_HTML: :alt Curl output :title Curl output
+  [[file:../../img/o/Screen-Shot-2014-08-31-at-1.43.32-PM.png][file:../../img/o/Screen-Shot-2014-08-31-at-1.43.32-PM-resized.png]]
+
+  You can see the result of adding the =wrap-trace= middleware: We're getting
+  feedback on the decisions that Liberator took for our request. The first check
+  is whether the service is available, then if the request's method is known and
+  so on. It seems to find no available media types:
+
+  #+begin_src text
+< X-Liberator-Trace: :decision (:media-type-available? nil)
+< X-Liberator-Trace: :handler (:handle-not-acceptable "(default implementation)")
+  #+end_src
+
+  Before we change that, the following lines give you a link to a visual
+  representation of the decision graph:
+
+  #+begin_src text
+< Link: <//x-liberator/requests/4eo3a>; rel=x-liberator-trace
+< X-Liberator-Trace-Id: 4eo3a
+  #+end_src
+
+  You can open the request in your browser and follow the colored path to figure
+  out what happened. In my case the URL is http://localhost:2134/x-liberator/requests/4eo3a
+
+  #+ATTR_HTML: :alt Decision graph :title Decision graph
+  [[file:../../img/o/Screen-Shot-2014-08-31-at-1.53.12-PM.png][file:../../img/o/Screen-Shot-2014-08-31-at-1.53.12-PM-resized.png]]
+
+  To make the media type avaible, we just add:
+
+  #+begin_src clojure
+    (defresource users-resource
+      :available-media-types ["application/json"]
+      :handle-ok (fn [context] {}))
+  #+end_src
+
+  Now we only have the POST functionality left ;)
+
+  #+ATTR_HTML: :alt Decision graph. :title Decision graph.
+  [[file:../../img/o/Screen-Shot-2014-08-31-at-1.56.01-PM.png][file:../../img/o/Screen-Shot-2014-08-31-at-1.56.01-PM-resized.png]]
+
+  Let's give that a try and take a look at the data we're given:
+
+  #+begin_src clojure
+(defresource users-resource
+  :available-media-types ["application/json"]
+  :post! (fn [context] (println context))
+  :handle-ok (fn [context] {}))
+  #+end_src
+
+  But the POST request is failing with a 405. If you don't know all status codes
+  by heart, like me, just evaluate the buffer again (or just the =defresource=
+  expression) and issue another request via:
+
+  #+begin_src fundamental
+    curl -v -XPOST -H'Content-type: application/json' -d'{"nick": "hans"}' localhost:2134/users
+  #+end_src
+
+  And Liberator will tell us:
+
+  #+ATTR_HTML: :alt Method not allowed. :title Method not allowed.
+  [[file:../../img/o/Screen-Shot-2014-08-31-at-2.05.26-PM.png][file:../../img/o/Screen-Shot-2014-08-31-at-2.05.26-PM-resized.png]]
+
+  So let's allow that method:
+
+  #+begin_src clojure
+(defresource users-resource
+  :available-media-types ["application/json"]
+  :allowed-methods [:get :post]
+  :post! (fn [context] (println context))
+  :handle-ok (fn [context] {}))
+  #+end_src
+
+  And there we have our request context:
+
+  #+ATTR_HTML: :alt Request context. :title Request context.
+  [[file:../../img/o/Screen-Shot-2014-08-31-at-2.07.28-PM.png][file:../../img/o/Screen-Shot-2014-08-31-at-2.07.28-PM-resized.png]]
+
+  And the POST test succeeds as well! ;) So let's stop faking and actually pass
+  the data on to Datomic:
+
+  #+begin_src clojure
+    (defn find-all-users [database]
+      (peer/q '[:find ?u :where [?u :user/id]] database))
+
+    (defn add-user [database data]
+      (let [new-id (+ 1 (count (find-all-users database)))
+            user-tx {:db/id (peer/tempid :db.part/user) :user/id new-id :user/nick (get data "nick")}]
+        (println
+         (peer/transact (peer/connect datomic-uri) [user-tx]))))
+
+    (defresource users-resource
+      :available-media-types ["application/json"]
+      :allowed-methods [:get :post]
+      :post! (fn [context] (let [body (json/read-str (slurp (get-in context [:request :body])))]
+                             (add-user (read-database) body)))
+      :handle-ok (fn [context] {}))
+  #+end_src
+
+  This snippet skips several iterations where I use cider's backend for
+  =eldoc-mode= to get a function's interface in the minibuffer or just use =println=
+  on an intermediary result, like the result of the call to =peer/transact= above:
+
+  #+ATTR_HTML: :alt Transaction result. :title Transaction result.
+  [[file:../../img/o/Screen-Shot-2014-08-31-at-2.24.52-PM.png][file:../../img/o/Screen-Shot-2014-08-31-at-2.24.52-PM-resized.png]]
+
+  The output shows me that the result is a future that I should probably wait
+  for. So let's skip ahead once more and try an actual implementation of GET:
+
+  #+begin_src clojure
+    (defresource users-resource
+      :available-media-types ["application/json"]
+      :allowed-methods [:get :post]
+      :post! (fn [context] (let [body (json/read-str (slurp (get-in context [:request :body])))]
+                             (add-user (read-database) body)))
+      :handle-ok (fn [context]
+                   (let [database (read-database)
+                         entity-ids (find-all-users database)]
+                     entity-ids)))
+  #+end_src
+
+  Just returning the =entity-ids= doesn't work, we're getting 500s. Evaluating the
+  buffer and firing another GET request via curl will tell us that the check
+  against =multiple-representations?= fails and the request ends in a default
+  implementation of =handle-exception=:
+
+  #+begin_src fundamental
+    < X-Liberator-Trace: :decision (:multiple-representations? false)
+    < X-Liberator-Trace: :handler (:handle-ok)
+    < X-Liberator-Trace: :handler (:handle-exception "(default implementation)")
+  #+end_src
+
+  So let's override that default implementation and take a look at the exception
+  by printing it:
+
+  #+begin_src clojure
+    (defresource users-resource
+      :handle-exception (fn [context] (println "EX:" (:exception context)))
+      :available-media-types ["application/json"]
+      :allowed-methods [:get :post]
+      :post! (fn [context] (let [body (json/read-str (slurp (get-in context [:request :body])))]
+                             (add-user (read-database) body)))
+      :handle-ok (fn [context]
+                   (let [database (read-database)
+                         entity-ids (find-all-users database)]
+                     entity-ids)))
+  #+end_src
+
+  We're getting a:
+
+  #+begin_src fundamental
+    EX: #<IllegalArgumentException java.lang.IllegalArgumentException: No implementation of method: :as-response of protocol: #'liberator.representation/Representation found for class: java.util.HashSet>
+  #+end_src
+
+  So there's no default implementation for serializing a HashSet to JSON. But
+  that's ok, we only want to return a map, which is supported out of the
+  box. So let's ignore that for now and built up our result:
+
+  #+begin_src clojure
+    (defresource users-resource
+      :handle-exception (fn [context] (println "EX:" (:exception context)))
+      :available-media-types ["application/json"]
+      :allowed-methods [:get :post]
+      :post! (fn [context] (let [body (json/read-str (slurp (get-in context [:request :body])))]
+                             (add-user (read-database) body)))
+      :handle-ok (fn [context]
+                   (let [database (read-database)
+                         entity-ids (find-all-users database)
+                         entities (map (fn [[entity-id]] (peer/entity database entity-id))
+                                       entity-ids)
+                         users (map (fn [entity] {(:user/id entity) {:nick (:user/nick entity)}})
+                                    entities)]
+                     (into {} users))))
+  #+end_src
+
+  Our query against Datomic returns a vector of vectors, where each nested
+  vector contains just the entity (identified by the =?u= in the query). We need
+  to ask the database for the entity's information and then in the second =map=,
+  create a list of maps where a user's external ID identifies a map of the
+  user's attributes. In this case just the nick. Then we flatten the list into a
+  single map with =into= and we're done, as Midje's test runner is happy ;)
+
+  #+ATTR_HTML: :alt Done. :title Done.
+  [[file:../../img/o/Screen-Shot-2014-08-31-at-2.36.37-PM.png][file:../../img/o/Screen-Shot-2014-08-31-at-2.36.37-PM-resized.png]]
