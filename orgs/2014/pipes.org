@@ -12,164 +12,110 @@
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE: § pipes
 
-   This posts describes some of the utility functions that I wrote for editing
-   Scala code. They've mostly grown into existence after I couldn't be bothered
-   to repeat a task manually over and over again. Fortunately, it is quite easy
-   to translate manual steps of text manipulation in Emacs to executable Emacs
-   Lisp. So in a sense they are just slightly more complex macros ;)
+I was looking for an operator to make the following easier to read:
 
-   These little utility functions are doomed to be imperfect, as they're lacking
-   information from static analysis. That means the functionality is nowhere
-   close to what [[https://github.com/aemoncannon/ensime][aemoncannon/ensime]] and other tools can do for you. On the other
-   hand, they are very light-weight, flexible and easily extensible alternatives
-   and work for most of my use cases. And possibly, they make your life easier
-   as well.
+#+begin_src scala
+  val hans = Person("Herbert", "Fischer", new java.util.Date(now - (23 * MilliSecondsInYear)))
+  val withAge = addAge(hans)
+  val withAgeAndFullName = addFullName(withAge)
+#+end_src
 
-   Perhaps they offer you a simple entry point to write your own functions after
-   seeing how easy it is to jump from calling functions such as =replace-regexp=
-   interactively to calling them from utility functions. All functions are using
-   basic Emacs Lisp functionality and some third party libraries that are
-   available via ELPA -- most notably [[https://github.com/magnars/dash.el][magnars/dash.el]] for list and [[https://github.com/magnars/s.el][magnars/s.el]]
-   for string manipulation.
+More specifically, the goal is to fill in optional fields based on initially
+populated fields. In this case the mandatory fields are =firstName=, =lastName= and
+=birthDate= and we derive the =age= and =fullName=:
 
-   In my [[http://beltmogul.blogspot.co.nz/2014/03/emacs-scala.html][previous post]] I mentioned that I use [[https://github.com/fgeller/scalariform-daemon][fgeller/scalariform-daemon]] to save
-   time when formatting files. To trigger the daemon, I add the following
-   function to the =after-save-hook= in =scala-mode= buffers:
+#+begin_src scala
+  val MilliSecondsInYear = 1000 * 60 * 60 * 24 * 365L
+  def now = System.currentTimeMillis
 
-   #+begin_src emacs-lisp
-     (defun scalariform-daemon-format-file ()
-       (when (and (boundp 'scalariform-preferences-file)
-                  scalariform-preferences-file)
-         (require 'request)
-         (request
-          "http://localhost:8080/format"
-          :params `((fileName . ,buffer-file-name)
-                    (preferencesFile . ,scalariform-preferences-file)))))
-   #+end_src
+  case class Person(
+    firstName: String,
+    lastName: String,
+    birthDate: java.util.Date,
+    age: Option[Long] = None,
+    fullName: Option[String] = None)
 
-   It reports the current file name to the daemon via an HTTP request using
-   [[https://github.com/tkf/emacs-request][tkf/emacs-request]]. The request includes a reference to the file that
-   tells scalariform how to format a given file. This means that I can set the
-   value of =scalariform-preferences-file= in a directory-local variable and have
-   different preferences for different projects and keep different parties
-   happy.
+  def addFullName(person: Person) = person.copy(fullName = Some(s"${person.firstName} ${person.lastName}"))
+  def addAge(person: Person) = person.copy(age = Some((now - person.birthDate.getTime) / MilliSecondsInYear))
+#+end_src
 
-   When working on tests I often want to focus on a single test. My SBT session
-   usually triggers for a whole test class though and the dance to run a
-   single test from SBT is not that easy to automate. As an alternative, I
-   simply ignore all other tests in my current test class by text manipulation:
+The full example I was looking at had about ten chained function
+invocations. Inserting intermediate results led to redundant names as in the
+example above and nesting the function invocations felt hard to read as you have
+to read the expressions from the inside out:
 
-   #+begin_src emacs-lisp
-     (defun scala-ignore-all-tests ()
-       (interactive)
-       (save-excursion
-         (replace-regexp "\\bit(\\(s\\)?\"" "ignore(\\1\"" nil (point-min) (point-max)))
-       (unless current-prefix-arg
-         (save-excursion
-           (search-backward "ignore(" nil)
-           (replace-match "it(" nil t))))
-   #+end_src
+#+begin_src scala
+  val withAgeAndFullName = addFullName(addAge(hans))
+#+end_src
 
+My preferred solution was imitating pipes like this:
 
-   Assuming =point= is in the test that I'm trying to focus on, this simply
-   replaces all occurrences of =it(= with =ignore(= in the current buffer and then
-   replaces the closest match backwards to enable the current test. It skips the
-   re-enabling of the current test if the function was invoked with a prefix
-   argument. These patterns work for [[http://www.scalatest.org/getting_started_with_fun_spec][ScalaTest's FunSpec]] but would have to be
-   changed for other specs or test frameworks where you'd identify tests
-   differently.
+#+begin_src sh
+  ls | sort | uniq -c
+#+end_src
 
-   After the test is green, I should be a good citizen and make sure that none
-   of the others are affected and that works by simply re-enabling them all:
+So ideally we could write:
 
-   #+begin_src emacs-lisp
-     (defun scala-enable-all-tests ()
-       (interactive)
-       (save-excursion
-         (replace-regexp "\\bignore(\\(s\\)?\"" "it(\\1\"" nil (point-min) (point-max))))
-   #+end_src
+#+begin_src scala
+  val withAgeAndFullName = hans | addAge | addFullName
+#+end_src
 
-   Managing import statements is often a nuisance and IDEs are very good at
-   taking that pain away. The benefit of not having an IDE do the work for you,
-   is that you get an understanding of your project -- but even then it boils
-   down to very repetitive tasks and I'm rather lazy when it comes to those.
+But that's the bitwise OR. The alternative I've seen is the following:
 
-   To add an import statement for a new symbol, I'm using the indexed tags of my
-   project to find the definition of a symbol and then try to derive the full
-   package name from visiting the file:
+#+begin_src scala
+  val withAgeAndFullName = hans |> addAge |> addFullName
+#+end_src
 
-   #+begin_src emacs-lisp
-     (defun helm-gtags-action-import-tag (elm)
-       (when (string-match "\\(.+?\\):\\([0-9]+\\):\\(.+\\)" elm)
-         (let* ((filename (match-string 1 elm))
-                (tagname (helm-attr 'helm-gtags-tagname))
-                (default-directory (helm-gtags-base-directory))
-                (package (save-excursion
-                           (with-current-buffer (find-file-noselect filename)
-                             (goto-char (point-min))
-                             (while (and (not (looking-at-p "package ")) (not (eobp)))
-                               (beginning-of-line)
-                               (forward-line 1))
-                             (if (looking-at-p "package ")
-                                 (buffer-substring
-                                  (+ (point) (length "package "))
-                                  (point-at-eol))
-                               "PACKAGE"))))
-                (import-statement (format "import %s.%s" package tagname)))
-           (goto-char (point-min))
-           (when (looking-at-p "package ") (forward-line 1) (newline))
-           (insert import-statement)
-           (when helm-gtags-pulse-at-cursor
-             (pulse-momentary-highlight-one-line (point))))))
-   #+end_src
+Rather than including a library for this, we can try this ourselves. First, we
+need to pimp objects with our operator:
 
-   I use a copy of [[https://github.com/syohex/emacs-helm-gtags][syohex/emacs-helm-gtags]] functionality to jump to a tag to
-   identify a symbol name that I want to import. It provides easy access to
-   the indexed tags and offers convenient matching when the name is not
-   unique. The above function is the action that I install to find the package
-   name and adding the import statement to the top of the file. It does not work
-   for all edge cases, for example, multiple package statements in a single
-   file, but it has served me well so far. In case you want to try this, it
-   relies on patch [[https://github.com/fgeller/emacs-helm-gtags/commit/3bed42e4c8cadce882a6363f720dbde7771b0fc7][3bed42e]] to [[https://github.com/syohex/emacs-helm-gtags][syohex/emacs-helm-gtags]] to access the tag name in
-   a custom action via the helm attribute =helm-gtags-tagname=. For more context
-   on how to hook it up consider my configuration [[https://github.com/fgeller/emacs.d][fgeller/emacs.d]].
+#+begin_src scala
+  class PimpAny[A](any: A) {
+    def |>[B](fun: A ⇒ B): B = fun(any)
+  }
+#+end_src
 
-   As importing is easy now ;) you may want to remove unused imports. The
-   following function identifies the imported name for each import statement and
-   then counts its occurrences in the current buffer to identify unused imports:
+And add an implicit conversion to make this available:
 
-   #+begin_src emacs-lisp
-     (defun find-unused-imports ()
-       (interactive)
-       (let* ((full-buffer-contents (buffer-substring-no-properties (point-min) (point-max)))
-              (filter-unused-imports
-               (lambda (line)
-                 (let* ((raw (cadr (s-match "import .+\\.\\(.+\\)" line)))
-                        (name-match (s-match "{ .+ \\(⇒\\|=>\\) \\(.+\\) }" raw))
-                        (name-re (format "\\b%s\\b" (if name-match (caddr name-match) raw)))
-                        (count (s-count-matches name-re full-buffer-contents)))
-                   (when (eq count 1) line))))
-              (unused-import-lines
-               (with-temp-buffer
-                 (insert full-buffer-contents)
-                 (goto-char (point-min))
-                 (keep-lines "^import " (point-min) (point-max))
-                 (let* ((contents (filter-buffer-substring (point-min) (point-max) t))
-                        (import-lines (s-split "\n" contents t)))
-                   (-flatten (-map filter-unused-imports import-lines))))))
-         (goto-char (point-min))
-         (insert (s-join "\n" unused-import-lines))
-         (open-line 2)
-         (-each
-             unused-import-lines
-           (lambda (line) (save-excursion (flush-lines (format "^%s$" line)))))))
-   #+end_src
+#+begin_src scala
+  implicit def pimpAnyWithPipeOperator[A](any: A) = new PimpAny(any)
+#+end_src
 
-   This is just a heuristic that might give you false results. Therefore the
-   function just moves the import statements that are potentially superfluous to
-   the top of the buffer rather then deleting them immediately. You can then
-   review the identified imports and decide to keep false positives like
-   implicits. After adding and removing import statements I use
-   [[https://github.com/fgeller/sort-imports.el][fgeller/sort-imports.el]] to identify blocks in which I want the import
-   statements to be grouped and then continue with what I actually wanted to
-   code :)
+We can be even more concise and combine the wrapping class and the
+implicit conversion via syntactic sugar in an implicit class:
+
+#+begin_src scala
+  implicit class PimpAnyWithPipeOperator[A](any: A) {
+    def |>[B](fun: A ⇒ B): B = fun(any)
+  }
+#+end_src
+
+And we're done -- fun practice to learn about implicit classes. :)
+
+Full REPL example with pipes:
+
+#+begin_src scala
+  implicit class PimpAnyWithPipeOperator[A](any: A) {
+    def |>[B](fun: A ⇒ B): B = fun(any)
+  }
+
+  val MilliSecondsInYear = 1000 * 60 * 60 * 24 * 365L
+
+  case class Person(
+    firstName: String,
+    lastName: String,
+    birthDate: java.util.Date,
+    age: Option[Long] = None,
+    fullName: Option[String] = None)
+
+  def now = System.currentTimeMillis
+
+  def addFullName(person: Person): Person =
+    person.copy(fullName = Some(s"${person.firstName} ${person.lastName}"))
+
+  def addAge(person: Person): Person =
+    person.copy(age = Some((now - person.birthDate.getTime) / MilliSecondsInYear))
+
+  val hans = Person("Herbert", "Fischer", new java.util.Date(now - (23 * MilliSecondsInYear)))
+  val withAgeAndFullName = hans |> addAge |> addFullName
+#+end_src
