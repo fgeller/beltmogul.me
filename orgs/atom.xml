@@ -8,6 +8,82 @@
   <updated>2014-05-31T02:50:05+0000</updated>
 
   <entry>
+    <title>§ 2014-10-04</title>
+    <link type="text/html" href="http://www.beltmogul.me/2014/.html"/>
+    <id>urn:uuid:85b78d44-bb7f-5884-a8d3-889a5a53a753</id>
+    <updated>2014-10-04T04:36:20+0000</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <h1 class="title">§ 2014-10-04</h1>
+<p>
+<a href="http://www.infoq.com/presentations/scaling-gilt">Learnings from Building and Scaling Gilt</a>  growth &amp; innovation.
+</p>
+
+<p>
+<a href="http://fivethirtyeight.com/features/in-126-years-english-football-has-seen-13475-nil-nil-draws/">In 126 Years, English Football Has Seen 13,475 Nil-Nil Draws</a>  "a bit dull"
+</p>
+
+<p>
+<a href="http://www.slideshare.net/ktoso/distributed-consensus-aka-what-do-we-eat-for-lunch">Distributed Consensus A.K.A. "What do we eat for lunch?"</a>  paxos by example.
+</p>
+
+<p>
+<a href="http://nautil.us/blog/the-sound-so-loud-that-it-circled-the-earth-four-times">The Sound So Loud That It Circled the Earth Four Times</a>  wow.
+</p>
+
+<p>
+<a href="http://www.thoughtworks.com/insights/blog/first-story-every-project">The First Story in Every Project</a>  release early!
+</p>
+
+<p>
+<a href="http://bouk.co/blog/idiomatic-generics-in-go/">Idiomatic Generics in Go</a>  wow.
+</p>
+
+<p>
+<a href="http://kazimirmajorinc.com/Documents/Lisp-code-typography/index.html">A few examples of Lisp code typography</a>   history of s-expressions.
+</p>
+
+<p>
+<a href="http://www.wilfred.me.uk/blog/2014/09/27/the-definitive-guide-to-syntax-highlighting/">The Definitive Guide To Syntax Highlighting</a>  extensive list for emacs.
+</p>
+
+<p>
+<a href="https://www.youtube.com/watch?v=mq-r20mlGes">Shake Your Silk-Maker: The Dance of the Peacock Spider</a>  o_O
+</p>
+
+<p>
+<a href="http://www.slate.com/articles/sports/sports_nut/2014/09/sinquefield_cup_one_of_the_most_amazing_feats_in_chess_history_just_happened.single.html">One of the most amazing feats in chess history just happened</a>  interesting read.
+</p>
+
+<p>
+<a href="http://c9x.me/edit/">Edit - Home Brewed Text Editor</a>  acme + vi
+</p>
+
+<p>
+<a href="http://bocoup.com/weblog/developer-weeks/">Why hourly time tracking doesn't work for software</a> &#x2026;
+</p>
+
+<p>
+<a href="https://github.com/killme2008/defun">killme2008/defun</a>  pattern matching on function args via a macro.
+</p>
+
+<p>
+<a href="http://austinmann.com/trek/iphone-6-plus-camera-review-iceland">iPhone 6 Plus Camera Review: Iceland — Austin Mann</a>  5s vs 6p.
+</p>
+
+<p>
+<a href="http://vimeo.com/85070976">Aurora Substorm - Real time motion</a>  wow.
+</p>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+
+  <entry>
     <title>clojure workflow</title>
     <link type="text/html" href="http://www.beltmogul.me/2014/clojure-workflow.html"/>
     <id>urn:uuid:f375a7b8-5e09-3a44-3833-0e41394994a6</id>
@@ -940,134 +1016,6 @@ Full REPL example with pipes:
 <span style="color: #d98c10;">val</span> <span style="color: #8e44ad;">withAgeAndFullName</span> <span style="color: #d98c10;">=</span> hans |&gt; addAge |&gt; addFullName
 </pre>
 </div>
-
-      </div>
-    </content>
-    <author>
-      <name>Felix Geller</name>
-    </author>
-  </entry>
-
-
-  <entry>
-    <title>tree</title>
-    <link type="text/html" href="http://www.beltmogul.me/2014/tree.html"/>
-    <id>urn:uuid:[yas] elisp error! Symbol's function definition is void: uuid-string</id>
-    <updated>2014-06-10T09:24:49+0000</updated>
-    <summary></summary>
-    <content type="xhtml">
-      <div xmlns="http://www.w3.org/1999/xhtml">
-        <div class="figure">
-          <p><img src="../../img/a/P6082095.jpg" alt="tree" title="tree" />
-          </p>
-        </div>
-      </div>
-    </content>
-    <author>
-      <name>Felix Geller</name>
-    </author>
-  </entry>
-
-
-  <entry>
-    <title>leaving</title>
-    <link type="text/html" href="http://www.beltmogul.me/2014/leaving.html"/>
-    <id>urn:uuid:dc1fa56f-709c-cf64-ac73-53ce7de8778d</id>
-    <updated>2014-05-31T05:18:21+0000</updated>
-    <summary></summary>
-    <content type="xhtml">
-      <div xmlns="http://www.w3.org/1999/xhtml">
-        <h1 class="title">§ leaving</h1>
-
-        <div class="figure">
-          <p><img src="../../img/a/P3120694.jpg" alt="leaving" title="leaving" />
-          </p>
-        </div>
-      </div>
-    </content>
-    <author>
-      <name>Felix Geller</name>
-    </author>
-  </entry>
-
-
-  <entry>
-    <title>black swan</title>
-    <link type="text/html" href="http://www.beltmogul.me/2014/black-swan.html"/>
-    <id>urn:uuid:b146463d-e960-4884-0a6b-9b1bb147f5d6</id>
-    <updated>2014-05-31T03:00:15+0000</updated>
-    <summary></summary>
-    <content type="xhtml">
-      <div xmlns="http://www.w3.org/1999/xhtml">
-        <h1 class="title">§ black swan</h1>
-
-        <div class="figure">
-          <p><img src="../../img/a/P5031821.jpg" alt="black swan" title="black swan" />
-          </p>
-        </div>
-
-      </div>
-    </content>
-    <author>
-      <name>Felix Geller</name>
-    </author>
-  </entry>
-
-  <entry>
-    <title>move</title>
-    <link type="text/html" href="http://www.beltmogul.me/2014/move.html"/>
-    <id>urn:uuid:0640e75b-49f2-5904-51b3-6084a2cdd48a</id>
-    <updated>2014-05-31T02:59:55+0000</updated>
-    <summary></summary>
-    <content type="xhtml">
-      <div xmlns="http://www.w3.org/1999/xhtml">
-        <h1 class="title">§ move</h1>
-        <p>
-          beltmogul moved to a new home: <a href="http://www.beltmogul.me">beltmogul.me</a>
-        </p>
-      </div>
-    </content>
-    <author>
-      <name>Felix Geller</name>
-    </author>
-  </entry>
-
-  <entry>
-    <title>up or down?</title>
-    <link type="text/html" href="http://www.beltmogul.me/2014/up-or-down.html"/>
-    <id>urn:uuid:746d3b78-6fee-9fd4-dc8b-85a5ad5802db</id>
-    <updated>2014-05-31T02:59:21+0000</updated>
-    <summary></summary>
-    <content type="xhtml">
-      <div xmlns="http://www.w3.org/1999/xhtml">
-        <h1 class="title">§ up or down?</h1>
-
-        <div class="figure">
-          <p><img src="../img/a/PC051248.jpg" alt="up or down?" title="up or down?" />
-          </p>
-        </div>
-
-      </div>
-    </content>
-    <author>
-      <name>Felix Geller</name>
-    </author>
-  </entry>
-
-  <entry>
-    <title>my world</title>
-    <link type="text/html" href="http://www.beltmogul.me/2014/my-world.html"/>
-    <id>urn:uuid:a41eceb4-0a4a-d4a4-18eb-4747245dd279</id>
-    <updated>2014-05-31T02:58:45+0000</updated>
-    <summary></summary>
-    <content type="xhtml">
-      <div xmlns="http://www.w3.org/1999/xhtml">
-        <h1 class="title">§ my world</h1>
-
-        <div class="figure">
-          <p><img src="../img/a/P3231118.jpg" alt="my world" title="my world" />
-          </p>
-        </div>
 
       </div>
     </content>

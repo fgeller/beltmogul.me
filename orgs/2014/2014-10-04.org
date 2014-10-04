@@ -1,0 +1,43 @@
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § 2014-10-04
+
+[[http://www.infoq.com/presentations/scaling-gilt][Learnings from Building and Scaling Gilt]]  growth & innovation.
+
+[[http://fivethirtyeight.com/features/in-126-years-english-football-has-seen-13475-nil-nil-draws/][In 126 Years, English Football Has Seen 13,475 Nil-Nil Draws]]  "a bit dull"
+
+[[http://www.slideshare.net/ktoso/distributed-consensus-aka-what-do-we-eat-for-lunch][Distributed Consensus A.K.A. "What do we eat for lunch?"]]  paxos by example.
+
+[[http://nautil.us/blog/the-sound-so-loud-that-it-circled-the-earth-four-times][The Sound So Loud That It Circled the Earth Four Times]]  wow.
+
+[[http://www.thoughtworks.com/insights/blog/first-story-every-project][The First Story in Every Project]]  release early!
+
+[[http://bouk.co/blog/idiomatic-generics-in-go/][Idiomatic Generics in Go]]  wow.
+
+[[http://kazimirmajorinc.com/Documents/Lisp-code-typography/index.html][A few examples of Lisp code typography]]   history of s-expressions.
+
+[[http://www.wilfred.me.uk/blog/2014/09/27/the-definitive-guide-to-syntax-highlighting/][The Definitive Guide To Syntax Highlighting]]  extensive list for emacs.
+
+[[https://www.youtube.com/watch?v%3Dmq-r20mlGes][Shake Your Silk-Maker: The Dance of the Peacock Spider]]  o_O
+
+[[http://www.slate.com/articles/sports/sports_nut/2014/09/sinquefield_cup_one_of_the_most_amazing_feats_in_chess_history_just_happened.single.html][One of the most amazing feats in chess history just happened]]  interesting read.
+
+[[http://c9x.me/edit/][Edit - Home Brewed Text Editor]]  acme + vi
+
+[[http://bocoup.com/weblog/developer-weeks/][Why hourly time tracking doesn't work for software]] ...
+
+[[https://github.com/killme2008/defun][killme2008/defun]]  pattern matching on function args via a macro.
+
+[[http://austinmann.com/trek/iphone-6-plus-camera-review-iceland][iPhone 6 Plus Camera Review: Iceland — Austin Mann]]  5s vs 6p.
+
+[[http://vimeo.com/85070976][Aurora Substorm - Real time motion]]  wow.
