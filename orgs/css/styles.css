@@ -17,3 +17,4 @@ pre { font-family: monospace; font-size: 10pt; background-color: #dfe4ea; paddin
 pre.src { margin-left: 2em; margin-right: 2em; border: 1px solid #95a5a6; }
 div#content { width: 560px; margin: 0 auto; }
 div#content img { display: block; margin-right: auto; margin-left: auto; }
+div.entry { border-bottom: 1px solid #95a5a6; padding-bottom: 3em; margin-bottom: 4em; }
