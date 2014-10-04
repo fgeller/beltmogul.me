@@ -9,7 +9,6 @@
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE: § 2014-03-17
-* § 2014-03-17
 
 [[http://vimeo.com/87845442][Live Coding ScalaJS]]
 
