@@ -21,6 +21,7 @@
 <a href="/atom.xml" class="fa fa-rss"></a>
 #+END_HTML
 
+* § [[file:2014/pastels.html][pastels]]
 * § [[file:./2014/2014-10-04.html][2014-10-04]]
 * § [[file:2014/clojure-workflow.html][clojure workflow]]
 * § [[file:2014/typing.html][typing]]
