@@ -1,4 +1,5 @@
-# -*- org-export-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+BIND: org-html-postamble-format '(("en" "<div class=\"footer\"><a href=\"/\"> mogul</a></div>"))
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
 #+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
 #+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
