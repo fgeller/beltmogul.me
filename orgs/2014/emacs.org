@@ -1,0 +1,139 @@
+# -*- org-html-postamble-format:(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>")) -*-
+#+BIND: org-html-postamble-format '(("en" "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>"))
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
+#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
+#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § emacs
+
+Emacs Lisp and the ability to hack Emacs like a REPL on steroids is probably
+Emacs' greatest feature from my perspective. I enjoy the immediacy of hacking
+Emacs in Emacs every time. As I started to clean up my
+[[https://github.com/fgeller/emacs.d/][.emacs.d]] recently, I enjoyed writing a
+couple of extensions myself. This post introduces each one briefly. Maybe some
+of these extensions are useful to you as well or trigger your interest to hack
+on some yourself :)
+
+* basic theme
+
+As I started with a clean slate, I didn't have major modes installed for some of
+the languages I work with daily. Funnily enough, I enjoyed the lack of colors
+and am still practicing abstinence today ;) Controversial I bet, but it works
+for me at the moment. I generally try to reduce the UI noise, much like
+Bastien's [[http://bzg.fr/emacs-strip-tease.html][#Emacs, naked]]. I wrote the
+minimal [[https://github.com/fgeller/basic-theme.el][fgeller/basic-theme.el]] to
+accomodate this. Here's the =*scratch*= buffer after startup:
+
+#+ATTR_HTML: :alt basic theme: scratch buffer :title basic theme: scratch buffer
+[[file:../../img/o/basic-scratch.png][file:../../img/o/basic-scratch-resized.png]]
+
+Not much changes visually when editing Emacs Lisp:
+
+#+ATTR_HTML: :alt basic theme: Emacs Lisp :title basic theme: Emacs Lisp
+[[file:../../img/o/basic-emacs-lisp.png][file:../../img/o/basic-emacs-lisp-resized.png]]
+
+Notice that the mode-line is nearly entirely hidden. I use a little helper to
+make it visible from time to time. Check out
+[[https://github.com/fgeller/basic-theme.el][fgeller/basic-theme.el]] for the
+basic idea.
+
+* highlight-thing
+
+While I disable the =font-lock= machinery globally to prevent syntax
+highlighting, the UI is not fully monochrome. Certain elements are still
+colorized to facilitate reading and finding patterns.
+
+One package I used previously is the excellent
+[[https://github.com/nschum/highlight-symbol.el][nschum/highlight-symbol.el]]
+that highlights the symbol under point and the other occurrences of it in the
+current buffer. However, it relies on =font-lock= for highlighting, which I'm
+trying to get around. So I wrote a very simple global minor mode that does just
+this, highlight the current symbol or word under point:
+[[https://github.com/fgeller/highlight-thing.el][fgeller/highlight-thing.el]].
+
+#+ATTR_HTML: :alt highlight-thing :title highlight-thing
+[[file:../../img/o/highlight-thing.png][file:../../img/o/highlight-thing-resized.png]]
+
+This allows me to quickly find occurrences of a variable or function name. The
+minor mode uses only built-in functionality and is very lightweight (~50 lines
+of code). There are plenty of solutions that are more sophisticated
+(e.g. [[https://github.com/nschum/highlight-symbol.el][nschum/highlight-symbol.el]]
+which also adds helpers for navigation, or
+[[https://github.com/boyw165/hl-anything][boyw165/hl-anything]] which introduces
+more detail control over what to highlight when and how to get around multiple
+highlights conflicting with each other), but I enjoy the simplicity of
+=highlight-thing=.
+
+* fingers
+
+The last extension is the result of trying multiple other modes to get around
+the infamous pinky or modifier problem. I had used
+[[https://github.com/chrisdone/god-mode][chrisdone/god-mode]] happily for a
+while: It allows for a comfortable transition to modal editing. When enabled,
+all commands that require the control modifier =C-= are available as if =C-= was
+pressed. So to move point a line up and then down again you can press =pn=
+rather than =C-p C-n=. Other prefixes like =M-= and =C-M-= are also conveniently
+accessible via the =g= and =G= prefix.
+
+I recently tried [[https://github.com/jyp/boon][jyp/boon]] which requires a
+bigger step by introducing entirely new bindings for navigation and text
+manipulation. Rather than relying on Emacs' bindings that are mostly based on
+mnemonics, =boon= adds key bindings that are organized with ergonomics in mind
+and several helpful text manipulation commands. For example, navigation commands
+are bound to your right hand: home row allows for navigation within a line, the
+top row allows for navigation across lines. I enjoyed the ideas quite a bit, but
+found it rather hard to extend =boon=. It is optimized for the Colemak keyboard
+layout and I found [[https://github.com/fgeller/boon/commits/workman][no easy
+mapping mechanism]].
+
+Standing on the shoulders of both giants, I wrote
+[[https://github.com/fgeller/fingers.el][fgeller/fingers.el]]. It combines ideas
+from both =god-mode= and =boon=. For example, navigation and text manipulation
+is split between right and left hand like for =boon= and you can access commands
+that require the =M-= prefix similarly to =god-mode=. =fingers-mode= has no
+external dependencies and I try to limit the bindings to what is generally
+applicable. This is a short demo of some of the text manipulation commands as
+discussed in the README:
+
+#+ATTR_HTML: :alt fingers-mode :title fingers-mode :width 500px
+[[file:../../img/o/fingers-mode.gif][file:../../img/o/fingers-mode.gif]]
+
+The README contains more details and examples and I added mappings for Qwerty
+and Neo, so maybe give it a try and let me know what you think :)
+
+* publish
+
+All three can be installed by cloning the respective repository and adding it to
+your =load-path= manually. [[https://github.com/fgeller/fingers.el][fingers.el]]
+is already available via [[http://melpa.milkbox.net:1337/#/fingers][MELPA]], and
+the other two packages may soon be available too.
+
+If you're curious, the process of adding a package to MELPA was straight-forward
+and smooth:
+
+ - Fork [[https://github.com/milkypostman/melpa][milkypostman/melpa]]
+ - Add a recipe of the form
+   #+begin_src emacs-lisp
+     (name :fetcher github :repo "fgeller/name.el")
+   #+end_src
+ - Package it locally:
+   #+begin_src sh
+     make recipes/name
+   #+end_src
+ - Inspect and install it locally in a sandbox:
+   #+begin_src emacs-lisp
+     EMACS=~/bin/emacs make sandbox
+   #+end_src
+ - Commit to a new branch and push it to your fork
+ - Create a pull request against upstream.
+ - Voilà!
+
+That's it, happy Emacs hacking :)
+

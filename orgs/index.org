@@ -21,6 +21,7 @@
 <a href="/atom.xml" class="fa fa-rss"></a>
 #+END_HTML
 
+* § [[file:2014/emacs.html][emacs]]
 * § [[file:2014/hidden.html][hidden]]
 * § [[file:2014/on-the-edge.html][on the edge]]
 * § [[file:2014/pastels.html][pastels]]

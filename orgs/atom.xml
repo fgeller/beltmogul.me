@@ -5,7 +5,217 @@
   <link href="http://beltmogul.me/feed/" rel="self" />
   <link href="http://beltmogul.me/" />
   <id>urn:uuid:8875bcdd-f8d6-ce64-0193-6da7c5eb9cd6</id>
-  <updated>2014-05-31T02:50:05+0000</updated>
+  <updated>2014-12-07T07:21:42+0000</updated>
+
+  <entry>
+    <title>emacs</title>
+    <link type="text/html" href="http://www.beltmogul.me/2014/emacs.html"/>
+    <id>urn:uuid:6505aca3-ec8f-fa74-ee13-08e09ab1c945</id>
+    <updated>2014-12-07T07:21:42+0000</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<h1 class="title">§ emacs</h1>
+<p>
+Emacs Lisp and the ability to hack Emacs like a REPL on steroids is probably
+Emacs' greatest feature from my perspective. I enjoy the immediacy of hacking
+Emacs in Emacs every time. As I started to clean up my
+<a href="https://github.com/fgeller/emacs.d/">.emacs.d</a> recently, I enjoyed writing a
+couple of extensions myself. This post introduces each one briefly. Maybe some
+of these extensions are useful to you as well or trigger your interest to hack
+on some yourself :)
+</p>
+
+<div id="outline-container-unnumbered-1" class="outline-2">
+<h2 id="unnumbered-1">basic theme</h2>
+<div class="outline-text-2" id="text-unnumbered-1">
+<p>
+As I started with a clean slate, I didn't have major modes installed for some of
+the languages I work with daily. Funnily enough, I enjoyed the lack of colors
+and am still practicing abstinence today ;) Controversial I bet, but it works
+for me at the moment. I generally try to reduce the UI noise, much like
+Bastien's <a href="http://bzg.fr/emacs-strip-tease.html">#Emacs, naked</a>. I wrote the
+minimal <a href="https://github.com/fgeller/basic-theme.el">fgeller/basic-theme.el</a> to
+accomodate this. Here's the <code>*scratch*</code> buffer after startup:
+</p>
+
+
+<div class="figure">
+<p><a href="../../img/o/basic-scratch.png" alt="basic theme: scratch buffer" title="basic theme: scratch buffer"><img src="../../img/o/basic-scratch-resized.png" alt="basic theme: scratch buffer" title="basic theme: scratch buffer" /></a>
+</p>
+</div>
+
+<p>
+Not much changes visually when editing Emacs Lisp:
+</p>
+
+
+<div class="figure">
+<p><a href="../../img/o/basic-emacs-lisp.png" alt="basic theme: Emacs Lisp" title="basic theme: Emacs Lisp"><img src="../../img/o/basic-emacs-lisp-resized.png" alt="basic theme: Emacs Lisp" title="basic theme: Emacs Lisp" /></a>
+</p>
+</div>
+
+<p>
+Notice that the mode-line is nearly entirely hidden. I use a little helper to
+make it visible from time to time. Check out
+<a href="https://github.com/fgeller/basic-theme.el">fgeller/basic-theme.el</a> for the
+basic idea.
+</p>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-2" class="outline-2">
+<h2 id="unnumbered-2">highlight-thing</h2>
+<div class="outline-text-2" id="text-unnumbered-2">
+<p>
+While I disable the <code>font-lock</code> machinery globally to prevent syntax
+highlighting, the UI is not fully monochrome. Certain elements are still
+colorized to facilitate reading and finding patterns.
+</p>
+
+<p>
+One package I used previously is the excellent
+<a href="https://github.com/nschum/highlight-symbol.el">nschum/highlight-symbol.el</a>
+that highlights the symbol under point and the other occurrences of it in the
+current buffer. However, it relies on <code>font-lock</code> for highlighting, which I'm
+trying to get around. So I wrote a very simple global minor mode that does just
+this, highlight the current symbol or word under point:
+<a href="https://github.com/fgeller/highlight-thing.el">fgeller/highlight-thing.el</a>.
+</p>
+
+
+<div class="figure">
+<p><a href="../../img/o/highlight-thing.png" alt="highlight-thing" title="highlight-thing"><img src="../../img/o/highlight-thing-resized.png" alt="highlight-thing" title="highlight-thing" /></a>
+</p>
+</div>
+
+<p>
+This allows me to quickly find occurrences of a variable or function name. The
+minor mode uses only built-in functionality and is very lightweight (~50 lines
+of code). There are plenty of solutions that are more sophisticated
+(e.g. <a href="https://github.com/nschum/highlight-symbol.el">nschum/highlight-symbol.el</a>
+which also adds helpers for navigation, or
+<a href="https://github.com/boyw165/hl-anything">boyw165/hl-anything</a> which introduces
+more detail control over what to highlight when and how to get around multiple
+highlights conflicting with each other), but I enjoy the simplicity of
+<code>highlight-thing</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-3" class="outline-2">
+<h2 id="unnumbered-3">fingers</h2>
+<div class="outline-text-2" id="text-unnumbered-3">
+<p>
+The last extension is the result of trying multiple other modes to get around
+the infamous pinky or modifier problem. I had used
+<a href="https://github.com/chrisdone/god-mode">chrisdone/god-mode</a> happily for a
+while: It allows for a comfortable transition to modal editing. When enabled,
+all commands that require the control modifier <code>C-</code> are available as if <code>C-</code> was
+pressed. So to move point a line up and then down again you can press <code>pn</code>
+rather than <code>C-p C-n</code>. Other prefixes like <code>M-</code> and <code>C-M-</code> are also conveniently
+accessible via the <code>g</code> and <code>G</code> prefix.
+</p>
+
+<p>
+I recently tried <a href="https://github.com/jyp/boon">jyp/boon</a> which requires a
+bigger step by introducing entirely new bindings for navigation and text
+manipulation. Rather than relying on Emacs' bindings that are mostly based on
+mnemonics, <code>boon</code> adds key bindings that are organized with ergonomics in mind
+and several helpful text manipulation commands. For example, navigation commands
+are bound to your right hand: home row allows for navigation within a line, the
+top row allows for navigation across lines. I enjoyed the ideas quite a bit, but
+found it rather hard to extend <code>boon</code>. It is optimized for the Colemak keyboard
+layout and I found <a href="https://github.com/fgeller/boon/commits/workman">no easy
+mapping mechanism</a>.
+</p>
+
+<p>
+Standing on the shoulders of both giants, I wrote
+<a href="https://github.com/fgeller/fingers.el">fgeller/fingers.el</a>. It combines ideas
+from both <code>god-mode</code> and <code>boon</code>. For example, navigation and text manipulation
+is split between right and left hand like for <code>boon</code> and you can access commands
+that require the <code>M-</code> prefix similarly to <code>god-mode</code>. <code>fingers-mode</code> has no
+external dependencies and I try to limit the bindings to what is generally
+applicable. This is a short demo of some of the text manipulation commands as
+discussed in the README:
+</p>
+
+
+<div class="figure">
+<p><a href="../../img/o/fingers-mode.gif" alt="fingers-mode" title="fingers-mode" width="500px"><img src="../../img/o/fingers-mode.gif" alt="fingers-mode" title="fingers-mode" width="500px" /></a>
+</p>
+</div>
+
+<p>
+The README contains more details and examples and I added mappings for Qwerty
+and Neo, so maybe give it a try and let me know what you think :)
+</p>
+</div>
+</div>
+
+<div id="outline-container-unnumbered-4" class="outline-2">
+<h2 id="unnumbered-4">publish</h2>
+<div class="outline-text-2" id="text-unnumbered-4">
+<p>
+All three can be installed by cloning the respective repository and adding it to
+your <code>load-path</code> manually. <a href="https://github.com/fgeller/fingers.el">fingers.el</a>
+is already availabe via <a href="http://melpa.milkbox.net:1337/#/fingers">MELPA</a>, and
+the other two packages may soon be available to. The process of adding a package
+to MELPA was straight-forward and smooth:
+</p>
+
+<ul class="org-ul">
+<li>Fork <a href="https://github.com/milkypostman/melpa">milkypostman/melpa</a>
+</li>
+<li><p>
+Add a recipe of the form
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">(name :fetcher github :repo "fgeller/name.el")
+</pre>
+</div>
+</li>
+<li><p>
+Package it locally:
+</p>
+<div class="org-src-container">
+
+<pre class="src src-sh">make recipes/name
+</pre>
+</div>
+</li>
+<li><p>
+Inspect and install it in a sandbox locally via (the package is installable
+via the usual <code>(list-packages)</code> functionality.
+</p>
+<div class="org-src-container">
+
+<pre class="src src-emacs-lisp">EMACS=~/bin/emacs make sandbox
+</pre>
+</div>
+</li>
+<li>Commit to a new branch and push it to your fork
+</li>
+<li>Create a pull request against upstream.
+</li>
+<li>Voilà!
+</li>
+</ul>
+
+<p>
+That's it, happy Emacs hacking :)
+</p>
+</div>
+</div>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
 
   <entry>
     <title>§ hidden</title>
