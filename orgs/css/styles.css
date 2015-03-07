@@ -64,12 +64,10 @@ p {
 a {
     color: #2980b9;
     text-decoration: none;
-    padding: 0.25em;
 }
 
 a:hover {
     color: #f1c40f;
-    background-color: #fff;
 }
 
 div.figure a {
