@@ -5,7 +5,28 @@
   <link href="http://beltmogul.me/feed/" rel="self" />
   <link href="http://beltmogul.me/" />
   <id>urn:uuid:8875bcdd-f8d6-ce64-0193-6da7c5eb9cd6</id>
-  <updated>2014-12-07T07:21:42+0000</updated>
+  <updated>2015-03-08T07:47:42+1300</updated>
+
+  <entry>
+    <title>§ clouded</title>
+    <link type="text/html" href="http://www.beltmogul.me/2015/clouded.html"/>
+    <id>urn:uuid:36972c8a-8377-4217-b383-2ca7167ea4b4</id>
+    <updated>2015-03-08T07:47:20+1300</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<h1 class="title">§ clouded</h1>
+
+<div class="figure">
+<p><img src="../../img/a/clouded.jpg" alt="clouded" title="clouded" />
+</p>
+</div>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
 
   <entry>
     <title>emacs</title>

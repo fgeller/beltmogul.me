@@ -1,0 +1,9 @@
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: § clouded
+
+  #+ATTR_HTML: :alt clouded :title clouded
+  [[file:../../img/a/clouded.jpg]]

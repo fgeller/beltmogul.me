@@ -6,6 +6,7 @@
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE:
 
+* § [[file:2015/clouded.html][clouded]]
 * § [[file:2014/emacs.html][emacs]]
 * § [[file:2014/hidden.html][hidden]]
 * § [[file:2014/on-the-edge.html][on the edge]]

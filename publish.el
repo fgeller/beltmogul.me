@@ -93,13 +93,16 @@
   <div id=\"feed\">
     <a href=\"/atom.xml\">&nbsp;<span class=\"fa fa-rss\"></span></a>
   </div>
+  <div id=\"2015\">
+    <a href=\"/2015\">2015</a>
+  </div>
   <div id=\"2014\">
     <a href=\"/2014\">2014</a>
   </div>
 </div>
 <div id=\"title-bar\">
   <a href=\"/\">belt<br />
-&nbsp;mogul</a><br />
+mogul</a><br />
 </div>
 "))))
     (org-publish-project "beltmogul" t)))
