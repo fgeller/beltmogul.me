@@ -1,25 +1,10 @@
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/normalize.css" />
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="/css/styles.css" />
-#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway:100,400,600"/>
-#+HTML_HEAD: <link type="text/css" rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato"/>
-#+HTML_HEAD: <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-#+HTML_HEAD: <link rel="icon" href="/favicon.ico" type="image/x-icon">
-#+HTML_HEAD: <link href="atom.xml" type="application/atom+xml" rel="alternate" title="belt mogul feed">
-#+HTML_HEAD: <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-#+HTML_HEAD: <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-#+HTML_HEAD: <script src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js"></script>
-#+HTML_HEAD: <script src="scripts/jquery.appear.js"></script>
-#+HTML_HEAD: <script src="scripts/loader.js"></script>
-#+OPTIONS: html-link-use-abs-url:nil html-postamble:nil html-preamble:nil
+#+HTML_HEAD_EXTRA: <script src="scripts/loader.js"></script>
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
 #+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: belt mogul
-
-#+BEGIN_HTML
-<a href="/atom.xml" class="fa fa-rss"></a>
-#+END_HTML
+#+TITLE:
 
 * § [[file:2014/emacs.html][emacs]]
 * § [[file:2014/hidden.html][hidden]]
