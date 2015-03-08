@@ -15,38 +15,85 @@ h1.title {
     text-align: left;
 }
 
-#nav-bar {
-    position: fixed;
-    right: 0;
-    bottom: 0;
-    float: left;
-    font-size: 24pt;
-    font-family: 'Raleway';
-    font-weight: 100;
-    text-align: right;
-    margin-bottom: 0.5em;
-    margin-right: 0.5em;
+
+@media screen and (min-width: 850px) {
+
+    #nav-bar {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        float: left;
+        font-size: 24pt;
+        font-family: 'Raleway';
+        font-weight: 100;
+        text-align: right;
+        margin-bottom: 0.5em;
+        margin-right: 0.5em;
+    }
+
+    #nav-bar div {
+        padding-top: 0.7em;
+        margin: 0;
+    }
+
+    #title-bar {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        float: left;
+        font-size: 24pt;
+        margin-bottom: 0.5em;
+        margin-left: 0.5em;
+        font-family: 'Raleway';
+        font-weight: 100;
+        width: 4em;
+    }
+
+    #title-bar a {
+        line-height: 1.3em;
+    }
+
 }
 
-#nav-bar div {
-    padding-top: 0.7em;
-    margin: 0;
-}
+@media screen and (max-width: 850px) {
 
-#title-bar {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    float: left;
-    font-size: 24pt;
-    margin-bottom: 0.5em;
-    margin-left: 0.5em;
-    font-family: 'Raleway';
-    font-weight: 100;
-}
+    #content {
+        padding-top: 4em;
+    }
 
-#title-bar a {
-    line-height: 1.3em;
+    #nav-bar {
+        position: fixed;
+        top: 0;
+        right: 0;
+        font-size: 24pt;
+        font-family: 'Raleway';
+        font-weight: 100;
+        text-align: right;
+        margin-top: .5em;
+        margin-right: .5em;
+    }
+
+    #nav-bar div {
+        float: right;
+        margin: 0;
+        padding-left: 0.5em;
+    }
+
+    #title-bar {
+        position: fixed;
+        top: 0;
+        float: left;
+        font-size: 24pt;
+        font-family: 'Raleway';
+        font-weight: 100;
+        margin-top: .5em;
+        margin-left: .5em;
+    }
+
+    #title-bar a {
+        line-height: 1.3em;
+    }
+
 }
 
 h2 {

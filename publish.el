@@ -101,8 +101,7 @@
   </div>
 </div>
 <div id=\"title-bar\">
-  <a href=\"/\">belt<br />
-mogul</a><br />
+  <a href=\"/\">belt mogul</a>
 </div>
 "))))
     (org-publish-project "beltmogul" t)))
