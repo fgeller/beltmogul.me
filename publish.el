@@ -55,7 +55,7 @@
          :publishing-function org-html-publish-to-html)
         ("beltmogul-static"
          :base-directory "~/code/beltmogul/orgs/"
-         :base-extension "css\\|png\\|jpg\\|gif\\|ico\\|xml\\|txt"
+         :base-extension "css\\|otf\\|eot\\|svg\\|ttf\\|woff\\|woff2\\|png\\|jpg\\|gif\\|ico\\|xml\\|txt"
          :publishing-directory "~/code/beltmogul/public_html/"
          :recursive t
          :publishing-function org-publish-attachment)
@@ -83,7 +83,7 @@
 <link rel=\"shortcut icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
 <link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
 <link href=\"atom.xml\" type=\"application/atom+xml\" rel=\"alternate\" title=\"belt mogul feed\">
-<link href=\"//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css\" rel=\"stylesheet\">
+<link href=\"/css/font-awesome.min.css\" rel=\"stylesheet\">
 <script src=\"//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js\"></script>
 <script src=\"//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js\"></script>
 <script src=\"scripts/jquery.appear.js\"></script>
