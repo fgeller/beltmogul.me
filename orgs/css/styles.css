@@ -11,6 +11,8 @@ h1.title {
     color: #2c3e50;
     padding: 0em;
     text-align: left;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
 }
 
 @media screen and (min-width: 32em) {
