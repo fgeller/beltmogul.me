@@ -1,5 +1,5 @@
 #+HTML_HEAD_EXTRA: <script src="scripts/loader.js"></script>
-#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:nil
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
 #+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div

@@ -88,21 +88,20 @@
 <script src=\"//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js\"></script>
 <script src=\"scripts/jquery.appear.js\"></script>
 ")
-        (org-html-postamble-format
-         '(("en" "<div id=\"nav-bar\">
-  <div id=\"feed\">
-    <a href=\"/atom.xml\">&nbsp;<span class=\"fa fa-rss\"></span></a>
-  </div>
-  <div id=\"2015\">
+        (org-html-postamble-format '(("en" "")))
+        (org-html-preamble-format
+         '(("en" "
+<div id=\"top-bar\"><div id=\"title-bar\"><a href=\"/\">belt mogul</a></div><div id=\"nav-bar\">
+  <span id=\"2015\">
     <a href=\"/2015\">2015</a>
-  </div>
-  <div id=\"2014\">
+  </span>
+  <span id=\"2014\">
     <a href=\"/2014\">2014</a>
-  </div>
-</div>
-<div id=\"title-bar\">
-  <a href=\"/\">belt mogul</a>
-</div>
+  </span>
+  <span id=\"feed\">
+    <a href=\"/atom.xml\"><span class=\"fa fa-rss\"></span></a>
+  </span>
+</div></div>
 "))))
     (org-publish-project "beltmogul" t)))
 
