@@ -76,6 +76,7 @@
   (interactive)
   (let ((default-directory "~/code/beltmogul/")
         (org-html-head "
+<meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">
 <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/normalize.css\" />
 <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/styles.css\" />
 <link type=\"text/css\" rel=\"stylesheet\" href=\"http://fonts.googleapis.com/css?family=Raleway:100,400,600\"/>
