@@ -87,7 +87,6 @@
 <link href=\"/css/font-awesome.min.css\" rel=\"stylesheet\">
 <script src=\"//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js\"></script>
 <script src=\"//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js\"></script>
-<script src=\"scripts/jquery.appear.js\"></script>
 ")
         (org-html-postamble-format '(("en" "")))
         (org-html-preamble-format
