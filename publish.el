@@ -1,4 +1,3 @@
-;; ~/Applications/Emacs.app/Contents/MacOS/Emacs -q -l publish.el
 
 (setq make-backup-files nil)
 
@@ -113,3 +112,17 @@
 
 (publish-beltmogul-locally)
 (save-buffers-kill-terminal)
+
+;; (serve-beltmogul-locally)
+(defun serve-beltmogul-locally ()
+  (let ((default-directory "~/code/beltmogul/public_html/"))
+    (compile "python -m SimpleHTTPServer 3033")
+    (with-current-buffer "*compilation*"
+      (rename-buffer "*serve-beltmogul*"))))
+
+;; ~/Applications/Emacs.app/Contents/MacOS/Emacs -q -l publish.el
+;; (compile-beltmogul-locally)
+(defun compile-beltmogul-locally ()
+  (compile "~/Applications/Emacs.app/Contents/MacOS/Emacs -q -l ~/code/beltmogul/publish.el")
+  (with-current-buffer "*compilation*"
+    (rename-buffer "*compile-beltmogul*")))
