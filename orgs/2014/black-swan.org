@@ -6,4 +6,4 @@
 #+TITLE: § black swan
 
   #+ATTR_HTML: :alt black swan :title black swan
-  [[file:../../img/a/P5031821.jpg]]
+  [[file:../../img/a/P5031821-orig.jpg][file:../../img/a/P5031821.jpg]]

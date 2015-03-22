@@ -6,4 +6,4 @@
 #+TITLE: § my world
 
   #+ATTR_HTML: :alt my world :title my world
-  [[file:../img/a/P3231118.jpg]]
+  [[file:../img/a/P3231118-orig.jpg][file:../img/a/P3231118.jpg]]

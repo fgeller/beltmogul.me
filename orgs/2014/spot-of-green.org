@@ -6,4 +6,4 @@
 #+TITLE: § spot of green
 
   #+ATTR_HTML: :alt spot of green :title spot of green
-  [[file:../../img/a/P1093767.jpg]]
+  [[file:../../img/a/P1093767-orig.jpg][file:../../img/a/P1093767.jpg]]

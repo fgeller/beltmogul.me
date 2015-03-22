@@ -6,4 +6,4 @@
 #+TITLE: § leaving
 
   #+ATTR_HTML: :alt leaving :title leaving
-  [[file:../../img/a/P3120694.jpg]]
+  [[file:../../img/a/P3120694-orig.jpg][file:../../img/a/P3120694.jpg]]

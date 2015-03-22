@@ -6,4 +6,4 @@
 #+TITLE: § golden moon
 
   #+ATTR_HTML: :alt golden moon :title golden moon
-  [[file:../../img/a/P6132373.jpg]]
+  [[file:../../img/a/P6132373-orig.jpg][file:../../img/a/P6132373.jpg]]

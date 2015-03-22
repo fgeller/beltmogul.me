@@ -6,4 +6,4 @@
 #+TITLE: § clouded
 
   #+ATTR_HTML: :alt clouded :title clouded
-  [[file:../../img/a/clouded.jpg]]
+  [[file:../../img/a/clouded-orig.jpg][file:../../img/a/clouded.jpg]]

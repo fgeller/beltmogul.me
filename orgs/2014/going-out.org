@@ -6,4 +6,4 @@
 #+TITLE: § going out
 
   #+ATTR_HTML: :alt going out :title going out
-  [[file:../../img/a/PC273171.jpg]]
+  [[file:../../img/a/PC273171-orig.jpg][file:../../img/a/PC273171.jpg]]

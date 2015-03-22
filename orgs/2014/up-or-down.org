@@ -6,4 +6,4 @@
 #+TITLE: § up or down?
 
   #+ATTR_HTML: :alt up or down? :title up or down?
-  [[file:../img/a/PC051248.jpg]]
+  [[file:../img/a/PC051248-orig.jpg][file:../img/a/PC051248.jpg]]

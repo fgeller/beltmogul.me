@@ -6,4 +6,4 @@
 #+TITLE: § orange
 
   #+ATTR_HTML: :alt orange :title orange
-  [[file:../../img/a/P2044317.jpg]]
+  [[file:../../img/a/P2044317-orig.jpg][file:../../img/a/P2044317.jpg]]

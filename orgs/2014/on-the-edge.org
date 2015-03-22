@@ -6,4 +6,4 @@
 #+TITLE: § on the edge
 
   #+ATTR_HTML: :alt on the edge :title on the edge
-  [[file:../../img/a/PA131440.jpg]]
+  [[file:../../img/a/PA131440-orig.jpg][file:../../img/a/PA131440.jpg]]
