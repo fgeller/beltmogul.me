@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § pipes
+#+TITLE: pipes
 
 I was looking for an operator to make the following easier to read:
 

@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § pastels
+#+TITLE: pastels
 
   #+ATTR_HTML: :alt pastels :title pastels
   [[file:../../img/a/PC293398-orig.jpg][file:../../img/a/PC293398.jpg]]

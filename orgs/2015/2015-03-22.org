@@ -1,0 +1,30 @@
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: 2015-03-22
+
+[[http://moo.nac.uci.edu/~hjm/parsync/][parsync]]
+parallel rsync
+
+[[http://yusugomori.com/projects/css-sans/fonts][CSS SANS]]
+css font
+
+[[https://medium.com/@chadfowler/the-best-job-description-for-an-engineer-ever-written-57b42919cc2f][The best job description for an engineer ever written]]
++1
+
+[[http://www.upat6.com/10-things-you-should-know-before-you-start-getting-up-at-6-am/][10 things you should know before you start getting up at 6am]]
+
+[[https://news.ycombinator.com/item?id%3D9207360][Ask HN: Favorite podcasts?]]
+
+[[http://whitane.com/post/recovering-deleted-files-in-osx/][recovering deleted files in osx]]
+ for open files
+
+[[http://thekidshouldseethis.com/post/3d-printed-blooming-fibonacci-zoetrope-sculptures][3D-printed "blooming" Fibonacci zoetrope sculptures]]
+pretty.
+
+[[http://vincebuffalo.com/2013/08/08/the-mighty-named-pipe.html][Using named pipes and process substitution]]
+mighty indeed
+
+

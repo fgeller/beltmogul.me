@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § black swan
+#+TITLE: black swan
 
   #+ATTR_HTML: :alt black swan :title black swan
   [[file:../../img/a/P5031821-orig.jpg][file:../../img/a/P5031821.jpg]]

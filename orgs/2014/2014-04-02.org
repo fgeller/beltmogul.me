@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § 2014-04-02
+#+TITLE: 2014-04-02
 
 [[http://travel.nationalgeographic.com/travel/traveler-magazine/photo-contest/2012/entries/2014/150230/view/][Spontaneous Humpback]]  wow.
 

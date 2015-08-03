@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § golden moon
+#+TITLE: golden moon
 
   #+ATTR_HTML: :alt golden moon :title golden moon
   [[file:../../img/a/P6132373-orig.jpg][file:../../img/a/P6132373.jpg]]

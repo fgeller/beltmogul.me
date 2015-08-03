@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § emacs + scala
+#+TITLE: emacs + scala
 
   For a bit more than a year I have been working mainly with Scala in
   Emacs. While it's not like working with a LISP, there are a few tweaks that

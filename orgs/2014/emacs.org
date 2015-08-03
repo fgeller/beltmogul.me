@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § emacs
+#+TITLE: emacs
 
 Emacs Lisp and the ability to hack Emacs like a REPL on steroids is probably
 Emacs' greatest feature from my perspective. I enjoy the immediacy of hacking

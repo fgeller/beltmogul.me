@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § hidden
+#+TITLE: hidden
 
   #+ATTR_HTML: :alt hidden :title hidden
   [[file:../../img/a/PA211508-orig.jpg][file:../../img/a/PA211508.jpg]]

@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § tree
+#+TITLE: tree
 
   #+ATTR_HTML: :alt tree :title tree
   [[file:../../img/a/P6082095-orig.jpg][file:../../img/a/P6082095.jpg]]

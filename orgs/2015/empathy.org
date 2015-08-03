@@ -1,0 +1,12 @@
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: Empathy Is Actually a Choice
+
+  #+ATTR_HTML: :alt Empathy Is Actually a Choice :title Empathy Is Actually a Choice :height 310
+  [[http://www.nytimes.com/2015/07/12/opinion/sunday/empathy-is-actually-a-choice.html][http://static01.nyt.com/images/2015/07/12/opinion/sunday/12gray/12gray-articleLarge.jpg]]
+
+  via [[http://kottke.org/15/07/the-power-of-empathy][kottke]]
+

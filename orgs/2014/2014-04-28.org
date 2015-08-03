@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § 2014-04-28
+#+TITLE: 2014-04-28
 
 [[http://blog.tinkeringmonkey.com/do-your-back-a-favor-get-a-standing-desk/][Do Your Back a Favor, Get a Standing Desk]]  interesting design.
 

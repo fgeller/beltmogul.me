@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § 2014-03-01
+#+TITLE: 2014-03-01
 
 [[https://www.youtube.com/watch?v%3DDlguc63cRXg][Scaling Source Control at Facebook]]  hg on steroids.
 

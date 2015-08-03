@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § my world
+#+TITLE: my world
 
   #+ATTR_HTML: :alt my world :title my world
   [[file:../img/a/P3231118-orig.jpg][file:../img/a/P3231118.jpg]]

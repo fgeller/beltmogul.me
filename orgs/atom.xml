@@ -5,7 +5,128 @@
   <link href="http://beltmogul.me/feed/" rel="self" />
   <link href="http://beltmogul.me/" />
   <id>urn:uuid:8875bcdd-f8d6-ce64-0193-6da7c5eb9cd6</id>
-  <updated>2015-03-08T07:47:42+1300</updated>
+  <updated>2015-08-02T21:47:42-0600</updated>
+
+  <entry>
+    <title></title>
+    <link type="text/html" href="http://www.beltmogul.me/2015/empathy.html"/>
+    <id>urn:uuid:59bf7014-3c28-46ff-89e0-5931154247d0</id>
+    <updated>2015-07-18T19:21:20+0100</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<h1 class="title">Empathy Is Actually a Choice</h1>
+
+<div class="figure">
+<p><a href="http://www.nytimes.com/2015/07/12/opinion/sunday/empathy-is-actually-a-choice.html" alt="Empathy Is Actually a Choice" title="Empathy Is Actually a Choice" height="310"><img src="http://static01.nyt.com/images/2015/07/12/opinion/sunday/12gray/12gray-articleLarge.jpg" alt="Empathy Is Actually a Choice" title="Empathy Is Actually a Choice" height="310" /></a>
+</p>
+</div>
+
+<p>
+via <a href="http://kottke.org/15/07/the-power-of-empathy">kottke</a>
+</p>
+</div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+  <entry>
+    <title>§ glowing</title>
+    <link type="text/html" href="http://www.beltmogul.me/2015/glowing.html"/>
+    <id>urn:uuid:ddb3f13a-8d52-4eed-a0c9-8ca3bf731fe9</id>
+    <updated>2015-07-18T19:21:20+0100</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<h1 class="title">§ glowing</h1>
+
+<div class="figure">
+<p><img src="../../img/a/glowing.jpg" alt="glowing" title="glowing" />
+</p>
+</div>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+  <entry>
+    <title>§ soft</title>
+    <link type="text/html" href="http://www.beltmogul.me/2015/soft.html"/>
+    <id>urn:uuid:29dc9b09-70e2-4f13-bb7e-0d7588b83a73</id>
+    <updated>2015-03-22T22:17:20+1300</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<h1 class="title">§ soft</h1>
+
+<div class="figure">
+<p><img src="../../img/a/P1274794.jpg" alt="soft" title="soft" />
+</p>
+</div>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+
+  <entry>
+    <title>§ 2015-03-22</title>
+    <link type="text/html" href="http://www.beltmogul.me/2015/2015-03-22.html"/>
+    <id>urn:uuid:cce48270-87cb-41e6-9157-bb1818e7e482</id>
+    <updated>2015-03-22T22:05:20+1300</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<h1 class="title">§ 2015-03-22</h1>
+<p>
+<a href="http://moo.nac.uci.edu/~hjm/parsync/">parsync</a>
+parallel rsync
+</p>
+
+<p>
+<a href="http://yusugomori.com/projects/css-sans/fonts">CSS SANS</a>
+css font
+</p>
+
+<p>
+<a href="https://medium.com/@chadfowler/the-best-job-description-for-an-engineer-ever-written-57b42919cc2f">The best job description for an engineer ever written</a>
++1
+</p>
+
+<p>
+<a href="http://www.upat6.com/10-things-you-should-know-before-you-start-getting-up-at-6-am/">10 things you should know before you start getting up at 6am</a>
+</p>
+
+<p>
+<a href="https://news.ycombinator.com/item?id=9207360">Ask HN: Favorite podcasts?</a>
+</p>
+
+<p>
+<a href="http://whitane.com/post/recovering-deleted-files-in-osx/">recovering deleted files in osx</a>
+ for open files
+</p>
+
+<p>
+<a href="http://thekidshouldseethis.com/post/3d-printed-blooming-fibonacci-zoetrope-sculptures">3D-printed "blooming" Fibonacci zoetrope sculptures</a>
+pretty.
+</p>
+
+<p>
+<a href="http://vincebuffalo.com/2013/08/08/the-mighty-named-pipe.html">Using named pipes and process substitution</a>
+mighty indeed
+</p>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
 
   <entry>
     <title>§ clouded</title>

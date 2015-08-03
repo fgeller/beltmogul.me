@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § orange
+#+TITLE: orange
 
   #+ATTR_HTML: :alt orange :title orange
   [[file:../../img/a/P2044317-orig.jpg][file:../../img/a/P2044317.jpg]]

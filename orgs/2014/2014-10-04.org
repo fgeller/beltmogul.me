@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § 2014-10-04
+#+TITLE: 2014-10-04
 
 [[http://www.infoq.com/presentations/scaling-gilt][Learnings from Building and Scaling Gilt]]  growth & innovation.
 

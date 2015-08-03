@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § leaving
+#+TITLE: leaving
 
   #+ATTR_HTML: :alt leaving :title leaving
   [[file:../../img/a/P3120694-orig.jpg][file:../../img/a/P3120694.jpg]]

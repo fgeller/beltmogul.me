@@ -5,4 +5,7 @@
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE: 2015
 
-* § [[file:clouded.html][clouded]]
+* [[file:glowing.html][glowing]]
+* [[file:soft.html][soft]]
+* [[file:2015-03-22.html][2015-03-22]]
+* [[file:clouded.html][clouded]]

@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § up or down?
+#+TITLE: up or down?
 
   #+ATTR_HTML: :alt up or down? :title up or down?
   [[file:../img/a/PC051248-orig.jpg][file:../img/a/PC051248.jpg]]

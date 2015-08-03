@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § typing
+#+TITLE: typing
 
    This post is a summary of the tools that I'm fiddling with to tweak my
    keyboard layout every now and then. I recently changed from [[https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard][Dvorak]] to the

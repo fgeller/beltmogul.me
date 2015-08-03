@@ -1,0 +1,9 @@
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: glowing
+
+  #+ATTR_HTML: :alt soft :title glowing
+  [[file:../../img/a/glowing-orig.jpg][file:../../img/a/glowing.jpg]]

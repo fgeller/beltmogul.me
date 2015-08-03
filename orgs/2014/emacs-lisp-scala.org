@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § emacs lisp + scala
+#+TITLE: emacs lisp + scala
 
    This posts describes some of the utility functions that I wrote for editing
    Scala code. They've mostly grown into existence after I couldn't be bothered

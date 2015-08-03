@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § 2014-04-13
+#+TITLE: 2014-04-13
 
 [[http://eed3si9n.com/learning-scalaz/Tagged%2Btype.html][Tagged type]] in scala.
 

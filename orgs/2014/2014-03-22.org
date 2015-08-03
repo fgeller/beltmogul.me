@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § 2014-03-22
+#+TITLE: 2014-03-22
 
 [[http://articles.coreyhaines.com/posts/thoughts-on-pair-programming/][Thoughts on pair programming]]  by Corey Haines.
 

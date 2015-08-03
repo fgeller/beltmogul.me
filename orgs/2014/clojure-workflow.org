@@ -3,7 +3,7 @@
 #+OPTIONS: toc:0 num:nil ^:{}
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
-#+TITLE: § clojure workflow
+#+TITLE: clojure workflow
 
 This post is a write-up of a short presentation that I gave at the last Clojure
 meetup in Auckland. The topic was "Real World Clojure" and I gave a quick demo
