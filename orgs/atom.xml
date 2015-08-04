@@ -5,7 +5,133 @@
   <link href="http://beltmogul.me/feed/" rel="self" />
   <link href="http://beltmogul.me/" />
   <id>urn:uuid:8875bcdd-f8d6-ce64-0193-6da7c5eb9cd6</id>
-  <updated>2015-08-02T21:47:42-0600</updated>
+  <updated>2015-08-04T15:28:42+1200</updated>
+
+  <entry>
+    <title></title>
+    <link type="text/html" href="http://www.beltmogul.me/2015/and-then-try.html"/>
+    <id>urn:uuid:0da593ec-150b-455a-aa78-c676402ab07f</id>
+    <updated>2015-08-04T15:28:42+1200</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<h1 class="title">andThen Try another implicit class</h1>
+<p>
+When using Scala, I often guard application boundaries by wrapping the call to
+another library or database in a Try. Consider the following example:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def findUserId(name: String): Try[Long] = {
+  Try {
+    q.execute(s"SELECT id FROM users WHERE name = '$name'")
+  }
+}
+</pre>
+</div>
+
+<p>
+Wrapping the call in a Try allows me to indicate that something might go wrong
+here and I don't really know what to do. The database might hit a connection
+limit or be temporarily unavailable, but at this stage it's unclear how to best
+handle it. We can use the type to propagate that information up to the callers
+where more context is available.
+</p>
+
+<p>
+Given that I'm trying to identify exceptional cases, I often want to log those
+for visibility. Sometimes it's better to do it in the caller, if there's more
+context that should be logged. But often I want to log it right where I create
+the Try. One pattern that I use is the following:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def findUserId(name: String): Try[Long] = {
+  val result = Try {
+    q.execute(s"SELECT id FROM users WHERE name = '$name'")
+  }
+
+  result match {
+    case Success(_)  &#8658;
+    case Failure(ex) &#8658;
+      log.error(s"Exception while finding ID for user with name $name", ex)
+  }
+
+  result
+}
+</pre>
+</div>
+
+<p>
+There are two things here that are boilerplate for me:
+</p>
+
+<ol class="org-ol">
+<li>We only want to match the failure case but we still need to add a case for a
+possible Success value.
+</li>
+
+<li>We only want to side-effect so we have to store the original value to be able
+to return it after we log the message.
+</li>
+</ol>
+
+<span><a href="/2014/pipes.html">Another</a> quick implicit class to the rescue!</span>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">implicit class TryOps[A](t: Try[A]) {
+  def andThen(pf: PartialFunction[Try[A], Unit]): Try[A] = {
+    if (pf.isDefinedAt(t)) {
+      pf.apply(t)
+    }
+
+    t
+  }
+}
+</pre>
+</div>
+
+<p>
+This allows you to write the following version:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">def findUserId(name: String): Try[Long] = {
+  Try {
+    q.execute(s"SELECT id FROM users WHERE name = '$name'")
+  } andThen {
+    case Failure(ex) &#8658;
+      log.error(s"Exception while finding ID for user with name $name", ex)
+  }
+}
+</pre>
+</div>
+
+<p>
+The andThen just passes the original result through, so no need for an
+intermediary step (2), and the PartialFunction only gets applied when it's
+defined for the given argument, so no need for that superfluous Success case
+either (1).
+</p>
+
+<p>
+This might look very familiar to you: I got this idea from
+<a href="https://github.com/scala/scala/blob/70f0b1ded880ec9b3a9478d02f1898fcfeee230c/src/library/scala/concurrent/Future.scala#L431">Future</a>. There
+the andThen also indicates a side-effect and allows for partial
+matching. <a href="https://groups.google.com/d/msg/scala-user/Yysmkc2iJVs/-7ApHGkjSrYJ">Others</a>
+have asked for an andThen to be added to Try as well and I'm not sure why it
+hasn't been, but adding it via an implicit class is easy enough :)
+</p>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
 
   <entry>
     <title></title>

@@ -5,6 +5,8 @@
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE: 2015
 
+* [[file:and-then-try.html][andThen Try another implicit class]]
+* [[file:empathy.html][Empathy Is Actually a Choice]]
 * [[file:glowing.html][glowing]]
 * [[file:soft.html][soft]]
 * [[file:2015-03-22.html][2015-03-22]]

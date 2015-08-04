@@ -1,0 +1,91 @@
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: andThen Try another implicit class
+
+When using Scala, I often guard application boundaries by wrapping the call to
+another library or database in a Try. Consider the following example:
+
+#+begin_src scala
+  def findUserId(name: String): Try[Long] = {
+    Try {
+      q.execute(s"SELECT id FROM users WHERE name = '$name'")
+    }
+  }
+#+end_src
+
+Wrapping the call in a Try allows me to indicate that something might go wrong
+here and I don't really know what to do. The database might hit a connection
+limit or be temporarily unavailable, but at this stage it's unclear how to best
+handle it. We can use the type to propagate that information up to the callers
+where more context is available.
+
+Given that I'm trying to identify exceptional cases, I often want to log those
+for visibility. Sometimes it's better to do it in the caller, if there's more
+context that should be logged. But often I want to log it right where I create
+the Try. One pattern that I use is the following:
+
+#+begin_src scala
+  def findUserId(name: String): Try[Long] = {
+    val result = Try {
+      q.execute(s"SELECT id FROM users WHERE name = '$name'")
+    }
+
+    result match {
+      case Success(_)  ⇒
+      case Failure(ex) ⇒
+        log.error(s"Exception while finding ID for user with name $name", ex)
+    }
+
+    result
+  }
+#+end_src
+
+There are two things here that are boilerplate for me:
+
+1. We only want to match the failure case but we still need to add a case for a
+   possible Success value.
+
+2. We only want to side-effect so we have to store the original value to be able
+   to return it after we log the message.
+
+#+HTML: <span><a href="/2014/pipes.html">Another</a> quick implicit class to the rescue!</span>
+
+#+begin_src scala
+  implicit class TryOps[A](t: Try[A]) {
+    def andThen(pf: PartialFunction[Try[A], Unit]): Try[A] = {
+      if (pf.isDefinedAt(t)) {
+        pf.apply(t)
+      }
+
+      t
+    }
+  }
+#+end_src
+
+This allows you to write the following version:
+
+#+begin_src scala
+  def findUserId(name: String): Try[Long] = {
+    Try {
+      q.execute(s"SELECT id FROM users WHERE name = '$name'")
+    } andThen {
+      case Failure(ex) ⇒
+        log.error(s"Exception while finding ID for user with name $name", ex)
+    }
+  }
+#+end_src
+
+The andThen just passes the original result through, so no need for an
+intermediary step (2), and the PartialFunction only gets applied when it's
+defined for the given argument, so no need for that superfluous Success case
+either (1).
+
+This might look very familiar to you: I got this idea from
+[[https://github.com/scala/scala/blob/70f0b1ded880ec9b3a9478d02f1898fcfeee230c/src/library/scala/concurrent/Future.scala#L431][Future]]. There
+the andThen also indicates a side-effect and allows for partial
+matching. [[https://groups.google.com/d/msg/scala-user/Yysmkc2iJVs/-7ApHGkjSrYJ][Others]]
+have asked for an andThen to be added to Try as well and I'm not sure why it
+hasn't been, but adding it via an implicit class is easy enough :)
