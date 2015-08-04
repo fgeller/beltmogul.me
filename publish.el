@@ -106,9 +106,9 @@
 
 ;;   (compile "rsync -azv ~/code/beltmogul/public_html hipp0:~/beltmogul.me/")
 
-(setq org-src-fontify-natively t)
-(global-font-lock-mode 1)
-(load-theme 'flatui t)
+(setq org-src-fontify-natively nil)
+(global-font-lock-mode 0)
+(load-theme 'basic t)
 
 (publish-beltmogul-locally)
 (save-buffers-kill-terminal)
