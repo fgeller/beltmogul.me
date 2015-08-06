@@ -5,7 +5,28 @@
   <link href="http://beltmogul.me/feed/" rel="self" />
   <link href="http://beltmogul.me/" />
   <id>urn:uuid:8875bcdd-f8d6-ce64-0193-6da7c5eb9cd6</id>
-  <updated>2015-08-04T15:28:42+1200</updated>
+  <updated>2015-08-05T13:28:42+1200</updated>
+
+  <entry>
+    <title>Red waves</title>
+    <link type="text/html" href="http://www.beltmogul.me/2015/red-waves.html"/>
+    <id>urn:uuid:74edd95a-b495-4293-b952-6971351a8e26</id>
+    <updated>2015-08-05T13:21:20+1200</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<h1 class="title">Red waves</h1>
+
+<div class="figure">
+<p><a href="../../img/a/red-waves-orig.jpg" alt="Red waves" title="Red waves"><img src="../../img/a/red-waves.jpg" alt="Red waves" title="Red waves" /></a>
+</p>
+</div>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
 
   <entry>
     <title></title>

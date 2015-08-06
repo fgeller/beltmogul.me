@@ -1,0 +1,9 @@
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: Red waves
+
+  #+ATTR_HTML: :alt Red waves :title Red waves
+  [[file:../../img/a/red-waves-orig.jpg][file:../../img/a/red-waves.jpg]]

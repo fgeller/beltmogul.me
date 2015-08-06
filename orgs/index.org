@@ -8,6 +8,7 @@
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE: belt mogul
 
+* [[file:2015/red-waves.html][Red waves]]
 * [[file:2015/and-then-try.html][andThen Try another implicit class]]
 * [[file:2015/empathy.html][Empathy Is Actually a Choice]]
 * [[file:2015/glowing.html][glowing]]
