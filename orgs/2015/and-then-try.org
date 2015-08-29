@@ -1,9 +1,11 @@
 #+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
 #+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
-#+OPTIONS: toc:0 num:nil ^:{}
+#+OPTIONS: toc:0 num:nil ^:{} title:nil
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE: andThen Try another implicit class
+
+#+HTML: <div><h2><a href="and-then-try.html">andThen Try another implicit class</a> <span class="date">03-08-2015</span></h2></div>
 
 When using Scala, I often guard application boundaries by wrapping the call to
 another library or database in a Try. Consider the following example:

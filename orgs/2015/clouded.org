@@ -1,9 +1,11 @@
 #+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
 #+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
-#+OPTIONS: toc:0 num:nil ^:{}
+#+OPTIONS: toc:0 num:nil ^:{} title:nil
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE: clouded
+
+#+HTML: <div><h2><a href="clouded.html">Clouded</a> <span class="date">22-03-2015</span></h2></div>
 
   #+ATTR_HTML: :alt clouded :title clouded
   [[file:../../img/a/clouded-orig.jpg][file:../../img/a/clouded.jpg]]
