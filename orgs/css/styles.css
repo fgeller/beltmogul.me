@@ -10,6 +10,16 @@ body {
     margin-bottom: 5em;
 }
 
+h2 .date {
+    font-size: 10pt;
+    color: #888;
+}
+
+h1 {
+    font-family: Raleway;
+    font-weight: 100;
+}
+
 h1.title {
     font-family: Raleway;
     font-weight: 400;

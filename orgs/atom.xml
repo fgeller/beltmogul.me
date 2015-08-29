@@ -8,6 +8,27 @@
   <updated>2015-08-05T13:28:42+1200</updated>
 
   <entry>
+    <title>Gradient</title>
+    <link type="text/html" href="http://www.beltmogul.me/2015/gradient.html"/>
+    <id>urn:uuid:eb2d01af-159b-4472-a5b8-1321b760c42e</id>
+    <updated>2015-08-29T19:35:20+1200</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<h1 class="title">Gradient</h1>
+
+<div class="figure">
+<p><a href="../../img/a/gradient-orig.jpg" alt="Gradient" title="Gradient"><img src="../../img/a/gradient.jpg" alt="Gradient" title="Gradient" /></a>
+</p>
+</div>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+  <entry>
     <title>Red waves</title>
     <link type="text/html" href="http://www.beltmogul.me/2015/red-waves.html"/>
     <id>urn:uuid:74edd95a-b495-4293-b952-6971351a8e26</id>

@@ -1,10 +1,11 @@
 #+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
 #+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
-#+OPTIONS: toc:0 num:nil ^:{}
+#+OPTIONS: toc:0 num:nil ^:{} title:nil
 #+HTML_CONTAINER: div
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE: 2014
 
+#+HTML: <div class="outline-2"><h1><a href="index.html">2014</a></h1></div>
 * [[file:emacs.html][emacs]]
 * [[file:hidden.html][hidden]]
 * [[file:on-the-edge.html][on the edge]]

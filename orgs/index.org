@@ -8,13 +8,14 @@
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE: belt mogul
 
-* [[file:2015/red-waves.html][Red waves]]
-* [[file:2015/and-then-try.html][andThen Try another implicit class]]
-* [[file:2015/empathy.html][Empathy Is Actually a Choice]]
-* [[file:2015/glowing.html][glowing]]
-* [[file:2015/soft.html][soft]]
-* [[file:2015/2015-03-22.html][2015-03-22]]
-* [[file:2015/clouded.html][clouded]]
+#+HTML: <div class="outline-2"><h2><a href="2015/gradient.html">Gradient</a> <span class="date">29-08-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/red-waves.html">Red waves</a> <span class="date">05-08-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/and-then-try.html">andThen Try another implicit class</a> <span class="date">03-08-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/empathy.html">Empathy Is Actually a Choice</a> <span class="date">02-08-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/glowing.html">glowing</a> <span class="date">19-07-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/soft.html">soft</a> <span class="date">22-03-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/2015-03-22.html">2015-03-22</a></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/clouded.html">clouded</a> <span class="date">22-03-2015</span></h2></div>
 * [[file:2014/emacs.html][emacs]]
 * [[file:2014/hidden.html][hidden]]
 * [[file:2014/on-the-edge.html][on the edge]]
