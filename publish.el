@@ -86,7 +86,9 @@
 <script src=\"//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js\"></script>
 <script src=\"//cdnjs.cloudflare.com/ajax/libs/lodash.js/2.4.1/lodash.min.js\"></script>
 ")
-        (org-html-postamble-format '(("en" "")))
+        (org-html-postamble-format '(("en" "
+<!-- <div id=\"footer\">Made with <span class=\"fa fa-heart\"><span> in Piha.</div> -->
+")))
         (org-html-preamble-format
          '(("en" "
 <div id=\"top-bar\"><div id=\"title-bar\"><a href=\"/\">belt mogul</a></div><div id=\"nav-bar\">
