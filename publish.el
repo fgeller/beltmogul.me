@@ -97,6 +97,9 @@
   <span id=\"2014\">
     <a href=\"/2014\">2014</a>
   </span>
+  <span id=\"topics\">
+    <a href=\"/topics.html\">topics</a>
+  </span>
   <span id=\"feed\">
     <a href=\"/atom.xml\"><span class=\"fa fa-rss\"></span></a>
   </span>

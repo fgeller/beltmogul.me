@@ -1,0 +1,54 @@
+#+HTML_HEAD_EXTRA: <style>h1.title { display: none }</style>
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{}
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: belt mogul - grouped
+
+#+HTML: <div class="outline-2"><h1>Scala</h1></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/and-then-try.html">andThen Try another implicit class</a> <span class="date">03-08-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/pipes.html">scala pipes</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/emacs-lisp-scala.html">emacs lisp + scala</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/emacs-scala.html">emacs + scala</a> <span class="date">2014</span></h2></div>
+
+#+HTML: <div class="outline-2"><h1>Emacs</h1></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/emacs.html">emacs</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/emacs-lisp-scala.html">emacs lisp + scala</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/emacs-scala.html">emacs + scala</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/clojure-workflow.html">clojure workflow</a> <span class="date">2014</span></h2></div>
+
+#+HTML: <div class="outline-2"><h1>Clojure</h1></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/clojure-workflow.html">clojure workflow</a> <span class="date">2014</span></h2></div>
+
+#+HTML: <div class="outline-2"><h1>Photos</h1></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/gradient.html">Gradient</a> <span class="date">29-08-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/red-waves.html">Red waves</a> <span class="date">05-08-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/glowing.html">glowing</a> <span class="date">19-07-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/soft.html">soft</a> <span class="date">22-03-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/clouded.html">clouded</a> <span class="date">22-03-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/hidden.html">hidden</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/on-the-edge.html">on the edge</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/pastels.html">pastels</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/tree.html">tree</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/leaving.html">leaving</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/black-swan.html">black swan</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/up-or-down.html">up or down?</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/my-world.html">my world</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/orange.html">orange</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/going-out.html">going out</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/spot-of-green-ii.html">spot of green II</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/spot-of-green.html">spot of green</a> <span class="date">2014</span></h2></div>
+
+#+HTML: <div class="outline-2"><h1>Misc</h1></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/empathy.html">Empathy Is Actually a Choice</a> <span class="date">02-08-2015</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/2015-03-22.html">2015-03-22</a></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/2014-10-04.html">2014-10-04</a></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/typing.html">typing</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/move.html">move</a> <span class="date">2014</span></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/2014-04-28.html">2014-04-28</a></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/2014-04-13.html">2014-04-13</a></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/2014-04-02.html">2014-04-02</a></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/2014-03-22.html">2014-03-22</a></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/2014-03-17.html">2014-03-17</a></h2></div>
+#+HTML: <div class="outline-2"><h2><a href="2014/2014-03-01.html">2014-03-01</a></h2></div>
