@@ -102,6 +102,9 @@
   <span id=\"feed\">
     <a href=\"/atom.xml\"><span class=\"fa fa-rss\"></span></a>
   </span>
+  <span id=\"me\">
+    <a href=\"http://felix.geller.io\"><span class=\"fa fa-child\"></span></a>
+  </span>
 </div></div>
 "))))
     (org-publish-project "beltmogul" t)))

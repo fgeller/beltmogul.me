@@ -100,6 +100,10 @@ h1.title {
     text-align: right;
 }
 
+#me .fa-child {
+    font-size: 14pt;
+}
+
 #nav-bar span {
     padding-left: 0.25em;
 }
