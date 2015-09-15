@@ -4,26 +4,26 @@
 
 body {
     background-color: #fff;
-    font-family: 'Droid Sans', sans-serif;
-    font-size: 11pt;
+    font-family: 'Roboto', sans-serif;
+    font-size: 10pt;
     line-height:1.6em;
     margin-bottom: 5em;
 }
 
 h2 .date {
-    font-size: 10pt;
+    font-size: 9pt;
     color: #888;
 }
 
 h1 {
-    font-family: Raleway;
+    font-family: Roboto;
     font-weight: 100;
     margin-top: 1em;
     margin-bottom: 1em;
 }
 
 h1.title {
-    font-family: Raleway;
+    font-family: Roboto;
     font-weight: 400;
     font-size: 15pt;
     color: #000;
@@ -79,7 +79,7 @@ h1.title {
 }
 
 #top-bar {
-    font-family: Raleway;
+    font-family: Roboto;
     font-weight: 400;
     display: inline-block;
     background-color: #fff;
@@ -94,8 +94,8 @@ h1.title {
 }
 
 #nav-bar {
-    font-family: Raleway, sans-serif;
-    font-size: 11pt;
+    font-family: Roboto, sans-serif;
+    font-size: 10pt;
     display: inline-block;
     text-align: right;
 }
@@ -115,7 +115,7 @@ h1.title {
 }
 
 h2 {
-    font-family: Raleway;
+    font-family: Roboto;
     font-weight: 400;
     font-size: 15pt;
 }
@@ -143,7 +143,7 @@ div.figure p {
 }
 
 code {
-    font-family: "Droid Sans Mono", monospace;
+    font-family: "Roboto Mono", monospace;
     font-size: 11pt;
     color: #000;
 }

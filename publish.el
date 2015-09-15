@@ -78,8 +78,7 @@
 <meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">
 <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/normalize.css\" />
 <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/styles.css\" />
-<link type=\"text/css\" rel=\"stylesheet\" href=\"http://fonts.googleapis.com/css?family=Raleway:100,400,600\"/>
-<link type=\"text/css\" rel=\"stylesheet\" href=\"http://fonts.googleapis.com/css?family=Droid+Sans\">
+<link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Roboto:400,100'>
 <link rel=\"shortcut icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
 <link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">
 <link href=\"atom.xml\" type=\"application/atom+xml\" rel=\"alternate\" title=\"belt mogul feed\">
