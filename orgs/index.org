@@ -8,6 +8,7 @@
 #+HTML_DOCTYPE: xhtml-strict
 #+TITLE: belt mogul
 
+#+HTML: <div class="outline-2"><h2><a href="2015/pattern-matching.html">Notes on pattern matching in Scala</a> <span class="date">30-09-2015</span></h2></div>
 #+HTML: <div class="outline-2"><h2><a href="2015/gradient.html">Gradient</a> <span class="date">29-08-2015</span></h2></div>
 #+HTML: <div class="outline-2"><h2><a href="2015/red-waves.html">Red waves</a> <span class="date">05-08-2015</span></h2></div>
 #+HTML: <div class="outline-2"><h2><a href="2015/and-then-try.html">andThen Try another implicit class</a> <span class="date">03-08-2015</span></h2></div>

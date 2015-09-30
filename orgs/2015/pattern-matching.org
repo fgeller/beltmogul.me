@@ -1,0 +1,554 @@
+#+OPTIONS: html-link-use-abs-url:nil html-postamble:t html-preamble:t
+#+OPTIONS: html-scripts:nil html-style:nil html5-fancy:nil
+#+OPTIONS: toc:0 num:nil ^:{} title:nil
+#+HTML_CONTAINER: div
+#+HTML_DOCTYPE: xhtml-strict
+#+TITLE: Notes on pattern matching in Scala
+
+#+HTML: <div><h2><a href="pattern-matching.html">Notes on pattern matching in Scala</a> <span class="date">30-09-2015</span></h2></div>
+
+  #+ATTR_HTML: :alt Geckos :title Geckos
+  [[http://www.wikiart.org/en/m-c-escher/lizard-1][file:../../img/a/lizards.jpg]]
+
+This is a write-up of a quick presentation for summarizing Scala's pattern
+matching facilities. I'll walk through a couple of examples and try to point out
+interesting options and some lessons I've learned.
+
+** Background
+
+Pattern matching has many meanings to different people, even if we limit the
+context to programming languages -- so what do I mean? I don't mean regular
+expression matching. I also don't mean splitting function definitions up based
+on patterns like you can in Haskell and many other languages:
+
+#+begin_src haskell
+  fac 0 = 1
+  fac n = n * fac n - 1
+#+end_src
+
+For me, pattern matching is a useful tool that allows binding functionality to
+data structures in a declarative way. This comes back to a difference that I see
+between the two paradigms of object-oriented and functional programming: The
+former aims to keep data and functionality close together, while the latter
+separates them as orthogonal concerns. Pattern matching is most common in
+functional languages and can be seen as supportive glue between data and
+functionality.
+
+** Basics
+
+Let's look at a short example for pattern matching in Scala:
+
+#+begin_src scala :results output
+  val target = Option("Peter")
+  target match {
+    case Some(n) ⇒ println(s"yay, found $n!")
+    case None    ⇒ println(":(")
+  }
+#+end_src
+
+Will print:
+
+#+RESULTS:
+: yay, found Peter!
+
+From a high-level the match functionality looks like a switch statement: We have
+a couple of clauses with a pattern that acts as a guard on the left and
+associated functionality on the right side. One difference to note is that we
+can bind a value to a name and refer to it via the name on the right side.
+
+In Scala there is no need to be complete when you list the case statements, the
+following works just fine:
+
+#+begin_src scala :results output
+  val target = Option("Hans")
+  target match {
+    case Some(n) ⇒ println(s"yay, found $n!")
+  }
+#+end_src
+
+Will print:
+
+#+RESULTS:
+: yay, found Hans!
+
+But keep in mind that all of this ends up being matched at runtime, and there is
+no guarantee that the clauses include patterns that match a given value. The
+following will fail at runtime with a MatchError:
+
+#+begin_src scala :results output
+  val target = Option.empty[String]
+  target match {
+    case Some(n) ⇒ println(s"yay, found $n!")
+  }
+#+end_src
+
+But the compiler tries to warn you about this:
+
+#+begin_src fundamental
+warning: match may not be exhaustive.
+It would fail on the following input: None
+#+end_src
+
+But let's keep matching values. We used =n= to bind a string value in a previous
+example. Lower case identifiers can be seen as wildcard patterns, they match
+anything:
+
+#+begin_src scala :results output
+  val target = Option("Hans")
+  target match {
+    case p ⇒ println(s"yay, got value $p!")
+  }
+#+end_src
+
+This will print:
+
+#+RESULTS:
+: yay, got value Some(Hans)!
+
+Really, anything:
+
+#+begin_src scala :results output
+  null match {
+    case p ⇒ println(s"yay, got a strange value: $p!")
+  }
+#+end_src
+
+Will print:
+
+#+RESULTS:
+: yay, got a strange value: null!
+
+So if lower case identifiers are wildcard patterns, how can I refer back to a
+value that is bound outside the =match= statement? There are at least two ways:
+The first just escapes the naming convention by using an upper case letter to
+start the identifier:
+
+#+begin_src scala :results output
+  val target = Option("Hans")
+  val FirstName = "Hans"
+  target match {
+    case Some(FirstName) ⇒ println(s"yay, found $FirstName!")
+  }
+#+end_src
+
+Will cheerfully print:
+
+#+RESULTS:
+: yay, found Hans!
+
+Where the following would run through the second clause:
+
+#+begin_src scala :results output
+  val target = Option("Hans")
+  val FirstName = "Peter"
+  target match {
+    case Some(FirstName) ⇒ println(s"yay, found $FirstName!")
+    case wildcard        ⇒ println(s"unsure, found: $wildcard")
+  }
+#+end_src
+
+And print:
+
+#+RESULTS:
+: unsure, found: Some(Hans)
+
+An alternative approach is to add markup to the name to tell the parser that you
+mean to refer to an identifier rather than declaring a wildcard pattern. You can
+do this by adding backticks around the name:
+
+#+begin_src scala :results output
+  val target = Option("Hans")
+  val firstName = "Hans"
+  target match {
+    case Some(`firstName`) ⇒ println(s"yay, found $firstName!")
+  }
+#+end_src
+
+Will print:
+
+#+RESULTS:
+: yay, found Hans!
+
+Now that we know that we can bind values to names via wildcard patterns a follow
+up question, that [[https://twitter.com/archevel][@archevel]] brought up, is whether one could refer back to a
+name and what the semantics would be in that case. So for example, what happens
+here:
+
+#+begin_src scala :results output
+  val target = Tuple2("Hans", "Hans")
+  target match {
+    case Tuple2(n, n) ⇒ println(s"yay, found $n!")
+ }
+#+end_src
+
+The Scala compiler won't allow this and tells us that we can't re-use names:
+
+#+begin_src fundamental
+  error: n is already defined as value n
+#+end_src
+
+** Typecase
+
+Another basic pattern is a simple type check:
+
+#+begin_src scala :results output
+  val x: Any = 21
+  x match {
+    case i: Int ⇒ println(s"got an int smaller than ${i + 1}")
+    case _      ⇒ println("not sure what i got")
+  }
+#+end_src
+
+Which will print:
+
+#+RESULTS:
+: got an int smaller than 22
+
+I haven't used this pattern much, but one of the benefits you can see is that it
+combines an =isInstanceOf= with an =asInstanceOf= in a concise manner. If you do
+require a cast, this way you don't forget the check to prevent a
+=ClassCastException=. For more details consider the follow excerpt from a =scalac
+-Xprint:patmat= invocation:
+
+#+begin_src fundamental
+  val x: Any = 21;
+    {
+      case <synthetic> val x1: Any = x;
+      case5(){
+        if (x1.isInstanceOf[Int])
+          {
+            <synthetic> val x2: Int = (x1.asInstanceOf[Int]: Int);
+            matchEnd4(scala.this.Predef.println(scala.StringContext.apply("got an int smaller than ", "").s(x2.+(1))))
+          }
+        else
+          case6()
+      };
+      case6(){
+        matchEnd4(scala.this.Predef.println("not sure what i got"))
+      };
+      matchEnd4(x: Unit){
+        x
+      }
+    }
+#+end_src
+
+** Deep destructuring
+
+One of the features that Scala's pattern matching facilities enable is deep
+destructuring of data structures. In our first example we destructured a =Some=
+value and "extracted" the contained string:
+
+#+begin_src scala :results output
+  val target = Option("Hans")
+  target match {
+    case Some(n) ⇒ println(s"yay, found $n!")
+  }
+#+end_src
+
+This works for arbitrarily nested structures. Consider the following example:
+
+#+begin_src scala :results output
+  case class Person(firstName: String, lastName: String, address: Address)
+  case class Address(
+    street: String,
+    houseNumber: String,
+    city: String,
+    postCode: String,
+    country: Country
+  )
+  case class Country(name: String, code: String)
+
+  val hans = Person(
+    "Hans",
+    "Schmitt",
+    Address(
+      "Queen St",
+      "220",
+      "Auckland",
+      "1010",
+      Country("New Zealand", "NZ")
+    )
+  )
+
+  hans match {
+    case Person(fn, _, addr @ Address(_, _, _, _, Country(_, "NZ"))) ⇒
+       println(s"yay, found a Kiwi named $fn from at $addr!")
+  }
+#+end_src
+
+Will print out:
+
+#+RESULTS:
+: yay, found a Kiwi named Hans living at Address(Queen St,220,Auckland,1010,Country(New Zealand,NZ))!
+
+The destructuring allows us to easily access sub-parts of a nested data
+structure. This means that we can selectively pick values that we're interested
+in and also restrict the pattern (cf. the "NZ" literal in the above example).
+
+Two more things to point out about the example above: =_= is an anonymous wildcard
+pattern and matches anything, while the =@= allows us to bind the value a pattern
+matched to a name. In the above example I use it to access the address on the
+right side while also destructuring and matching on sub-parts.
+
+** Disjunctions and guards
+
+Another feature that can be helpful to concisely express a pattern are
+disjunctions:
+
+#+begin_src scala :results output
+  val target = Option("Hans")
+  target match {
+    case Some(n @ ("Peter" | "Hans")) ⇒
+      println(s"yay, found $n!")
+  }
+#+end_src
+
+This will print the following:
+
+#+RESULTS:
+: yay, found Hans!
+
+But would also find "Peter". More commonly, I've seen this solved via a
+pattern guard:
+
+#+begin_src scala :results output
+  val target = Option("Hans")
+  target match {
+    case Some(n) if n == "Peter" || n == "Hans" ⇒
+      println(s"yay, found $n!")
+  }
+#+end_src
+
+There you escape the pattern and can define a predicate as in a regular =if=
+statement. But in the pattern guard you can even drop the parenthesis ;)
+
+** List destructuring
+
+Scala has additional helpers to match and destructure =List= values:
+
+#+begin_src scala :results output
+  List(1, 3, 5) match {
+    case Nil ⇒
+      println("empty list!")
+    case head :: tail ⇒
+      println(s"head was $head, and tail $tail")
+  }
+#+end_src
+
+You can split a list into its head and tail via =::= in a pattern and match on an
+empty list via the =Nil= value. This allows for concise definitions of base cases
+when working on lists:
+
+#+begin_src scala :results output
+  def qs(lst: List[Int]): List[Int] = {
+    lst match {
+      case Nil | _ :: Nil ⇒
+        lst
+      case lst ⇒
+        val p = lst(lst.size / 2)
+        lst.partition(_ <= p) match {
+          case (Nil, sorted) ⇒ sorted
+          case (sorted, Nil) ⇒ sorted
+          case (lte, gt)     ⇒ qs(lte) ++ qs(gt)
+        }
+    }
+  }
+
+  println(qs(List(3, 1, 4, 1, 2, 6, 5, 3, 5, 9)))
+#+end_src
+
+Which reconstructs a sorted list and prints:
+
+#+RESULTS:
+: List(1, 1, 2, 3, 4, 5, 3, 5, 6, 9)
+
+The first clause uses a disjunction to match both the empty list as well as
+lists with a single element. Destructuring into head and tail of a list also
+often comes up with recursive definitions over lists.
+
+** Partial functions
+
+Sometimes you can save some line noise by using a partial function. So instead
+of explicitly matching on the single argument to the closure that we pass to
+=foreach= in the following example:
+
+#+begin_src scala :results output
+  val people = List(Option("Hans"), None, Option("Peter"))
+  people foreach { p ⇒
+    p match {
+      case Some(fn) ⇒ println(s"yay, found $fn!")
+      case None     ⇒ println(s":(")
+    }
+  }
+#+end_src
+
+You can pass a partial function that allows you to match and destructure in a
+more concise fashion:
+
+#+begin_src scala :results output
+  val people = List(Option("Hans"), None, Option("Peter"))
+  people foreach {
+    case Some(fn) ⇒ println(s"yay, found $fn!")
+    case None     ⇒ println(s":(")
+  }
+#+end_src
+
+And both print:
+
+#+RESULTS:
+: yay, found Hans!
+: :(
+: yay, found Peter!
+
+But keep in mind that not every receiver of a partial function knows what to do
+in case it isn't defined for a given input:
+
+#+begin_src scala :results output
+  val people = List(Option("Hans"), None, Option("Peter"))
+  people foreach {
+    case Some(fn) ⇒ println(s"yay, found $fn!")
+  }
+#+end_src
+
+Which will throw a =MatchError= at runtime.
+
+** Extractors
+
+Case classes allow for easy matching and destructuring, but not every value can
+be used as easily in a =match= statement. Consider the following (silly) example:
+
+#+begin_src scala :results output
+  import scala.concurrent._
+  import ExecutionContext.Implicits.global
+
+  Future.successful(3) match {
+    case Future(3) ⇒ println("yay??")
+    case wildcard  ⇒ println(s"caught a: $wildcard")
+  }
+#+end_src
+
+The compiler won't let that pass and complains:
+
+#+begin_src fundamental
+  error: object Future is not a case class, nor does it have an unapply/unapplySeq member
+#+end_src
+
+So it seems we're missing an =unapply= method. Let's add that. It's called an
+extractor and is Scala's way of adding pattern match functionality where you
+can't use a case class:
+
+#+begin_src scala :results output
+  import scala.concurrent._
+  import ExecutionContext.Implicits.global
+  import scala.util._
+
+  object MatchFuture {
+    def unapply[T](v: Future[T]): Option[Try[T]] = {
+      v.value
+    }
+  }
+
+  Future.successful(3) match {
+    case MatchFuture(Success(3)) ⇒ println("yay!!")
+    case wildcard                ⇒ println(s"caught a: $wildcard")
+  }
+#+end_src
+
+Which happily prints:
+
+#+RESULTS:
+: yay!!
+
+An extractor generally is a method that accepts a value and returns an =Option[T]=
+to indicate whether a given value matches this pattern. This is also where the
+destructuring takes place: We can transform a given value as we want. In the
+above example we convert a =Future[T]= into a =Try[T]=.
+
+But futures are values that are (often) computed on a different thread. So what
+happens if we get lazy and sleep in our future computation:
+
+#+begin_src scala :results output
+  import scala.concurrent._
+  import ExecutionContext.Implicits.global
+  import scala.util._
+
+  object MatchFuture {
+    def unapply[T](v: Future[T]): Option[Try[T]] = {
+      v.value
+    }
+  }
+
+  Future { println("Let's sleep!"); Thread.sleep(100); 3 } match {
+    case MatchFuture(Success(3)) ⇒ println("yay!!")
+    case wildcard                ⇒ println(s"caught a: $wildcard")
+  }
+#+end_src
+
+This will print the following:
+
+#+RESULTS:
+: Let's sleep!
+: caught a: scala.concurrent.impl.Promise$DefaultPromise@76cec888
+
+So we start to sleep and the =value= call to the future value will produce a =None=
+value because the value hasn't been computed yet. So instead we fall to the
+second clause and find an unfinished value.
+
+To push this little example a bit further, you could add a blocking extractor:
+
+#+begin_src scala :results output
+  import scala.concurrent._
+  import ExecutionContext.Implicits.global
+  import scala.concurrent.duration._
+  import scala.util._
+
+  object MatchFutureBlocking {
+    def unapply[T](v: Future[T]): Option[T] = {
+      Try(Await.result(v, 1.seconds)).toOption
+    }
+  }
+
+  Future { println("Let's sleep!"); Thread.sleep(100); 3 } match {
+    case MatchFutureBlocking(3) ⇒ println("yay!!")
+    case wildcard               ⇒ println(s"caught a: $wildcard")
+  }
+#+end_src
+
+In this case we calmly await the future value to be computed successfully and
+print:
+
+#+RESULTS:
+: Let's sleep!
+: yay!!
+
+But keep in mind that the =toOption= call will silently hide failures that happens
+as the future value is being computed:
+
+#+begin_src scala :results output
+  import scala.concurrent._
+  import ExecutionContext.Implicits.global
+  import scala.concurrent.duration._
+  import scala.util._
+
+  object MatchFutureBlocking {
+    def unapply[T](v: Future[T]): Option[T] = {
+      Try(Await.result(v, 1.seconds)).toOption
+    }
+  }
+
+  Future.failed[Int](new RuntimeException("blablubb")) match {
+    case MatchFutureBlocking(3) ⇒ println("yay??")
+    case wildcard ⇒ println(s"caught a: $wildcard")
+  }
+#+end_src
+
+This will silently fall to the second clause and print:
+
+#+RESULTS:
+: caught a: scala.concurrent.impl.Promise$KeptPromise@3084c696
+
+So my example is a bit silly, but if you're interested in more useful extractors
+have a look at [[https://github.com/scala/scala/blob/2.11.x/src/library/scala/util/control/NonFatal.scala#L43][NonFatal]] or [[https://github.com/scala/scala/blob/2.11.x/src/library/scala/concurrent/duration/Duration.scala#L106][Duration]]. [[http://lampwww.epfl.ch/~emir/written/MatchingObjectsWithPatterns-TR.pdf][Matching Objects With Patterns]] is a nice
+start for more details as well.
+
+Happy hacking!
