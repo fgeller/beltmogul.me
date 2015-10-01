@@ -521,7 +521,7 @@ print:
 : Let's sleep!
 : yay!!
 
-But keep in mind that the =toOption= call will silently hide failures that happens
+But keep in mind that the =toOption= call will silently hide failures that happen
 as the future value is being computed:
 
 #+begin_src scala :results output
