@@ -29,9 +29,9 @@
           (exec-path-from-shell-initialize)
           (exec-path-from-shell-copy-env "LANG")))
 
-(use-package uuid :ensure uuid)
-(use-package htmlize :ensure htmlize)
-(use-package ox-publish)
+(require 'uuid)
+(require 'htmlize)
+(require 'ox-publish)
 (setq enable-local-variables :all)
 
 (defun insert-iso-timestamp ()
@@ -47,15 +47,15 @@
 
 (setq org-publish-project-alist
       '(("beltmogul-notes"
-         :base-directory "~/code/beltmogul/orgs/"
+         :base-directory "~/code/beltmogul.me/orgs/"
          :base-extension "org"
-         :publishing-directory "~/code/beltmogul/public_html/"
+         :publishing-directory "~/code/beltmogul.me/public_html/"
          :recursive t
          :publishing-function org-html-publish-to-html)
         ("beltmogul-static"
-         :base-directory "~/code/beltmogul/orgs/"
-         :base-extension "css\\|otf\\|eot\\|svg\\|ttf\\|woff\\|woff2\\|png\\|jpg\\|gif\\|ico\\|xml\\|txt"
-         :publishing-directory "~/code/beltmogul/public_html/"
+         :base-directory "~/code/beltmogul.me/orgs/"
+         :base-extension "js\\|css\\|otf\\|eot\\|svg\\|ttf\\|woff\\|woff2\\|png\\|jpg\\|gif\\|ico\\|xml\\|txt"
+         :publishing-directory "~/code/beltmogul.me/public_html/"
          :recursive t
          :publishing-function org-publish-attachment)
         ("beltmogul"
@@ -66,14 +66,16 @@
 
 (defun publish-beltmogul ()
   (interactive)
-  (let ((default-directory "~/code/beltmogul/"))
+  (let ((default-directory "~/code/beltmogul.me/"))
     (org-publish-project "beltmogul" t)))
 
 ;; "<div class=\"footer\"><a href=\"/\">belt mogul</a></div>"
 
 (defun publish-beltmogul-locally ()
   (interactive)
-  (let ((default-directory "~/code/beltmogul/")
+  (let ((default-directory "~/code/beltmogul.me/")
+	(org-src-fontify-natively nil)
+	(org-src-preserve-indentation t)
         (org-html-head "
 <meta name=\"viewport\" content=\"width=device-width,user-scalable=no\">
 <link rel=\"stylesheet\" type=\"text/css\" href=\"/css/normalize.css\" />
@@ -111,18 +113,17 @@
 "))))
     (org-publish-project "beltmogul" t)))
 
-;;   (compile "rsync -azv ~/code/beltmogul/public_html hipp0:~/beltmogul.me/")
+;;   (compile "rsync -azv ~/code/beltmogul.me/public_html hipp0:~/beltmogul.me/")
 
 (setq org-src-fontify-natively nil)
 (global-font-lock-mode 0)
 (load-theme 'basic t)
 
 (publish-beltmogul-locally)
-(save-buffers-kill-terminal)
 
 ;; (serve-beltmogul-locally)
 (defun serve-beltmogul-locally ()
-  (let ((default-directory "~/code/beltmogul/public_html/"))
+  (let ((default-directory "~/code/beltmogul.me/public_html/"))
     (compile "python -m SimpleHTTPServer 3033")
     (with-current-buffer "*compilation*"
       (rename-buffer "*serve-beltmogul*"))))
