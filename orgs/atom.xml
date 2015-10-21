@@ -8,6 +8,879 @@
   <updated>2015-08-05T13:28:42+1200</updated>
 
   <entry>
+    <title>On Scala's futures</title>
+    <link type="text/html" href="http://www.beltmogul.me/2015/futures.html"/>
+    <id>urn:uuid:fa8b4f52-9407-5c84-1293-236e1fa07247</id>
+    <updated>2015-10-21T23:35:21+1200</updated>
+    <summary></summary>
+    <content type="xhtml">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+<div><h2><a href="http://beltmogul.me/2015/futures.html">On Scala's futures</a> <span class="date">21-10-2015</span></h2></div>
+
+
+
+<div class="figure">
+<p><a href="http://www.wikiart.org/en/m-c-escher/liberation" alt="Liberation" title="Liberation"><img src="../../img/a/liberation.jpg" alt="Liberation" title="Liberation" /></a>
+</p>
+</div>
+
+<p>
+This is a write up of a lunch session on Scala's <code>Future</code> and <code>Promise</code>
+abstractions. We'll implement parts of these abstractions and gloss over
+details like synchronization to focus on the abstractions themselves.
+</p>
+
+<p>
+You can clone <a href="https://github.com/fgeller/futures.scala">fgeller/futures.scala</a> and follow the examples via tags, but this
+write-up should be self-contained as well.
+</p>
+
+<div id="outline-container-orgheadline1" class="outline-2">
+<h2 id="orgheadline1">Background</h2>
+<div class="outline-text-2" id="text-orgheadline1">
+<p>
+Commonly the JVM runs a single OS process and we use threads for performing
+parallel or asynchronous computation. Scala offers thin abstractions wrapping
+around such threads called Future and Promise. These abstractions grew out of
+<a href="http://docs.scala-lang.org/sips/completed/futures-promises.html">SIP-14</a> which included learnings from <a href="http://akka.io/">akka</a> as well as Scala's own
+implementation of <a href="http://docs.scala-lang.org/overviews/core/actors.html">actors</a> that is deprecated by now. Compared to actors a
+<code>Future</code> is a thinner abstraction with more emphasis on composability.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline2" class="outline-2">
+<h2 id="orgheadline2">Basics</h2>
+<div class="outline-text-2" id="text-orgheadline2">
+<p>
+Let's look at a simple multi-threaded application in Java:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-java">  public class Runner {
+    public static void main(String[] args) {
+      new Thread() {
+        public void run() {
+          System.out.println("hello, from elsewhere.");
+        }
+      }.start();
+      try { Thread.sleep(1); } catch (InterruptedException ex) {}
+      System.out.println("hello, from runner.");
+    }
+  }
+</pre>
+</div>
+
+
+<p>
+We create a new <code>Thread</code> object and override the <code>run</code> method to print a simple
+greeting. We start this thread right away and briefly block the main thread by
+sleeping for one millisecond, before we print a greeting from the main
+thread. It prints the following:
+</p>
+
+<pre class="example">
+hello, from elsewhere.
+hello, from runner.
+</pre>
+
+<p>
+What would this look like in Scala?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  new Thread() {
+    override def run(): Unit = {
+      println("hello, from elsewhere.")
+    }
+  }.start()
+  Thread.sleep(1)
+  println("hello, from runner.")
+</pre>
+</div>
+
+
+<p>
+We drop some of the boilerplate code, but we're doing the same thing as in the
+Java example above. It still prints:
+</p>
+
+<pre class="example">
+hello, from elsewhere.
+hello, from runner.
+</pre>
+
+<p>
+How would we achieve this with futures?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.concurrent._
+  import ExecutionContext.Implicits._
+  val f: Future[Unit] =
+    Future { println("hello, from elsewhere.") }
+  Thread.sleep(1)
+  println("hello, from runner.")
+</pre>
+</div>
+
+
+<p>
+This still prints:
+</p>
+
+<pre class="example">
+hello, from elsewhere.
+hello, from runner.
+</pre>
+
+<p>
+Some differences to notice when compared to the examples using Java's thread
+represenation:
+</p>
+
+<ul class="org-ul">
+<li>We need to import the desired abstractions from <code>scala.concurrent</code></li>
+<li>We import a global execution context, implicitly defining that our futures
+should be scheduled on this default thread pool.</li>
+<li>The <code>Future</code> is parameterized, identifying the type of the computation that
+we perform. In our case <code>println</code> "produces" a <code>Unit</code>.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgheadline3" class="outline-2">
+<h2 id="orgheadline3">Let's do this ourselves.</h2>
+<div class="outline-text-2" id="text-orgheadline3">
+<p>
+So let's try to implement this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  class Future[T](value: T)
+  object Future {
+    def apply[T](v: T): Future[T] = { new Future(v) }
+  }
+  println("hello, world.")
+  val of: Future[Unit] = Future(println("In the future!"))
+</pre>
+</div>
+
+<p>
+We create a class <code>Future</code> that holds a given value and an <code>apply</code> method in its
+companion object to construct instances of this class. It prints the
+following:
+</p>
+
+<pre class="example">
+hello, world.
+In the future!
+</pre>
+
+<p>
+Looks good right?
+</p>
+
+
+
+<div class="figure">
+<p><img src="../../img/a/really.jpg" alt="really-meme.jpg" />
+</p>
+</div>
+
+
+<p>
+Ok, ok, let's check whether it's multi-threaded:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  def log(msg: String) = println(s"${Thread.currentThread}: $msg")
+  class Future[T](value: T)
+  object Future {
+    def apply[T](v: T): Future[T] = { new Future(v) }
+  }
+  log("hello, world.")
+  val of: Future[Unit] = Future(log("In the future!"))
+</pre>
+</div>
+
+<p>
+So we wrap the <code>println</code> call and include the current thread. This should tell
+us what thread a given <code>println</code> expression is evaluated on. It prints the
+following:
+</p>
+
+<pre class="example">
+Thread[main,5,main]: hello, world.
+Thread[main,5,main]: In the future!
+</pre>
+
+<p>
+So I guess that didn't work. Let's actually add multi-threading:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  def log(msg: String) = println(s"${Thread.currentThread}: $msg")
+  class Future[T]() { var value: T = _ }
+  object Future {
+    def apply[T](v: T): Future[T] = {
+      val result = new Future[T]()
+      val thread = new Thread() {
+        override def run(): Unit = { result.value = v }
+      }
+      thread.start()
+      result
+    }
+  }
+  log("hello, world.")
+  val of: Future[Unit] = Future(log("In the future!"))
+</pre>
+</div>
+
+
+
+<p>
+So we create a new <code>Thread</code> instance in our <code>apply</code> method and change the
+container class to allow us to assign the value from the outside by making the
+instance variable re-assignable. That should do it, right? Let's see what it
+prints:
+</p>
+
+<pre class="example">
+Thread[main,5,main]: hello, world.
+Thread[main,5,main]: In the future!
+</pre>
+
+<p>
+Well, not really. What's missing? Scala is an eager or <a href="https://mitpress.mit.edu/sicp/full-text/sicp/book/node85.html">applicative order</a>
+language. This means that it evaluates the arguments to a function call before
+evaluating the function itself. This means that we evaluate the call to <code>log</code>
+before we even start the evaluation of the <code>apply</code> method, let alone start a new
+thread.
+</p>
+
+<p>
+What to do? Compiler magic to the rescue!
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  def log(msg: String) = println(s"${Thread.currentThread}: $msg")
+  class Future[T]() { var value: T = _ }
+  object Future {
+    def apply[T](v: &#8658; T): Future[T] = {
+      val result = new Future[T]()
+      val thread = new Thread() {
+        override def run(): Unit = { result.value = v }
+      }
+      thread.start()
+      result
+    }
+  }
+  log("hello, world.")
+  val of: Future[Unit] = Future(log("In the future!"))
+</pre>
+</div>
+
+<p>
+The only thing that changes in the above example is the following line:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">    def apply[T](v: &#8658; T): Future[T] = {
+</pre>
+</div>
+
+<p>
+We added a ⇒ to the type which means that this argument will only be
+evaluated when needed. We could do this ourselves by wrapping the argument in
+a closure like this:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  val of: Future[Unit] = Future.apply({ () &#8658; log("In the future!")})
+</pre>
+</div>
+
+<p>
+This would delay the execution of the call to <code>log</code> until the closure is
+actually evaluated. The ⇒ type annotation is essentially syntactic sugar for
+wrapping function arguments in closures.
+</p>
+
+<p>
+So did that actually work? This is what it prints:
+</p>
+
+<pre class="example">
+Thread[main,5,main]: hello, world.
+Thread[Thread-0,5,main]: In the future!
+</pre>
+
+<p>
+Looks like we're successfully printing from different threads now!
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-2">
+<h2 id="orgheadline4">Futures and Promises</h2>
+<div class="outline-text-2" id="text-orgheadline4">
+<p>
+Let's step back and look at what the <a href="http://docs.scala-lang.org/sips/completed/futures-promises.html">SIP</a> says about a future value:
+</p>
+
+<ul class="org-ul">
+<li>A future is an abstraction which represents a value which may become
+available at some point.</li>
+
+<li>A Future object either holds a result of a computation or an exception in
+the case that the computation failed.</li>
+
+<li>An important property of a future is that it is in effect immutable - it can
+never be written to or failed by the holder of the Future object.</li>
+</ul>
+
+<p>
+Our implementation seems to work for the first part, but we're missing the
+second and third statements. Let's first focus on the second statement:
+</p>
+
+<p>
+We currently neglect the fact that a computation might fail and only
+implicitly encode that a computation hasn't finished through the <code>null</code> value
+that we use to initialize the container. Let's use <code>Option[A]</code> to encode a
+possibly unfinished computation and <code>Try[B]</code> to encode a possibly failed or
+succeeded computation:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.util._
+  def log(msg: String) = println(s"${Thread.currentThread}: $msg")
+  class Future[T]() { var value = Option.empty[Try[T]] }
+  object Future {
+    def apply[T](v: &#8658; T): Future[T] = {
+      val result = new Future[T]()
+      val thread = new Thread() {
+        override def run(): Unit = { result.value = Some(Try(v)) }
+      }
+      thread.start()
+      result
+    }
+  }
+  log("hello, world.")
+  val of: Future[Unit] = Future(log("In the future!"))
+</pre>
+</div>
+
+<p>
+The type of the contained value changes to <code>Option[Try[T]]</code> and we wrap the
+evaluation of a computation in a <code>Try</code> to capture possible failures.
+</p>
+
+<p>
+That should tick two boxes. How about that third statement:
+</p>
+
+<ul class="org-ul">
+<li>An important property of a future is that it is in effect immutable - it can
+never be written to or failed by the holder of the Future object.</li>
+</ul>
+
+<p>
+That's certainly not true - we use a <code>var</code> to enable setting the container
+from a different thread. That's where promises come in. If we continue reading
+the SIP we get to this part:
+</p>
+
+<ul class="org-ul">
+<li>While futures are defined as a type of read-only placeholder object created
+for a result which doesn’t yet exist, a promise can be thought of as a
+writeable, single-assignment container, which completes a future.</li>
+</ul>
+
+<p>
+Turns out we were writing a promise all along! (Ignoring the single-assignment
+part for now). But still, how do these immutable futures work? The REPL offers
+help:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.concurrent._
+  import ExecutionContext.Implicits.global
+  println(s"Our future is ${Future(42)}")
+</pre>
+</div>
+
+<p>
+This prints the following:
+</p>
+
+<pre class="example">
+Our future is scala.concurrent.impl.Promise$DefaultPromise@87aac27
+</pre>
+
+<p>
+So a future is a promise, is a future, is a promise?
+Can we do this then?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.concurrent._
+  import ExecutionContext.Implicits.global
+  println(s"Our future is ${Future(42): Promise[Int]}")
+</pre>
+</div>
+
+<p>
+The typer doesn't like that:
+</p>
+
+<pre class="example">
+found   : scala.concurrent.Future[Int]
+required: scala.concurrent.Promise[Int]
+</pre>
+
+<p>
+How do we get a <code>Future</code> from a <code>Promise</code> in Scala? We generally call <code>future</code> on
+the promise - so how is that <a href="https://github.com/scala/scala/blob/27da46343cd545534819300235bc64ab74958c92/src/library/scala/concurrent/impl/Promise.scala#L20">implemented</a>?
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  private[concurrent] trait Promise[T]
+      extends scala.concurrent.Promise[T] with scala.concurrent.Future[T] {
+    def future: this.type = this
+  }
+</pre>
+</div>
+
+<p>
+So a promise is a promise is a future! We're simply restricting access to the
+mutability to the <code>Promise</code> type and the immutable parts to the <code>Future</code>. That
+looks doable, let's try!
+</p>
+
+<p>
+First, let's switch everything we have so far to a Promise:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.util._
+  def log(msg: String) = println(s"${Thread.currentThread}: $msg")
+  class Promise[T]() { var value = Option.empty[Try[T]] }
+  object Promise {
+    def apply[T](v: &#8658; T): Promise[T] = {
+      val result = new Promise[T]()
+      val thread = new Thread() {
+        override def run(): Unit = { result.value = Some(Try(v)) }
+      }
+      thread.start()
+      result
+    }
+  }
+  log("hello, world.")
+  val of: Promise[Unit] = Promise(log("In the future!"))
+</pre>
+</div>
+
+<p>
+This still prints:
+</p>
+
+<pre class="example">
+Thread[main,5,main]: hello, world.
+Thread[Thread-3,5,main]: In the future!
+</pre>
+
+<p>
+Let's try the rest in parts. First we wrap our implementation in a namespace
+that we can restrict access to &#x2013; I'll use objects in this example, but
+packages would work the same:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.util._
+  object our {
+    trait Promise[T] { def complete(value: Try[T]): Promise[T] }
+    trait Future[T] {}
+  }
+</pre>
+</div>
+
+<p>
+We define traits to represent our two abstractions to the outside and add a
+<code>complete</code> method on promises that allows an external caller to write a value to
+the container. Let's add the implementation of <code>apply</code> using this <code>complete</code>
+method:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.util._
+  object our {
+    trait Promise[T] { def complete(value: Try[T]): Promise[T] }
+    trait Future[T] {}
+    object Future {
+      def apply[T](v: &#8658; T): Future[T] = {
+        val result = new impl.Promise[T]()
+        val thread = new Thread() {
+          override def run(): Unit = { result.complete(Try(v)) }
+        }
+        thread.start()
+        result.future
+      }
+    }
+  }
+</pre>
+</div>
+
+<p>
+And then we add the implementation of our promise:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.util._
+  object our {
+    trait Promise[T] { def complete(value: Try[T]): Promise[T] }
+    trait Future[T] {}
+    object Future {
+      // left out for brevity
+    }
+    object impl {
+      private[our] class Promise[T] extends our.Promise[T] with our.Future[T] {
+        def future: Future[T] = this
+        private var value = Option.empty[Try[T]]
+        def complete(v: Try[T]): Promise[T] = {
+          if (this.value.isDefined)
+            throw new IllegalStateException("Can only complete a promise once.")
+
+          this.value = Some(v)
+          this
+        }
+      }
+    }
+  }
+</pre>
+</div>
+
+<p>
+We provide an accessor to view the underlying promise as a future and protect
+against completing the promise multiple times.
+</p>
+
+<p>
+And the full example:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.util._
+  object our {
+    trait Promise[T] { def complete(value: Try[T]): Promise[T] }
+    trait Future[T] {}
+    object Future {
+      def apply[T](v: &#8658; T): Future[T] = {
+        val result = new impl.Promise[T]()
+        val thread = new Thread() {
+          override def run(): Unit = { result.complete(Try(v)) }
+        }
+        thread.start()
+        result.future
+      }
+    }
+    object impl {
+      private[our] class Promise[T] extends our.Promise[T] with our.Future[T] {
+        def future: Future[T] = this
+        private var value = Option.empty[Try[T]]
+        def complete(v: Try[T]): Promise[T] = {
+          if (this.value.isDefined)
+            throw new IllegalStateException("Can only complete a promise once.")
+
+          this.value = Some(v)
+          this
+        }
+      }
+    }
+  }
+  import our._
+  def log(msg: String) = println(s"${Thread.currentThread}: $msg")
+  log("hello, world")
+  val of: Future[Unit] = Future(log("In the future!"))
+</pre>
+</div>
+
+<p>
+This will print the following:
+</p>
+
+<pre class="example">
+Thread[main,5,main]: hello, world
+Thread[Thread-0,5,main]: In the future!
+</pre>
+
+<p>
+Now let's provide access to the value of a future. Our first attempt is to
+install a callback that will be evaluated when the promise is completed. We
+add the ability to add a callback on the future:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  trait Future[T] { def onComplete(fun: Try[T] &#8658; Unit): Unit }
+</pre>
+</div>
+
+<p>
+The callback will receive a <code>Try[T]</code> which encodes the result of the computation
+and we'll ignore the result of the provided closure. To our implementation we
+add a Set[Try[T] ⇒ Unit] to keep track of the installed callbacks. We'll use
+a set because the order of these callbacks is <a href="http://www.scala-lang.org/api/2.11.7/index.html#scala.concurrent.Future@onComplete%5BU%5D(f:scala.util.Try%5BT%5D=%3EU)(implicitexecutor:scala.concurrent.ExecutionContext):Unit">not guaranteed</a>.
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  private[our] class Promise[T] extends Future[T] {
+    def future: Future[T] = this
+    private var value = Option.empty[Try[T]]
+    private var onCompletes = mutable.Set.empty[Try[T] &#8658; Unit]
+    def onComplete(fun: Try[T] &#8658; Unit): Unit = {
+      this.value match {
+        case Some(v) &#8658; fun(v)
+        case None    &#8658; onCompletes += fun
+      }
+    }
+  }
+</pre>
+</div>
+
+<p>
+And then we need to make sure that we execute the installed callbacks on
+completion of our promise:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  private[our] class Promise[T] extends Future[T] {
+    def complete(v: Try[T]): Promise[T] = {
+      if (this.value.isDefined)
+        throw new IllegalStateException("Can only complete a promise once.")
+
+      this.value = Some(v)
+      this.onCompletes.foreach(_(v))
+      this
+    }
+  }
+</pre>
+</div>
+
+<p>
+Here's the full example:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.util._
+  import scala.collection.mutable
+  object our {
+    trait Promise[T] { def complete(value: Try[T]): Promise[T] }
+    trait Future[T] { def onComplete(fun: Try[T] &#8658; Unit): Unit }
+    object Future {
+      def apply[T](v: &#8658; T): Future[T] = {
+        val result = new impl.Promise[T]()
+        val thread = new Thread() {
+          override def run(): Unit = { result.complete(Try(v)) }
+        }
+        thread.start()
+        result.future
+      }
+    }
+    object impl {
+      private[our] class Promise[T] extends Future[T] {
+        def future: Future[T] = this
+        private var value = Option.empty[Try[T]]
+        private var onCompletes = mutable.Set.empty[Try[T] &#8658; Unit]
+        def onComplete(fun: Try[T] &#8658; Unit): Unit = {
+          this.value match {
+            case Some(v) &#8658; fun(v)
+            case None    &#8658; onCompletes += fun
+          }
+        }
+        def complete(v: Try[T]): Promise[T] = {
+          if (this.value.isDefined)
+            throw new IllegalStateException("Can only complete a promise once.")
+
+          this.value = Some(v)
+          this.onCompletes.foreach(_(v))
+          this
+        }
+      }
+    }
+  }
+  import our._
+  def log(msg: String) = println(s"${Thread.currentThread}: $msg")
+  val of: Future[Unit] = Future(log("In the future!"))
+  of.onComplete { value &#8658; log(s"Our future: ${value}") }
+</pre>
+</div>
+
+<p>
+It prints the following:
+</p>
+
+<pre class="example">
+Thread[Thread-0,5,main]: In the future!
+Thread[Thread-0,5,main]: Our future: Success(())
+</pre>
+
+<p>
+We started out by claiming that Scala's abstractions over Threads have an
+emphasis on composability and our current API doesn't allow for that. We throw
+away the result of installed callbacks and don't allow chaining when we want
+to install callbacks. Let's add a <code>map</code> combinator that enables composability
+through chaining of defered computations. The only required change is the
+implementation of the combinator on <code>Future</code>:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  object our {
+    trait Future[T] {
+      def onComplete(fun: Try[T] &#8658; Unit): Unit
+      def map[U](fun: T &#8658; U): Future[U] = {
+        val result = new impl.Promise[U]()
+        this.onComplete {
+          case Success(v)  &#8658; result.complete(Try(fun(v)))
+          case Failure(th) &#8658; log("uhoh... not evaluating fun")
+        }
+        result.future
+      }
+    }
+  }
+</pre>
+</div>
+
+<p>
+The combinator creates a new promise and returns the corresponding future. It
+also installs a callback on the future that it is invoked on. In the callback
+we complete the new promise with the application of the result of the first
+future to the closure given to <code>map</code>. So we "thread" the result from the first
+future through to the next future, applying the closure given to <code>map</code> along the
+way. This allows for ordered chaining of closures like we do in this modified
+version of our example:
+</p>
+
+<div class="org-src-container">
+
+<pre class="src src-scala">  import scala.util._
+  import scala.collection.mutable
+  object our {
+    trait Promise[T] { def complete(value: Try[T]): Promise[T] }
+    trait Future[T] {
+      def onComplete(fun: Try[T] &#8658; Unit): Unit
+      def map[U](fun: T &#8658; U): Future[U] = {
+        val result = new impl.Promise[U]()
+        this.onComplete {
+          case Success(v)  &#8658; result.complete(Try(fun(v)))
+          case Failure(th) &#8658; log("uhoh... not evaluating fun")
+        }
+        result.future
+      }
+    }
+    object Future {
+      def apply[T](v: &#8658; T): Future[T] = {
+        val result = new impl.Promise[T]()
+        val thread = new Thread() {
+          override def run(): Unit = { result.complete(Try(v)) }
+        }
+        thread.start()
+        result.future
+      }
+    }
+    object impl {
+      private[our] class Promise[T] extends Future[T] {
+        def future: Future[T] = this
+        private var value = Option.empty[Try[T]]
+        private var onCompletes = mutable.Set.empty[Try[T] &#8658; Unit]
+        def onComplete(fun: Try[T] &#8658; Unit): Unit = {
+          this.value match {
+            case Some(v) &#8658; fun(v)
+            case None    &#8658; onCompletes += fun
+          }
+        }
+        def complete(v: Try[T]): Promise[T] = {
+          if (this.value.isDefined)
+            throw new IllegalStateException("Can only complete a promise once.")
+
+          this.value = Some(v)
+          this.onCompletes.foreach(_(v))
+          this
+        }
+      }
+    }
+  }
+  import our._
+  def log(msg: String) = println(s"${Thread.currentThread}: $msg")
+  Future(23).map(_ + 23).map(_.toString).map(log)
+</pre>
+</div>
+
+<p>
+Which simply prints:
+</p>
+
+<pre class="example">
+Thread[Thread-0,5,main]: 46
+</pre>
+
+<p>
+Now that we have the <code>map</code> combinator the next step would be to add the <code>flatMap</code>
+combinator for composing functions that produce futures. It would also allow
+us to use <a href="http://docs.scala-lang.org/tutorials/FAQ/yield.html#translating-for-comprehensions">for comprehensions</a> that allow us to compose functions in a concise
+manner. But I'll leave that and the other combinators as an exercise to the
+reader or a second part to this post :)
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline5" class="outline-2">
+<h2 id="orgheadline5">Conclusion</h2>
+<div class="outline-text-2" id="text-orgheadline5">
+<p>
+Please note that the multi-threaded nature of our examples means that the main
+thread might have finished and died before execution of all other threads has
+finished. You can get around that by either waiting on the main thread or
+implementing an abstraction similar to <code>Await</code> using a <a href="https://github.com/scala/scala/blob/27da46343cd545534819300235bc64ab74958c92/src/library/scala/concurrent/impl/Promise.scala#L194">polling mechanism</a>.
+</p>
+
+<p>
+Have a look at Scala's <a href="https://github.com/scala/scala/blob/27da46343cd545534819300235bc64ab74958c92/src/library/scala/concurrent/impl/Promise.scala#L20">implementation</a> or the <a href="http://docs.scala-lang.org/overviews/core/futures.html">docs</a> on scala-lang.org for more
+details. Happy hacking!
+</p>
+</div>
+</div>
+      </div>
+    </content>
+    <author>
+      <name>Felix Geller</name>
+    </author>
+  </entry>
+
+  <entry>
     <title>Notes on pattern matching in Scala</title>
     <link type="text/html" href="http://www.beltmogul.me/2015/pattern-matching.html"/>
     <id>urn:uuid:2c31f3a9-17a0-499a-b4ee-7966b48d6129</id>
@@ -15,7 +888,7 @@
     <summary></summary>
     <content type="xhtml">
       <div xmlns="http://www.w3.org/1999/xhtml">
-<div><h2><a href="pattern-matching.html">Notes on pattern matching in Scala</a> <span class="date">30-09-2015</span></h2></div>
+<div><h2><a href="http://beltmogul.me/2015/pattern-matching.html">Notes on pattern matching in Scala</a> <span class="date">30-09-2015</span></h2></div>
 
 
 <div class="figure">

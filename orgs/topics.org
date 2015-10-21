@@ -7,6 +7,7 @@
 #+TITLE: belt mogul - grouped
 
 #+HTML: <div class="outline-2"><h1>Scala</h1></div>
+#+HTML: <div class="outline-2"><h2><a href="2015/futures.html">On Scala's futures</a> <span class="date">21-10-2015</span></h2></div>
 #+HTML: <div class="outline-2"><h2><a href="2015/pattern-matching.html">Notes on pattern matching in Scala</a> <span class="date">30-09-2015</span></h2></div>
 #+HTML: <div class="outline-2"><h2><a href="2015/and-then-try.html">andThen Try another implicit class</a> <span class="date">03-08-2015</span></h2></div>
 #+HTML: <div class="outline-2"><h2><a href="2014/pipes.html">scala pipes</a> <span class="date">2014</span></h2></div>
